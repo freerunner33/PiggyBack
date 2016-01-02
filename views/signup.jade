@@ -1,0 +1,19 @@
+extends layout
+
+block content
+	h1 Sign up page
+
+	if errors
+		h4 Error occurred
+		ul
+		each error in errors
+			li= error
+	br
+	form(method='POST', action='/signup')
+		input(type='text', name='username', value=username, placeholder='Username', required)
+		input(type='text', name='firstname', value=firstname, placeholder='First name', required)
+		input(type='text', name='lastname', value=lastname, placeholder='Last name', required)
+		input(type='text', name='phone', value=phone, placeholder='Phone Number', required)
+		input(type='text', name='password', placeholder='Password', required)
+		input(type='text', name='password2', placeholder='Retype Password', required)
+		button(type='submit') Submit

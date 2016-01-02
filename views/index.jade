@@ -1,0 +1,95 @@
+extends layout
+
+block stylesheets
+	link(rel='stylesheet', href='/PiggyBack/css/style.css')
+
+block content
+	h1 Test Page for PiggyBack Technologies
+	a(href='/signup') Sign up
+	div#leftcontainer
+		h2 Organization:
+		ul
+			li Name: #{orgName}
+			li ID: #{orgID}
+			li Email: #{orgEmail}
+		h2 Team:
+		ul
+			li Name: #{teamName}
+			li ID: #{teamID}
+		h3 Workers:
+		ul
+			if teamWorkers.length
+				each w in teamWorkers
+					li Name: #{w.name}
+					li Phone: #{w.phone}
+					li ID: #{w.id}
+					li 
+						form(method='POST', action='/delete-worker')
+							input(type='hidden', name='id', value=w.id)
+							button(type='submit') Delete Worker
+						form(method='POST', action='/update-worker')
+							input(type='text', name='name')
+							input(type='hidden', name='id', value=w.id)
+							button(type='submit') Update Worker
+					br
+			else
+				li No workers in #{teamName}
+
+		h4 Create New Worker:
+		form(method='POST', action='/new-worker')
+			input(type='text', name='name', placeholder='Employee Name')
+			input(type='text', name='number', placeholder='Phone Number')
+			button(type='submit') Submit
+	
+	div#rightcontainer
+		h2 Destination: 
+		ul
+			li ID: #{destination.id}
+			li Address:
+			ul
+				li Name: #{destination.address.name}
+				li Number: #{destination.address.number}
+				li Street: #{destination.address.street}
+				li Apartment: #{destination.address.apartment}
+				li City: #{destination.address.city}
+				li State: #{destination.address.state}
+				li Postal Code: #{destination.address.postalCode}
+				li Country: #{destination.address.country}
+
+		h2 Tasks:
+		ul
+			if tasks.length
+				each task in tasks
+					li Task ID: #{task.id}
+					li Task State: #{task.state}
+					li Destination:
+					ul
+						li #{task.destination.address.number} #{task.destination.address.street}
+						li #{task.destination.address.city}, #{task.destination.address.state} #{task.destination.address.postalCode}
+					br
+			else
+				li No tasks at the moment
+
+		h2 WebHooks:
+		ul
+			if webhooks.length
+				each webhook in webhooks
+					li Webhook ID: #{webhook.id}
+					li Count: #{webhook.count}
+					li URL: #{webhook.url}
+					li Trigger: #{webhook.trigger}
+					hr
+			else
+				li No webhooks at the moment
+
+		h4 Create New Destination:
+		form(method='POST', action='new-destination')
+			input(type='text', name='name', placeholder='Name')
+			input(type='number', name='number', placeholder='Number', required)
+			input(type='text', name='street', placeholder='Street', required)
+			input(type='text', name='apartment', placeholder='Apartment')
+			input(type='text', name='city', placeholder='City', required)
+			input(type='text', name='state', placeholder='State')
+			input(type='number', name='postalCode', placeholder='Postal Code')
+			input(type='text', name='country', placeholder='Country', required)
+			button(type='submit') Submit

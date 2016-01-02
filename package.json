@@ -1,0 +1,23 @@
+{
+  "name": "piggyback",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.3",
+    "bcrypt": "^0.8.5",
+    "mysql": "^2.10.0",
+    "promise": "^7.1.1",
+    "jade": "^1.11.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "validator": "^4.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "database": "mysql -u root -p < ./database.sql"
+  },
+  "author": "",
+  "license": "ISC"
+}
