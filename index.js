@@ -17,8 +17,6 @@ app.use(bodyParser.urlencoded({
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 
-// app.use(express.static('public'));
-
 // Main GET request listener
 app.get('/PiggyBack', function(request, response) {
 	onfleet.getSingleTeamByName('TEST').then(function(team) {
