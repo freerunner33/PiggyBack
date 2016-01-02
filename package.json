@@ -16,7 +16,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "database": "mysql -u root -p < ./database.sql"
+    "database": "mysql -u root -p < ./database.sql",
+    "deploy": "node deploy"
   },
   "author": "",
   "license": "ISC"
