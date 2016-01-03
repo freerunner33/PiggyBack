@@ -18,6 +18,14 @@ app.use(bodyParser.urlencoded({
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 
+app.get('/', function(request, response) {
+	response.render('index', {
+		pageTitle: 'Home'
+	})
+})
+
+app.use(express.static('assets'))
+
 // Main GET request listener
 app.get('/PiggyBack', function(request, response) {
 	onfleet.getSingleTeamByName('TEST').then(function(team) {
@@ -26,8 +34,8 @@ app.get('/PiggyBack', function(request, response) {
 				onfleet.listTasks().then(function(tasks) {
 					onfleet.listWebHooks().then(function(webhooks) {
 						response.render(
-							'index', {
-								pageTitle: 'NOAH', 
+							'pbhome', {
+								pageTitle: 'PiggyBack', 
 								orgName: org.name, 
 								orgID: org.id,
 								orgEmail: org.email,

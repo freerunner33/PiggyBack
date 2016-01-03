@@ -2,11 +2,11 @@
 extends layout
 
 block stylesheets
-	link(rel='stylesheet', href='/assets/css/style.css')
+	link(rel='stylesheet', href='/PiggyBack/assets/css/style.css')
 
 block content
 	h1 PiggyBack Technologies
-	a(href='/signup') Sign up
+	a(href='/PiggyBack/signup') Sign up
 	div#leftcontainer
 		h2 Organization:
 		ul
@@ -25,10 +25,10 @@ block content
 					li Phone: #{w.phone}
 					li ID: #{w.id}
 					li 
-						form(method='POST', action='/delete-worker')
+						form(method='POST', action='/PiggyBack/delete-worker')
 							input(type='hidden', name='id', value=w.id)
 							button(type='submit') Delete Worker
-						form(method='POST', action='/update-worker')
+						form(method='POST', action='/PiggyBack/update-worker')
 							input(type='text', name='name')
 							input(type='hidden', name='id', value=w.id)
 							button(type='submit') Update Worker
@@ -37,7 +37,7 @@ block content
 				li No workers in #{teamName}
 
 		h4 Create New Worker:
-		form(method='POST', action='/new-worker')
+		form(method='POST', action='/PiggyBack/new-worker')
 			input(type='text', name='name', placeholder='Employee Name')
 			input(type='text', name='number', placeholder='Phone Number')
 			button(type='submit') Submit
@@ -84,7 +84,7 @@ block content
 				li No webhooks at the moment
 
 		h4 Create New Destination:
-		form(method='POST', action='new-destination')
+		form(method='POST', action='/PiggyBack/new-destination')
 			input(type='text', name='name', placeholder='Name')
 			input(type='number', name='number', placeholder='Number', required)
 			input(type='text', name='street', placeholder='Street', required)
