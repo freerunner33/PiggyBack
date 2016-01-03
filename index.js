@@ -24,7 +24,7 @@ app.get('/', function(request, response) {
 	})
 })
 
-app.use(express.static('assets'))
+// app.use(express.static('assets'))
 
 // Main GET request listener
 app.get('/PiggyBack', function(request, response) {
