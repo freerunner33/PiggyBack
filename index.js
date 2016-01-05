@@ -18,13 +18,14 @@ app.use(bodyParser.urlencoded({
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 
+app.use(express.static('assets'));
+
+
 app.get('/', function(request, response) {
 	response.render('index', {
 		pageTitle: 'Home'
 	})
 })
-
-// app.use(express.static('assets'))
 
 // Main GET request listener
 app.get('/PiggyBack', function(request, response) {
