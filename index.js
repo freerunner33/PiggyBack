@@ -263,7 +263,7 @@ app.post('/PiggyBack/signin', function(request, response) {
 		return
 	}
 
- 	connection.query('SELECT id from users where username=? && password=?', [username, password], function(error, rows) {
+ 	connection.query('SELECT id FROM Users WHERE username=? && password=?', [username, password], function(error, rows) {
 		if (error)
 			throw error
 		if (rows.length) {
