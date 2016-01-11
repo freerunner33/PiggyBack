@@ -1,3 +1,4 @@
+
 extends layout
 
 block content
@@ -9,6 +10,7 @@ block content
 		each error in errors
 			li= error
 	br
+	
 	form(method='POST', action='/PiggyBack/signup')
 		input(type='text', name='username', value=username, placeholder='Username', required)
 		input(type='text', name='firstname', value=firstname, placeholder='First name', required)

@@ -1,0 +1,19 @@
+
+extends layout
+
+block content
+	h1 Sign in page
+	
+	if errors
+		h4 Error occurred
+		ul
+		each error in errors
+			li= error
+	br
+
+	form(method='POST', action='/PiggyBack/signin')
+		input(type='text', name='username', value=username, placeholder='Username', required)
+		input(type='text', name='password', placeholder='Password', required)
+		button(type='submit') Submit
+
+	a(href='/PiggyBack/signup') Sign up

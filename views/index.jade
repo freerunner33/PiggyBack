@@ -1,8 +1,10 @@
+
 extends layout
 
 block stylesheets
-	link(rel='stylesheet', href='/assets/css/main.css')
+	link(rel='stylesheet', href='assets/css/main.css')
 
 block content
 	h1 Welcome
-	
+	h3 Views: #{views}
+	a(href='/destroy') Destroy Session

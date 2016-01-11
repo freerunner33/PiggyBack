@@ -2,11 +2,13 @@
 extends layout
 
 block stylesheets
-	link(rel='stylesheet', href='/assets/css/style.css')
+	link(rel='stylesheet', href='assets/css/style.css')
 
 block content
 	h1 Test page for PiggyBack Technologies
+	a(href='/PiggyBack/signin') Sign in
 	a(href='/PiggyBack/signup') Sign up
+	a(href='/PiggyBack/calculate') Calculate
 	div#leftcontainer
 		h2 Organization:
 		ul

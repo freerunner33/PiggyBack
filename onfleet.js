@@ -1,7 +1,8 @@
+var apiKey = require('./apikey.js')
+
 var Promise = require('promise')
 var https = require('https')
 
-var apiKey = '2a1a17056d3c4677ee5fe70a0c213f00'
 var hostname = 'onfleet.com'
 var path = '/api/v2/'
 

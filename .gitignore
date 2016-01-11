@@ -40,6 +40,9 @@ node_modules
 # Database config
 /database.js
 
-# deploy stuff
+# Deploy stuff
 password
 deploy.sh
+
+# Onfleet API key
+apikey.js

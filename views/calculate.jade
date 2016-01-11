@@ -1,0 +1,20 @@
+
+extends layout
+
+block content
+	h1 Calculate
+	
+	if errors
+		h4 Error occurred
+		ul
+		each error in errors
+			li= error
+
+	h1 The request body
+	p= reqbody
+	p= reqfile
+
+	form(method='POST', action='/PiggyBack/calculate', type='multipart/form-data')
+		input(type="text", name="title")
+		input(type="file" name="upload" accept=".csv")
+		button(type='submit' value='Upload') Submit
