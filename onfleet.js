@@ -1,5 +1,5 @@
 
-var apiKey = require('./apikey.js')
+var apiKey = require('./keys.js').apiKey
 
 var Promise = require('promise')
 var https = require('https')

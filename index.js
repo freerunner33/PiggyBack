@@ -1,6 +1,7 @@
 // Require the onfleet api, and the database js file
 var onfleet = require('./onfleet.js')
 var connection = require('./database.js')
+var signUpKey = require('./keys.js').signUpKey
 
 // npm modules that are required in
 var path = require('path')
@@ -202,6 +203,12 @@ app.post('/PiggyBack/signup', function(request, response) {
 	var phone = request.body.phone
 	var password = request.body.password
 	var password2 = request.body.password2
+	var key = request.body.key
+
+	if (key != signUpKey) {
+		response.render('signup', {pageTitle: 'Sign up', errors: ['Incorrect sign up key. Please contact Noah for a key to sign up'], username: username, firstname: firstname, lastname: lastname, phone: phone})
+		return
+	}
 
 	if (!(username && firstname && lastname && phone && password && password2)) {
 		response.render('signup', {pageTitle: 'Sign up', errors: ['All fields must be completed'], username: username, firstname: firstname, lastname: lastname, phone: phone})
@@ -227,7 +234,7 @@ app.post('/PiggyBack/signup', function(request, response) {
 		return
 	}
 
-	connection.query('SELECT id FROM users WHERE username=?', [username], function(error, rows) {
+	connection.query('SELECT id FROM Users WHERE username=?', [username], function(error, rows) {
 		if (error) 
 			throw error
 		if (rows.length) {
@@ -235,6 +242,7 @@ app.post('/PiggyBack/signup', function(request, response) {
 			return
 		}
 		
+		// something weird here. Not inserting correctly
 		connection.query('INSERT INTO Users (username, firstname, lastname, password, phone) VALUES (?,?,?,?,?)',
 			[username, firstname, lastname, password, phone], function(error, rows) 
 			{
