@@ -202,12 +202,12 @@ app.post('/PiggyBack/new-task', function(request, response) {
 					merchant: request.body.merchant,
 					executor: request.body.executor,
 					destination: request.body.destination,
-					recipients: [request.body.recipients],
-					completeAfter: request.body.completeAfter,
-					completeBefore: request.body.completeBefore,
-					pickupTask: request.body.pickupTask,
-					dependencies: request.body.dependencies,
-					notes: request.body.notes
+					recipients: [request.body.recipients]
+					// completeAfter: request.body.completeAfter,
+					// completeBefore: request.body.completeBefore,
+					// pickupTask: request.body.pickupTask,
+					// dependencies: request.body.dependencies,
+					// notes: request.body.notes
 					// autoAssign: request.body.autoAssign
 				}
 			).then(function(destination) {
