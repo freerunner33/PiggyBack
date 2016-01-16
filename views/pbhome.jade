@@ -38,7 +38,7 @@ block content
 			else
 				li No workers in #{teamName}
 
-		h4 Create New Worker:
+		h4 Create New Worker on test team:
 		form(method='POST', action='/PiggyBack/new-worker')
 			input(type='text', name='name', placeholder='Employee Name')
 			input(type='text', name='number', placeholder='Phone Number')
@@ -63,6 +63,7 @@ block content
 		ul
 			if tasks.length
 				each task in tasks
+					li #{JSON.stringify(task)})
 					li Task ID: #{task.id}
 					li Task State: #{task.state}
 					li Destination:
@@ -72,18 +73,6 @@ block content
 					br
 			else
 				li No tasks at the moment
-
-		h2 WebHooks:
-		ul
-			if webhooks.length
-				each webhook in webhooks
-					li Webhook ID: #{webhook.id}
-					li Count: #{webhook.count}
-					li URL: #{webhook.url}
-					li Trigger: #{webhook.trigger}
-					hr
-			else
-				li No webhooks at the moment
 
 		//- h4 Create New Destination:
 		//- form(method='POST', action='/PiggyBack/new-destination')
