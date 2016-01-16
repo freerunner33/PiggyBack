@@ -210,7 +210,7 @@ app.post('/PiggyBack/new-task', function(request, response) {
 				// {request.body.autoAssign}
 			).then(function(destination) {
 				console.log(JSON.stringify(destination))
-				response.redirect('/PiggyBack')
+				response.redirect('/PiggyBack/')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})
