@@ -84,13 +84,13 @@ block content
 		//- 	input(type='number', name='postalCode', placeholder='Postal Code')
 		//- 	input(type='text', name='country', placeholder='Country', required)
 		//- 	button(type='submit') Submit
-
+		
 		h4 Create New Task:
 		form(method='POST', action='/PiggyBack/new-task')
 			input(type='text', name='merchant', placeholder='Merchant ID', required)
 			input(type='text', name='executor', placeholder='Executor ID', required)
 			input(type='text', name='destination', placeholder='Destination ID', required)
-			input(type='text', name='recipients', placeholder='Recipient IDs', required)
+			input(type='text', name='recipients', placeholder='Recipient IDs')
 			input(type='number', name='completeAfter', placeholder='Complete After')
 			input(type='number', name='completeBefore', placeholder='Complete Before')
 			input(type='checkbox', name='pickupTask')

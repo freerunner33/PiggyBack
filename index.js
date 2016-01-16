@@ -201,12 +201,12 @@ app.post('/PiggyBack/new-task', function(request, response) {
 				request.body.merchant,
 				request.body.executor,
 				request.body.destination,
-				[]
-				// request.body.completeAfter,
-				// request.body.completeBefore,
-				// request.body.pickupTask,
-				// [request.body.dependencies],
-				// request.body.notes
+				[request.body.recipients],
+				request.body.completeAfter,
+				request.body.completeBefore,
+				request.body.pickupTask,
+				[request.body.dependencies],
+				request.body.notes
 				// {request.body.autoAssign}
 			).then(function(destination) {
 				console.log(JSON.stringify(destination))
