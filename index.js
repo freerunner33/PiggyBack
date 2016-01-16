@@ -201,7 +201,7 @@ app.post('/PiggyBack/new-task', function(request, response) {
 				request.body.merchant,
 				request.body.executor,
 				request.body.destination,
-				[],
+				[]
 				// request.body.completeAfter,
 				// request.body.completeBefore,
 				// request.body.pickupTask,
