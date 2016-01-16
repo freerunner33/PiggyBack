@@ -118,7 +118,7 @@ app.post('/PiggyBack/new-worker', function(request, response) {
 					color: 'black'
 				}
 			).then(function(worker) {
-				response.redirect('/PiggyBack/')
+				response.redirect('/PiggyBack')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})
@@ -151,10 +151,10 @@ app.post('/PiggyBack/delete-worker', function(request, response) {
 app.post('/PiggyBack/update-worker', function(request, response) {
 	if (request.session.loggedin) {
 		if (!(request.body.id && request.body.name))
-			response.redirect('/PiggyBack/')
+			response.redirect('/PiggyBack')
 		else {
 			onfleet.updateWorkerByID(request.body.id, {name: request.body.name}).then(function() {
-				response.redirect('/PiggyBack/')
+				response.redirect('/PiggyBack')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})
@@ -167,7 +167,7 @@ app.post('/PiggyBack/update-worker', function(request, response) {
 app.post('/PiggyBack/new-destination', function(request, response) {
 	if (request.session.loggedin) {
 		if (!(request.body.number && request.body.street && request.body.city && request.body.country))
-		response.redirect('/PiggyBack/')
+		response.redirect('/PiggyBack')
 		else {
 			onfleet.createNewDestination(
 				{
@@ -182,7 +182,7 @@ app.post('/PiggyBack/new-destination', function(request, response) {
 				}
 			).then(function(destination) {
 				console.log(JSON.stringify(destination))
-				response.redirect('/PiggyBack/')
+				response.redirect('/PiggyBack')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})
@@ -195,13 +195,13 @@ app.post('/PiggyBack/new-destination', function(request, response) {
 app.post('/PiggyBack/new-task', function(request, response) {
 	if (request.session.loggedin) {
 		if (!(request.body.merchant && request.body.executor && request.body.destination && request.body.recipients))
-		response.redirect('/PiggyBack/')
+		response.redirect('/PiggyBack')
 		else {
 			onfleet.createNewTask(
 				request.body.merchant,
 				request.body.executor,
 				request.body.destination,
-				[request.body.recipients],
+				[],
 				request.body.completeAfter,
 				request.body.completeBefore,
 				request.body.pickupTask,
@@ -210,7 +210,7 @@ app.post('/PiggyBack/new-task', function(request, response) {
 				// {request.body.autoAssign}
 			).then(function(destination) {
 				console.log(JSON.stringify(destination))
-				response.redirect('/PiggyBack/')
+				response.redirect('/PiggyBack')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})
