@@ -17,7 +17,7 @@ var session = require('express-session')
 
 // For use with file input and output
 var multer  = require('multer')
-var upload = multer({ dest: 'assets/uploads/' })
+// var upload = multer({ dest: 'assets/uploads/' })
 
 // For rendering the pages in the views folder
 app.set('views', path.join(__dirname, 'views'))
@@ -292,21 +292,21 @@ app.get('/PiggyBack/calculate', function(request, response) {
 	}
 })
 
-app.post('/PiggyBack/calculate', upload.single('testfile'), function(request, response) {
-	if (!request.session.loggedin) {
-		// req.file is the `avatar` file 
-	  	// req.body will hold the text fields, if there were any 
-		response.render('calculate', {
-			pageTitle: 'Calculate', 
-			reqbody: JSON.stringify(request.body),
-			reqfile: JSON.stringify(request.file),
-			other: JSON.stringify(response.locals.auth)
-			// need some way to access auth part of options on the request
-		})
-	} else {
-		response.redirect('/PiggyBack/signin')
-	}
-})
+// app.post('/PiggyBack/calculate', upload.single('testfile'), function(request, response) {
+// 	if (!request.session.loggedin) {
+// 		// req.file is the `avatar` file 
+// 	  	// req.body will hold the text fields, if there were any 
+// 		response.render('calculate', {
+// 			pageTitle: 'Calculate', 
+// 			reqbody: JSON.stringify(request.body),
+// 			reqfile: JSON.stringify(request.file),
+// 			other: JSON.stringify(response.locals.auth)
+// 			// need some way to access auth part of options on the request
+// 		})
+// 	} else {
+// 		response.redirect('/PiggyBack/signin')
+// 	}
+// })
 
 http.listen(8080, '127.0.0.1', function() {
 	console.log('listening on port 8080')
