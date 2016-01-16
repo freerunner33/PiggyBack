@@ -168,25 +168,55 @@ app.post('/PiggyBack/new-destination', function(request, response) {
 	if (request.session.loggedin) {
 		if (!(request.body.number && request.body.street && request.body.city && request.body.country))
 		response.redirect('/PiggyBack/')
-	else {
-		onfleet.createNewDestination(
-			{
-				name: request.body.name,
-				number: request.body.number,
-				street: request.body.street,
-				apartment: request.body.apartment,
-				city: request.body.city,
-				state: request.body.state,
-				postalCode: request.body.postalCode,
-				country: request.body.country
-			}
-		).then(function(destination) {
-			console.log(JSON.stringify(destination))
-			response.redirect('/PiggyBack/')
-		}).catch(function(error) {
-			response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
-		})
+		else {
+			onfleet.createNewDestination(
+				{
+					name: request.body.name,
+					number: request.body.number,
+					street: request.body.street,
+					apartment: request.body.apartment,
+					city: request.body.city,
+					state: request.body.state,
+					postalCode: request.body.postalCode,
+					country: request.body.country
+				}
+			).then(function(destination) {
+				console.log(JSON.stringify(destination))
+				response.redirect('/PiggyBack/')
+			}).catch(function(error) {
+				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+			})
+		}
+	} else {
+		response.redirect('/PiggyBack/signin')
 	}
+})
+
+app.post('/PiggyBack/new-task', function(request, response) {
+	if (request.session.loggedin) {
+		if (!(request.body.merchant && request.body.executor && request.body.destination && request.body.recipients))
+		response.redirect('/PiggyBack/')
+		else {
+			onfleet.createNewDestination(
+				{
+					merchant: request.body.merchant,
+					executor: request.body.executor,
+					destination: request.body.destination,
+					recipients: request.body.recipients,
+					completeAfter: request.body.completeAfter,
+					completeBefore: request.body.completeBefore,
+					pickupTask: request.body.pickupTask,
+					dependencies: request.body.dependencies,
+					notes: request.body.notes
+					// autoAssign: request.body.autoAssign
+				}
+			).then(function(destination) {
+				console.log(JSON.stringify(destination))
+				response.redirect('/PiggyBack/')
+			}).catch(function(error) {
+				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+			})
+		}
 	} else {
 		response.redirect('/PiggyBack/signin')
 	}
