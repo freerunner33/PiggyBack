@@ -197,18 +197,17 @@ app.post('/PiggyBack/new-task', function(request, response) {
 		if (!(request.body.merchant && request.body.executor && request.body.destination && request.body.recipients))
 		response.redirect('/PiggyBack/')
 		else {
-			onfleet.createNewDestination(
-				{
-					merchant: request.body.merchant,
-					executor: request.body.executor,
-					destination: request.body.destination,
-					recipients: [request.body.recipients]
-					// completeAfter: request.body.completeAfter,
-					// completeBefore: request.body.completeBefore,
-					// pickupTask: request.body.pickupTask,
-					// dependencies: request.body.dependencies,
-					// notes: request.body.notes
-					// autoAssign: request.body.autoAssign
+			onfleet.createNewTask(
+					request.body.merchant,
+					request.body.executor,
+					request.body.destination,
+					[request.body.recipients],
+					request.body.completeAfter,
+					request.body.completeBefore,
+					request.body.pickupTask,
+					[request.body.dependencies],
+					request.body.notes
+					// {request.body.autoAssign}
 				}
 			).then(function(destination) {
 				console.log(JSON.stringify(destination))
