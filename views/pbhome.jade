@@ -85,14 +85,27 @@ block content
 			else
 				li No webhooks at the moment
 
-		h4 Create New Destination:
-		form(method='POST', action='/PiggyBack/new-destination')
-			input(type='text', name='name', placeholder='Name')
-			input(type='number', name='number', placeholder='Number', required)
-			input(type='text', name='street', placeholder='Street', required)
-			input(type='text', name='apartment', placeholder='Apartment')
-			input(type='text', name='city', placeholder='City', required)
-			input(type='text', name='state', placeholder='State')
-			input(type='number', name='postalCode', placeholder='Postal Code')
-			input(type='text', name='country', placeholder='Country', required)
+		//- h4 Create New Destination:
+		//- form(method='POST', action='/PiggyBack/new-destination')
+		//- 	input(type='text', name='name', placeholder='Name')
+		//- 	input(type='number', name='number', placeholder='Number', required)
+		//- 	input(type='text', name='street', placeholder='Street', required)
+		//- 	input(type='text', name='apartment', placeholder='Apartment')
+		//- 	input(type='text', name='city', placeholder='City', required)
+		//- 	input(type='text', name='state', placeholder='State')
+		//- 	input(type='number', name='postalCode', placeholder='Postal Code')
+		//- 	input(type='text', name='country', placeholder='Country', required)
+		//- 	button(type='submit') Submit
+
+		h4 Create New Task:
+		form(method='POST', action='/PiggyBack/new-task')
+			input(type='text', name='merchant', placeholder='Merchant', required)
+			input(type='text', name='executor', placeholder='Executor', required)
+			input(type='text', name='destination', placeholder='Destination', required)
+			input(type='text', name='recipients', placeholder='Recipients', required)
+			input(type='number', name='completeAfter', placeholder='Complete After')
+			input(type='number', name='completeBefore', placeholder='Complete Before')
+			input(type='checkbox', name='pickupTask', placeholder='Pickup Task')
+			input(type='text', name='dependencies', placeholder='Dependencies')
+			input(type='text', name='notes', placeholder='Notes')
 			button(type='submit') Submit

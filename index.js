@@ -17,7 +17,7 @@ var session = require('express-session')
 
 // For use with file input and output
 var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
+var upload = multer({ dest: 'assets/uploads/' })
 
 // For rendering the pages in the views folder
 app.set('views', path.join(__dirname, 'views'))
@@ -285,21 +285,23 @@ app.post('/PiggyBack/signin', function(request, response) {
 })
 
 app.get('/PiggyBack/calculate', function(request, response) {
-	if (request.session.loggedin) {
+	if (!request.session.loggedin) {
 		response.render('calculate', {pageTitle: 'Calculate', reqbody: 'no content uploaded'})
 	} else {
 		response.redirect('/PiggyBack/signin')
 	}
 })
 
-app.post('/PiggyBack/calculate', upload.single('data.csv'), function(request, response) {
-	if (request.session.loggedin) {
+app.post('/PiggyBack/calculate', upload.single('testfile'), function(request, response) {
+	if (!request.session.loggedin) {
 		// req.file is the `avatar` file 
 	  	// req.body will hold the text fields, if there were any 
 		response.render('calculate', {
 			pageTitle: 'Calculate', 
 			reqbody: JSON.stringify(request.body),
-			reqfile: JSON.stringify(request.file)
+			reqfile: JSON.stringify(request.file),
+			other: JSON.stringify(response.locals.auth)
+			// need some way to access auth part of options on the request
 		})
 	} else {
 		response.redirect('/PiggyBack/signin')

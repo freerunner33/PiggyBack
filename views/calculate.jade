@@ -11,10 +11,14 @@ block content
 			li= error
 
 	h1 The request body
+	h4 Request body
 	p= reqbody
+	h4 Request file
 	p= reqfile
+	h4 Other
+	p= other
 
 	form(method='POST', action='/PiggyBack/calculate', type='multipart/form-data')
 		input(type="text", name="title")
-		input(type="file" name="upload" accept=".csv")
+		input(type="file" name="testfile")
 		button(type='submit' value='Upload') Submit
