@@ -165,8 +165,7 @@ function getSingleRecipient(id) {
 
 // TASKS
 	// state = (0: unassigned, 1: assigned, 2: active, 3: completed)
-function createNewTask(merchant, executor, destination, recipients, completeAfter,
-	completeBefore, pickupTask, dependendencies, notes, autoAssign) {
+function createNewTask(merchant, executor, destination, recipients, completeAfter, completeBefore, pickupTask, dependendencies, notes, autoAssign) {
 	return request(
 		'tasks', 
 		'POST', 
