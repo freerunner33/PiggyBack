@@ -12,7 +12,7 @@ header {
 	padding: 0.5em;
 	text-align: left;
 }
-header a {
+a#img {
 	padding: 0;
 }
 img {
