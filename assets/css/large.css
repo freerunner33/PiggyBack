@@ -1,0 +1,32 @@
+
+@media all and (min-width: 64em) {
+	div {
+		display: inline-block;
+		padding: 0.5em;
+		vertical-align: top;
+		width: calc(50% - 1em);
+		color: #888;
+	}
+	h2 {
+		color: #bbb;
+		margin: 0.5em 0;
+	}
+	h3 {
+		color: #aaa;
+		margin: 0.5em 0;
+	}
+
+	form#new {
+		border: 2px solid #444;
+		display: inline-block;
+		width: 75%;
+		padding: 0.25em 0.5em;
+	}
+	form#new p {
+		font-size: 0.875em;
+		margin: 0.5em 0 0.125em 0;
+	}
+	form#new input {
+		width: 50%;
+	}
+}

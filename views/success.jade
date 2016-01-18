@@ -1,6 +1,12 @@
+
 extends layout
+
+block stylesheets
+	link(rel='stylesheet', href='../css/success.css')
 
 block content
 	h1 Success
+	
+	img#success(src='http://m.memegen.com/ie2327.jpg')
 	h3= message
 	button(onclick='location.href="/PiggyBack"') Return to home

@@ -194,23 +194,22 @@ app.post('/PiggyBack/new-destination', function(request, response) {
 
 app.post('/PiggyBack/new-task', function(request, response) {
 	if (request.session.loggedin) {
-		if (!(request.body.merchant && request.body.executor && request.body.destination && request.body.recipients))
+		if (!(request.body.merchant && request.body.executor && request.body.destination))
 		response.redirect('/PiggyBack')
 		else {
 			onfleet.createNewTask(
 				request.body.merchant,
 				request.body.executor,
 				request.body.destination,
-				[]
-				// request.body.completeAfter,
-				// request.body.completeBefore,
+				[request.body.recipients]
+				// request.body.completeAfter - need to convert time to number
+				// request.body.completeBefore, - null if no time entered
 				// request.body.pickupTask,
 				// [request.body.dependencies],
 				// request.body.notes
 				// {request.body.autoAssign}
 			).then(function(destination) {
-				console.log(JSON.stringify(destination))
-				response.redirect('/PiggyBack/')
+				response.redirect('/PiggyBack')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})

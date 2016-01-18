@@ -1,6 +1,8 @@
 
 extends layout
 
+block stylesheets
+
 block content
 	h1 Sign in page
 	
@@ -14,6 +16,6 @@ block content
 	form(method='POST', action='/PiggyBack/signin')
 		input(type='text', name='username', value=username, placeholder='Username', required)
 		input(type='password', name='password', placeholder='Password', required)
-		button(type='submit') Submit
+		button(type='submit') Sign in
 
 	a(href='/PiggyBack/signup') Sign up

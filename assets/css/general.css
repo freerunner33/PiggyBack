@@ -1,0 +1,32 @@
+
+body {
+	background-color: rgb(35, 35, 35);
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: 300;
+	margin: 0;
+	padding: 1em;
+}
+
+header {
+	color: rgb(237, 45, 135);
+	padding: 0.5em;
+	text-align: left;
+}
+img {
+	height: 45px; 
+	vertical-align: middle;
+}
+nav {
+	display: inline-block;
+	text-align: right;
+	vertical-align: middle;
+	width: calc(100% - 212px);
+}
+
+a {
+	color: rgb(237, 45, 135);
+	display: inline-block;
+	padding: 0.25em 1em;
+	text-decoration: none;
+	vertical-align: top;
+}

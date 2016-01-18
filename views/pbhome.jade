@@ -2,20 +2,17 @@
 extends layout
 
 block stylesheets
-	link(rel='stylesheet', href='assets/css/style.css')
+	link(rel='stylesheet', href='css/large.css')
+	link(rel='stylesheet', href='css/small.css')
 
 block content
-	h1 Test page for PiggyBack Technologies
-	a(href='/PiggyBack/signin') Sign in
-	a(href='/PiggyBack/signup') Sign up
-	a(href='/PiggyBack/calculate') Calculate
 	div#leftcontainer
-		h2 Organization:
+		h2 Organization Details:
 		ul
 			li Name: #{orgName}
 			li ID: #{orgID}
 			li Email: #{orgEmail}
-		h2 Team:
+		h2 Team Details:
 		ul
 			li Name: #{teamName}
 			li ID: #{teamID}
@@ -30,22 +27,26 @@ block content
 						form(method='POST', action='/PiggyBack/delete-worker')
 							input(type='hidden', name='id', value=w.id)
 							button(type='submit') Delete Worker
+					li
 						form(method='POST', action='/PiggyBack/update-worker')
-							input(type='text', name='name')
+							input(type='text', name='name', placeholder='Employee Name')
 							input(type='hidden', name='id', value=w.id)
 							button(type='submit') Update Worker
 					br
 			else
 				li No workers in #{teamName}
 
-		h4 Create New Worker on test team:
-		form(method='POST', action='/PiggyBack/new-worker')
-			input(type='text', name='name', placeholder='Employee Name')
-			input(type='text', name='number', placeholder='Phone Number')
+		form#new(method='POST', action='/PiggyBack/new-worker')
+			h3 Create new worker on test team:
+			p Employee Name
+			input(type='text', name='name')
+			p Phone Number
+			input(type='text', name='number')
+			br
 			button(type='submit') Submit
 	
 	div#rightcontainer
-		h2 Destination: 
+		h2 Destination Details: 
 		ul
 			li ID: #{destination.id}
 			li Address:
@@ -59,7 +60,7 @@ block content
 				li Postal Code: #{destination.address.postalCode}
 				li Country: #{destination.address.country}
 
-		h2 Tasks:
+		h2 Current Tasks:
 		ul
 			if tasks.length
 				each task in tasks
@@ -85,15 +86,25 @@ block content
 		//- 	input(type='text', name='country', placeholder='Country', required)
 		//- 	button(type='submit') Submit
 		
-		h4 Create New Task:
-		form(method='POST', action='/PiggyBack/new-task')
-			input(type='text', name='merchant', placeholder='Merchant ID', required)
-			input(type='text', name='executor', placeholder='Executor ID', required)
-			input(type='text', name='destination', placeholder='Destination ID', required)
-			input(type='text', name='recipients', placeholder='Recipient IDs')
-			input(type='number', name='completeAfter', placeholder='Complete After')
-			input(type='number', name='completeBefore', placeholder='Complete Before')
+		form#new(method='POST', action='/PiggyBack/new-task')
+			h3 Create new task:
+			p Merchant (ID):
+			input(type='text', name='merchant', required)
+			p Executor:
+			input(type='text', name='executor', required)
+			p Destination:
+			input(type='text', name='destination', required)
+			p Recipient:
+			input(type='text', name='recipients')
+			p Complete After:
+			input(type='time', name='completeAfter')
+			p Complete Before:
+			input(type='time', name='completeBefore')
+			p Pickup Task?
 			input(type='checkbox', name='pickupTask')
-			input(type='text', name='dependencies', placeholder='Dependent task IDs')
+			p Dependencies:
+			input(type='text', name='dependencies', placeholder='Task IDs')
+			p Task Notes:
 			input(type='text', name='notes', placeholder='Notes')
+			br
 			button(type='submit') Submit
