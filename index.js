@@ -45,16 +45,12 @@ app.use(session({
 
 
 app.get('/', function(request, response) {
-	if (request.session.loggedin) {
-		if (request.session.views) {
-			request.session.views++
-			response.render('index', {pageTitle: 'Home', views: request.session.views})
-		} else {
-			request.session.views = 1
-			response.render('index', {pageTitle: 'Home', views: request.session.views})
-		}
+	if (request.session.views) {
+		request.session.views++
+		response.render('index', {pageTitle: 'Home', views: request.session.views})
 	} else {
-		response.redirect('/PiggyBack/signin')
+		request.session.views = 1
+		response.render('index', {pageTitle: 'Home', views: request.session.views})
 	}
 })
 
