@@ -12,6 +12,9 @@ header {
 	padding: 0.5em;
 	text-align: left;
 }
+header a {
+	padding: 0;
+}
 img {
 	height: 45px; 
 	vertical-align: middle;
