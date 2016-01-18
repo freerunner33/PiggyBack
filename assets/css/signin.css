@@ -4,11 +4,18 @@ body {
 }
 
 input {
+	display: block;
+	margin: 1em: auto;
 	width: 25%;
 	min-width: 20em;
 }
 
 button {
+	color: white;
+	background-color: rgb(237, 45, 135);
+	border-radius: 4px;
 	width: 20%;
 	min-width: 15em;
 }
+
+
