@@ -1,3 +1,11 @@
 img#success {
 	height: 20em;
 }
+
+input {
+	margin: 0 1em;
+}
+
+button {
+	margin: 0 1em;
+}
