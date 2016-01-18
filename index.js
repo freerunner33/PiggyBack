@@ -308,7 +308,7 @@ app.post('/PiggyBack/signin', function(request, response) {
 })
 
 app.get('/PiggyBack/calculate', function(request, response) {
-	if (!request.session.loggedin) {
+	if (request.session.loggedin) {
 		response.render('calculate', {pageTitle: 'Calculate', reqbody: 'no content uploaded'})
 	} else {
 		response.redirect('/PiggyBack/signin')
