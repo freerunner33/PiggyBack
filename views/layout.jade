@@ -3,17 +3,23 @@ doctype html
 html(lang='en')
 	head
 		title #{pageTitle}
-		link(rel='stylesheet', href='../assets/css/general.css')
+		link(rel='stylesheet', href='../assets/css/main.css')
 		link(href='https://fonts.googleapis.com/css?family=Ubuntu:300,400,700' rel='stylesheet' type='text/css')
 		block stylesheets
 
 	body
 		header
-		img(src='../assets/images/piggybacklogo.png')
-		nav
-			a(href='/PiggyBack/signin') Sign in
-			a(href='/PiggyBack/signup') Sign up
-			a(href='/PiggyBack/calculate') Calculate
-		hr
-		block content
+		h1 Not your average developer
+		div#about
+			h3 Academic
+			h3 Athletic
+			h3 About
+		div#projects
+			h3 CAD
+			h3 Software Development
+			h3 App Development
+		div#Hobbies
+			h3 Hockey
+			h3 Parkour
+			h3 Other Hobbies
 	
