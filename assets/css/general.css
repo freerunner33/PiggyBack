@@ -30,3 +30,16 @@ a {
 	text-decoration: none;
 	vertical-align: top;
 }
+
+h1 {
+	color:#ddd;
+	margin: 0.5em 0;
+}
+h2 {
+	color: #ccc;
+	margin: 0.5em 0;
+}
+h3 {
+	color: #bbb;
+	margin: 0.5em 0;
+}
