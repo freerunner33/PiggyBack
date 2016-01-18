@@ -1,5 +1,15 @@
 
-input, button {
-	display: block;
+body {
 	text-align: center;
+}
+
+input {
+	display: block;
+	width: 25%;
+	min-width: 20em;
+}
+
+button {
+	width: 20%;
+	min-width: 15em;
 }
