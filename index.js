@@ -55,7 +55,7 @@ app.get('/', function(request, response) {
 			password=parts[1];
 
 		response.writeHead(200, { 'Content-Type': 'text/plain' });
-		response.write('Hello World');
+		response.write("{header:Test Page, username:" + username + ", password:" + password + "}");
 		response.end();
 
 		// if (request.session.views) {
