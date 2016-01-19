@@ -56,10 +56,10 @@ app.get('/', function(request, response) {
 
 		if (request.session.views) {
 			request.session.views++
-			response.render('index', {pageTitle: 'Home', views: request.session.views, username: auth.length, password: password})
+			response.render('index', {pageTitle: 'Home', views: request.session.views, username: request.headers['authorization'], password: request.headers.length})
 		} else {
 			request.session.views = 1
-			response.render('index', {pageTitle: 'Home', views: request.session.views, username: auth.length, password: password})
+			response.render('index', {pageTitle: 'Home', views: request.session.views, username: request.headers['authorization'], password: request.headers.length})
 		}
 	})
 })
