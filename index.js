@@ -11,6 +11,7 @@ var http = require('http').Server(app)
 var validator = require('validator')
 var bcrypt = require('bcrypt')
 var uuid = require('node-uuid')
+var authorization = require('auth-header')
 
 // Used for session variables
 var session = require('express-session')
@@ -45,12 +46,19 @@ app.use(session({
 
 
 app.get('/', function(request, response) {
+	var header=request.headers['authorization']||'',        // get the header
+		token=header.split(/\s+/).pop()||'',            // and the encoded auth token
+		auth=new Buffer(token, 'base64').toString(),    // convert from base64
+		parts=auth.split(/:/),                          // split on colon
+		username=parts[0],
+		password=parts[1];
+
 	if (request.session.views) {
 		request.session.views++
-		response.render('index', {pageTitle: 'Home', views: request.session.views})
+		response.render('index', {pageTitle: 'Home', views: request.session.views, username: username, password: password})
 	} else {
 		request.session.views = 1
-		response.render('index', {pageTitle: 'Home', views: request.session.views})
+		response.render('index', {pageTitle: 'Home', views: request.session.views, username: username, password: password})
 	}
 })
 
