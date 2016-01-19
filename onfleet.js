@@ -28,7 +28,6 @@ function request(endpoint, method, data) {
 					reject(data)
 				}
 				else {
-					console.log(JSON.stringify(data))
 					resolve(data)
 				}
 			})

@@ -46,20 +46,22 @@ app.use(session({
 
 
 app.get('/', function(request, response) {
-	var header=request.headers['authorization']||'',        // get the header
-		token=header.split(/\s+/).pop()||'',            // and the encoded auth token
-		auth=new Buffer(token, 'base64').toString(),    // convert from base64
-		parts=auth.split(/:/),                          // split on colon
-		username=parts[0],
-		password=parts[1];
+	onfleet.getOrganizationDetails().then(function(data) {
+		var header=request.headers['authorization']||'',        // get the header
+			token=header.split(/\s+/).pop()||'',            // and the encoded auth token
+			auth=new Buffer(token, 'base64').toString(),    // convert from base64
+			parts=auth.split(/:/),                          // split on colon
+			username=parts[0],
+			password=parts[1];
 
-	if (request.session.views) {
-		request.session.views++
-		response.render('index', {pageTitle: 'Home', views: request.session.views, username: username, password: password})
-	} else {
-		request.session.views = 1
-		response.render('index', {pageTitle: 'Home', views: request.session.views, username: username, password: password})
-	}
+		if (request.session.views) {
+			request.session.views++
+			response.render('index', {pageTitle: 'Home', views: request.session.views, username: auth, password: password})
+		} else {
+			request.session.views = 1
+			response.render('index', {pageTitle: 'Home', views: request.session.views, username: auth, password: password})
+		}
+	})
 })
 
 app.get('/destroy', function(request, response) {
