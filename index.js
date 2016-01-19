@@ -47,22 +47,27 @@ app.use(session({
 
 app.get('/', function(request, response) {
 	onfleet.getOrganizationDetails().then(function(data) {
-		var header=request.headers['authorization']||'',        // get the header
-			token=header.split(/\s+/).pop()||'',            // and the encoded auth token
-			auth=new Buffer(token, 'base64').toString(),    // convert from base64
-			parts=auth.split(/:/),                          // split on colon
+		var header=request.headers['authorization']||'',
+			token=header.split(/\s+/).pop()||'',
+			auth=new Buffer(token, 'base64').toString(),
+			parts=auth.split(/:/),
 			username=parts[0],
 			password=parts[1];
 
-		if (request.session.views) {
-			request.session.views++
-		} else {
-			request.session.views = 1
-		}
-		if (username == 'noah' && password == 'something')
-			response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'success', password: 'success'})
-		else
-			response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'fail', password: 'fail'})
+		response.writeHead(200, { 'Content-Type': 'text/plain' });
+		response.write('Hello World');
+		response.end();
+
+		// if (request.session.views) {
+		// 	request.session.views++
+		// } else {
+		// 	request.session.views = 1
+		// }
+		// if (username == 'noah' && password == 'something')
+
+		// 	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'success', password: 'success'})
+		// else
+		// 	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'fail', password: 'fail'})
 	})
 })
 
