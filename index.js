@@ -79,7 +79,6 @@ app.post('/', function(request, response) {
 
 		response.writeHead(200, { 'Content-Type': 'text/plain' });
 		response.write(JSON.stringify(request.body.name))
-		// response.write("{header:Test Page, username:" + username + ", password:" + password + "}");
 		response.end();
 })
 
@@ -226,12 +225,18 @@ app.post('/PiggyBack/new-task', function(request, response) {
 				request.body.merchant,
 				request.body.executor,
 				request.body.destination,
-				[request.body.recipients]
+				[request.body.recipients],
+				null,
 				// request.body.completeAfter - need to convert time to number
+				null,
 				// request.body.completeBefore, - null if no time entered
+				false,
 				// request.body.pickupTask,
+				[],
 				// [request.body.dependencies],
+				'Test notes for this task',
 				// request.body.notes
+				{mode:'distance'}
 				// {request.body.autoAssign}
 			).then(function(destination) {
 				response.redirect('/PiggyBack')

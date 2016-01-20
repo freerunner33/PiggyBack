@@ -175,11 +175,11 @@ function createNewTask(merchant, executor, destination, recipients, completeAfte
 			destination: destination,
 			recipients: recipients,
 			completeAfter: completeAfter
-			// completeBefore: completeBefore,
-			// pickupTask: pickupTask,
-			// dependendencies: dependendencies,
-			// notes: notes,
-			// autoAssign: autoAssign
+			completeBefore: completeBefore,
+			pickupTask: pickupTask,
+			dependendencies: dependendencies,
+			notes: notes,
+			autoAssign: autoAssign
 		}
 	)
 }
