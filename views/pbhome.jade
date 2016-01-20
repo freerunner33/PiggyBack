@@ -29,7 +29,7 @@ block content
 							button(type='submit') Delete Worker
 					li
 						form(method='POST', action='/PiggyBack/update-worker')
-							input(type='text', name='name', placeholder='Employee Name')
+							input(type='text', name='name', placeholder='Employee Name', autocomplete='off')
 							input(type='hidden', name='id', value=w.id)
 							button(type='submit') Update Worker
 					br
@@ -39,9 +39,9 @@ block content
 		form#new(method='POST', action='/PiggyBack/new-worker')
 			h3 Create new worker on test team:
 			p Employee Name
-			input(type='text', name='name')
+			input(type='text', name='name', autocomplete='off')
 			p Phone Number
-			input(type='text', name='number')
+			input(type='text', name='number', autocomplete='off')
 			br
 			button(type='submit') Submit
 	
@@ -89,13 +89,13 @@ block content
 		form#new(method='POST', action='/PiggyBack/new-task')
 			h3 Create new task:
 			p Merchant (ID):
-			input(type='text', name='merchant', required)
+			input(type='text', name='merchant', required, autocomplete='off')
 			p Executor:
-			input(type='text', name='executor', required)
+			input(type='text', name='executor', required, autocomplete='off')
 			p Destination:
-			input(type='text', name='destination', required)
+			input(type='text', name='destination', required, autocomplete='off')
 			p Recipient:
-			input(type='text', name='recipients')
+			input(type='text', name='recipients', autocomplete='off')
 			p Complete After:
 			input(type='time', name='completeAfter')
 			p Complete Before:
@@ -103,8 +103,8 @@ block content
 			p Pickup Task?
 			input(type='checkbox', name='pickupTask')
 			p Dependencies:
-			input(type='text', name='dependencies', placeholder='Task IDs')
+			input(type='text', name='dependencies', placeholder='Task IDs', autocomplete='off')
 			p Task Notes:
-			input(type='text', name='notes', placeholder='Notes')
+			input(type='text', name='notes', placeholder='Notes', autocomplete='off')
 			br
 			button(type='submit') Submit

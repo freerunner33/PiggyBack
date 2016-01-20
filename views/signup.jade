@@ -14,10 +14,10 @@ block content
 	br
 	
 	form(method='POST', action='/PiggyBack/signup')
-		input(type='text', name='username', value=username, placeholder='Username', required)
-		input(type='text', name='firstname', value=firstname, placeholder='First name', required)
-		input(type='text', name='lastname', value=lastname, placeholder='Last name', required)
-		input(type='text', name='phone', value=phone, placeholder='Phone Number', required)
+		input(type='text', name='username', value=username, placeholder='Username', required, autocomplete='off')
+		input(type='text', name='firstname', value=firstname, placeholder='First name', required, autocomplete='off')
+		input(type='text', name='lastname', value=lastname, placeholder='Last name', required, autocomplete='off')
+		input(type='text', name='phone', value=phone, placeholder='Phone Number', required, autocomplete='off')
 		input(type='password', name='password', placeholder='Password', required)
 		input(type='password', name='password2', placeholder='Retype Password', required)
 		input(type='password', name='key', placeholder='Sign up key', required)
