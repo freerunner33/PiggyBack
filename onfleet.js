@@ -174,7 +174,7 @@ function createNewTask(merchant, executor, destination, recipients, completeAfte
 			executor: executor,
 			destination: destination,
 			recipients: recipients,
-			completeAfter: completeAfter
+			completeAfter: completeAfter,
 			completeBefore: completeBefore,
 			pickupTask: pickupTask,
 			dependendencies: dependendencies,
