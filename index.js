@@ -46,8 +46,31 @@ app.use(session({
 
 
 app.get('/', function(request, response) {
-	onfleet.getOrganizationDetails().then(function(data) {
-		var header=request.headers['authorization']||'',
+	var header=request.headers['authorization']||'',
+		token=header.split(/\s+/).pop()||'',
+		auth=new Buffer(token, 'base64').toString(),
+		parts=auth.split(/:/),
+		username=parts[0],
+		password=parts[1];
+
+	response.writeHead(200, { 'Content-Type': 'text/plain' });
+	response.write("{header:Test Page, username:" + username + ", password:" + password + "}");
+	response.end();
+
+	// if (request.session.views) {
+	// 	request.session.views++
+	// } else {
+	// 	request.session.views = 1
+	// }
+	// if (username == 'noah' && password == 'something')
+
+	// 	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'success', password: 'success'})
+	// else
+	// 	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'fail', password: 'fail'})
+})
+
+app.post('/', function(request, response) {
+	var header=request.headers['authorization']||'',
 			token=header.split(/\s+/).pop()||'',
 			auth=new Buffer(token, 'base64').toString(),
 			parts=auth.split(/:/),
@@ -57,18 +80,6 @@ app.get('/', function(request, response) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' });
 		response.write("{header:Test Page, username:" + username + ", password:" + password + "}");
 		response.end();
-
-		// if (request.session.views) {
-		// 	request.session.views++
-		// } else {
-		// 	request.session.views = 1
-		// }
-		// if (username == 'noah' && password == 'something')
-
-		// 	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'success', password: 'success'})
-		// else
-		// 	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'fail', password: 'fail'})
-	})
 })
 
 app.get('/destroy', function(request, response) {
