@@ -79,8 +79,8 @@ app.post('/', function(request, response) {
 
 		response.writeHead(200, { 'Content-Type': 'text/plain' });
 		console.log(JSON.stringify(request.body))
-		response.write(JSON.stringify(request.body))
-		response.write("{header:Test Page, username:" + username + ", password:" + password + "}");
+		response.write(JSON.stringify(request.body.name))
+		// response.write("{header:Test Page, username:" + username + ", password:" + password + "}");
 		response.end();
 })
 
