@@ -63,30 +63,30 @@ app.get('/', function(request, response) {
 	} else {
 		request.session.views = 1
 	}
-	if (username == 'yelp' && password == yelpPass)
+	if (1)
 		response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'Yelp', password: 'success'})
 	else
 		response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'Yelp', password: 'fail'})
 })
 
 app.post('/', function(request, response) {
-	var header=request.headers['authorization']||'',
-			token=header.split(/\s+/).pop()||'',
-			auth=new Buffer(token, 'base64').toString(),
-			parts=auth.split(/:/),
-			username=parts[0],
-			password=parts[1];
+	var header=request.headers['authorization']||''
+	var token=header.split(/\s+/).pop()||''
+	var auth=new Buffer(token, 'base64').toString()
+	var parts=auth.split(/:/)
+	var username=parts[0]
+	var password=parts[1]
 
-		if (username == 'Yelp' && password == yelpPass) {
-			response.writeHead(200, { 'Content-Type': 'text/plain' });
-			response.write('\nSuccess!\n')
-			response.write(JSON.stringify(request.body.name) + '\n')
-			response.end();
-		} else {
-			response.writeHead(401, { 'Content-Type': 'text/plain' });
-			response.write('\nIncorrect credentials\n')
-			response.end();
-		}
+	if (username == 'Yelp' && password == yelpPass) {
+		response.writeHead(200, { 'Content-Type': 'text/plain' })
+		response.write('\nSuccess!\n')
+		response.write(JSON.stringify(request.body.name) + '\n')
+		response.end()
+	} else {
+		response.writeHead(401, { 'Content-Type': 'text/plain' })
+		response.write('\nIncorrect credentials\n')
+		response.end()
+	}
 })
 
 app.get('/destroy', function(request, response) {
