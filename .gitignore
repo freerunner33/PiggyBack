@@ -44,5 +44,5 @@ node_modules
 password
 deploy.sh
 
-# Onfleet API key
-apikey.js
+# Keys
+keys.js
