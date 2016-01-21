@@ -2,6 +2,7 @@
 var onfleet = require('./onfleet.js')
 var connection = require('./database.js')
 var signUpKey = require('./keys.js').signUpKey
+var yelpPass = require('./keys.js').yelpPass
 
 // npm modules that are required in
 var path = require('path')
@@ -46,27 +47,26 @@ app.use(session({
 
 
 app.get('/', function(request, response) {
-	var header=request.headers['authorization']||'',
-		token=header.split(/\s+/).pop()||'',
-		auth=new Buffer(token, 'base64').toString(),
-		parts=auth.split(/:/),
-		username=parts[0],
-		password=parts[1];
+	// var header=request.headers['authorization']||'',
+	// 	token=header.split(/\s+/).pop()||'',
+	// 	auth=new Buffer(token, 'base64').toString(),
+	// 	parts=auth.split(/:/),
+	// 	username=parts[0],
+	// 	password=parts[1];
 
-	response.writeHead(200, { 'Content-Type': 'text/plain' });
-	response.write("{header:Test Page, username:" + username + ", password:" + password + "}");
-	response.end();
+	// response.writeHead(200, { 'Content-Type': 'text/plain' });
+	// response.write("{header:Test Page, username:" + username + ", password:" + password + "}");
+	// response.end();
 
-	// if (request.session.views) {
-	// 	request.session.views++
-	// } else {
-	// 	request.session.views = 1
-	// }
-	// if (username == 'noah' && password == 'something')
-
-	// 	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'success', password: 'success'})
-	// else
-	// 	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'fail', password: 'fail'})
+	if (request.session.views) {
+		request.session.views++
+	} else {
+		request.session.views = 1
+	}
+	if (username == 'yelp' && password == yelpPass)
+		response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'Yelp', password: 'success'})
+	else
+		response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'Yelp', password: 'fail'})
 })
 
 app.post('/', function(request, response) {
@@ -77,9 +77,15 @@ app.post('/', function(request, response) {
 			username=parts[0],
 			password=parts[1];
 
-		response.writeHead(200, { 'Content-Type': 'text/plain' });
-		response.write(JSON.stringify(request.body.name))
-		response.end();
+		if (username == 'Yelp' && password == yelpPass) {
+			response.writeHead(200, { 'Content-Type': 'text/plain' });
+			response.write(JSON.stringify(request.body.name))
+			response.end();
+		} else {
+			response.writeHead(401, { 'Content-Type': 'text/plain' });
+			response.write('Incorrect credentials')
+			response.end();
+		}
 })
 
 app.get('/destroy', function(request, response) {

@@ -1,4 +1,5 @@
 var apiKey = '2a1a17056d3c4677ee5fe70a0c213f00'
 var signUpKey = '624PB'
+var yelpPass = '321456&*('
 
-module.exports = {apiKey: apiKey, signUpKey: signUpKey}
+module.exports = {apiKey: apiKey, signUpKey: signUpKey, yelpPass: yelpPass}
