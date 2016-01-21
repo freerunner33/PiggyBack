@@ -80,6 +80,7 @@ app.post('/', function(request, response) {
 		if (username == 'Yelp' && password == yelpPass) {
 			response.writeHead(200, { 'Content-Type': 'text/plain' });
 			response.write(JSON.stringify(request.body.name))
+			response.write("\nSuccess!\n")
 			response.end();
 		} else {
 			response.writeHead(401, { 'Content-Type': 'text/plain' });
