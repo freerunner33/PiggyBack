@@ -74,16 +74,24 @@ block content
 			else
 				li No tasks at the moment
 
-		h4 Create New Destination:
-		form(method='POST', action='/PiggyBack/new-destination')
-			input(type='text', name='name', placeholder='Name')
-			input(type='number', name='number', placeholder='Number', required)
-			input(type='text', name='street', placeholder='Street', required)
-			input(type='text', name='apartment', placeholder='Apartment')
-			input(type='text', name='city', placeholder='City', required)
-			input(type='text', name='state', placeholder='State')
-			input(type='number', name='postalCode', placeholder='Postal Code')
-			input(type='text', name='country', placeholder='Country', required)
+		form#new(method='POST', action='/PiggyBack/new-destination')
+			h4 Create New Destination:
+			p Name:
+			input(type='text', name='name')
+			p Number:
+			input(type='number', name='number', required)
+			p Street:
+			input(type='text', name='street', required)
+			p Apartment:
+			input(type='text', name='apartment')
+			p City:
+			input(type='text', name='city', required)
+			p State:
+			input(type='text', name='state')
+			p Postal Code:
+			input(type='number', name='postalCode')
+			p Country:
+			input(type='text', name='country', required)
 			button(type='submit') Submit
 		
 		form#new(method='POST', action='/PiggyBack/new-task')
