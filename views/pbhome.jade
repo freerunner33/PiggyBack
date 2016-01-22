@@ -74,24 +74,20 @@ block content
 			else
 				li No tasks at the moment
 
-		//- h4 Create New Destination:
-		//- form(method='POST', action='/PiggyBack/new-destination')
-		//- 	input(type='text', name='name', placeholder='Name')
-		//- 	input(type='number', name='number', placeholder='Number', required)
-		//- 	input(type='text', name='street', placeholder='Street', required)
-		//- 	input(type='text', name='apartment', placeholder='Apartment')
-		//- 	input(type='text', name='city', placeholder='City', required)
-		//- 	input(type='text', name='state', placeholder='State')
-		//- 	input(type='number', name='postalCode', placeholder='Postal Code')
-		//- 	input(type='text', name='country', placeholder='Country', required)
-		//- 	button(type='submit') Submit
+		h4 Create New Destination:
+		form(method='POST', action='/PiggyBack/new-destination')
+			input(type='text', name='name', placeholder='Name')
+			input(type='number', name='number', placeholder='Number', required)
+			input(type='text', name='street', placeholder='Street', required)
+			input(type='text', name='apartment', placeholder='Apartment')
+			input(type='text', name='city', placeholder='City', required)
+			input(type='text', name='state', placeholder='State')
+			input(type='number', name='postalCode', placeholder='Postal Code')
+			input(type='text', name='country', placeholder='Country', required)
+			button(type='submit') Submit
 		
 		form#new(method='POST', action='/PiggyBack/new-task')
 			h3 Create new task:
-			p Merchant (ID):
-			input(type='text', name='merchant', required, autocomplete='off')
-			p Executor:
-			input(type='text', name='executor', required, autocomplete='off')
 			p Destination:
 			input(type='text', name='destination', required, autocomplete='off')
 			p Recipient:

@@ -229,19 +229,15 @@ app.post('/PiggyBack/new-task', function(request, response) {
 		response.redirect('/PiggyBack')
 		else {
 			onfleet.createNewTask(
-				request.body.merchant,
-				request.body.executor,
-				request.body.destination,
-				[request.body.recipients],
-				null,
-				// request.body.completeAfter - need to convert time to number
-				null,
-				// request.body.completeBefore, - null if no time entered
-				false,
-				// request.body.pickupTask,
-				[],
-				// [request.body.dependencies],
-				'Test notes for this task',
+				'~2FSQGbR0qSXi1v9kSQxtW4v',		// merchant
+				'~2FSQGbR0qSXi1v9kSQxtW4v',		// executor
+				request.body.destination,		// destination
+				[request.body.recipients],		// recipients - array
+				null,							// complete after - number
+				null,							// complete before - number
+				false,							// pickup task?
+				[],								// dependencies - array
+				request.body.notes,				// notes for task
 				// request.body.notes
 				{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}
 				// {request.body.autoAssign}
