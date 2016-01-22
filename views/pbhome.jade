@@ -44,6 +44,26 @@ block content
 			input(type='text', name='number', autocomplete='off')
 			br
 			button(type='submit') Submit
+
+		form#new(method='POST', action='/PiggyBack/new-destination')
+			h3 Create New Destination:
+			p Name:
+			input(type='text', name='name')
+			p Number:
+			input(type='number', name='number', required)
+			p Street:
+			input(type='text', name='street', required)
+			p Apartment:
+			input(type='text', name='apartment')
+			p City:
+			input(type='text', name='city', required)
+			p State:
+			input(type='text', name='state')
+			p Postal Code:
+			input(type='number', name='postalCode')
+			p Country:
+			input(type='text', name='country', required)
+			button(type='submit') Submit
 	
 	div#rightcontainer
 		h2 Destination Details: 
@@ -73,26 +93,6 @@ block content
 					br
 			else
 				li No tasks at the moment
-
-		form#new(method='POST', action='/PiggyBack/new-destination')
-			h4 Create New Destination:
-			p Name:
-			input(type='text', name='name')
-			p Number:
-			input(type='number', name='number', required)
-			p Street:
-			input(type='text', name='street', required)
-			p Apartment:
-			input(type='text', name='apartment')
-			p City:
-			input(type='text', name='city', required)
-			p State:
-			input(type='text', name='state')
-			p Postal Code:
-			input(type='number', name='postalCode')
-			p Country:
-			input(type='text', name='country', required)
-			button(type='submit') Submit
 		
 		form#new(method='POST', action='/PiggyBack/new-task')
 			h3 Create new task:
