@@ -243,10 +243,12 @@ app.post('/PiggyBack/new-task', function(request, response) {
 				// [request.body.dependencies],
 				'Test notes for this task',
 				// request.body.notes
-				{mode:'distance'}
+				{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}
 				// {request.body.autoAssign}
+				// TEST TEAM
 			).then(function(destination) {
-				response.redirect('/PiggyBack')
+				response.render('error', {pageTitle: 'Error', error: JSON.stringify(destination)})
+				// response.redirect('/PiggyBack')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})
@@ -348,13 +350,13 @@ app.post('/PiggyBack/signin', function(request, response) {
 	})
 })
 
-app.get('/PiggyBack/calculate', function(request, response) {
-	if (request.session.loggedin) {
-		response.render('calculate', {pageTitle: 'Calculate', reqbody: 'no content uploaded'})
-	} else {
-		response.redirect('/PiggyBack/signin')
-	}
-})
+// app.get('/PiggyBack/calculate', function(request, response) {
+// 	if (request.session.loggedin) {
+// 		response.render('calculate', {pageTitle: 'Calculate', reqbody: 'no content uploaded'})
+// 	} else {
+// 		response.redirect('/PiggyBack/signin')
+// 	}
+// })
 
 // app.post('/PiggyBack/calculate', upload.single('testfile'), function(request, response) {
 // 	if (!request.session.loggedin) {
