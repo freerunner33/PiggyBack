@@ -80,7 +80,7 @@ app.post('/', function(request, response) {
 	if (username == 'Yelp' && password == yelpPass) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' })
 		response.write('\nSuccess!\n')
-		response.write(JSON.stringify(request.body.name) + '\n')
+		response.write(JSON.stringify(request.body) + '\n')
 		response.end()
 	} else {
 		response.writeHead(401, { 'Content-Type': 'text/plain' })
@@ -402,12 +402,9 @@ app.post('/PiggyBack/signin', function(request, response) {
 })
 
 app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
+	console.log('webhook received')
 	response.send(request.params.check)
 	return next()
-})
-
-app.get('/PiggyBack/webhook', function(request, response) {
-	console.log(JSON.stringify(response))
 })
 
 // app.get('/PiggyBack/calculate', function(request, response) {
