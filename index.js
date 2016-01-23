@@ -211,8 +211,17 @@ app.post('/PiggyBack/new-destination', function(request, response) {
 					postalCode: request.body.postalCode,
 					country: request.body.country
 				}
-			).then(function(destination) {
-				console.log(JSON.stringify(destination))
+			).then(function(d) {
+					connection.query('INSERT INTO Destinations (id, name, number, street, apartment, city, state, postalCode, country) VALUES (?,?,?,?,?,?,?,?,?)',
+						[d.id, d.address.name, d.address.number, d.address.street, d.address.apartment, d.address.city, d.address.state, d.address.postalCode, d.address.country], 
+						function(error, rows) 
+						{
+							if (error)
+								throw error
+							console.log('Location successfully added to database. ID: ' + d.id)
+						}
+					)
+				console.log(JSON.stringify(d))
 				response.redirect('/PiggyBack')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
@@ -225,8 +234,8 @@ app.post('/PiggyBack/new-destination', function(request, response) {
 
 app.post('/PiggyBack/new-task', function(request, response) {
 	if (request.session.loggedin) {
-		if (!(request.body.merchant && request.body.executor && request.body.destination))
-		response.redirect('/PiggyBack')
+		if (!(request.body.destination))
+			response.redirect('/PiggyBack')
 		else {
 			onfleet.createNewTask(
 				'~2FSQGbR0qSXi1v9kSQxtW4v',		// merchant
@@ -242,9 +251,54 @@ app.post('/PiggyBack/new-task', function(request, response) {
 				{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}
 				// {request.body.autoAssign}
 				// TEST TEAM
-			).then(function(destination) {
-				response.render('error', {pageTitle: 'Error', error: JSON.stringify(destination)})
-				// response.redirect('/PiggyBack')
+			).then(function(t) {
+				var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+				var time = new Date();
+				if (t.didAutoAssign) { // get the worker's name
+					onfleet.getSingleWorkerByID(t.worker).then(function(w) {
+						connection.query('INSERT INTO Tasks (id, company, driverTip, month, day, year, hour, minute, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+							[
+								t.id, request.body.company, 
+								request.body.driverTip, 
+								months[time.getMonth()], 
+								time.getDate(), 
+								time.getFullYear(),
+								time.getHours(),
+								time.getMinutes(),
+								t.worker, 
+								w.name, 
+								t.destination.id, 
+								t.destination.address.number, 
+								t.destination.address.street, 
+								t.destination.address.city, 
+								t.destination.address.postalCode
+							], 
+							function(error, rows)
+							{
+								if (error)
+									throw error
+								console.log('Task successfully added to database ID: ' + t.id)
+							}
+						)
+						response.redirect('/PiggyBack')
+					}).catch(function(error) {
+						response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+					})
+				} else { // leave the name blank
+					console.log('Task was not assigned...')
+					connection.query('INSERT INTO Tasks (id, company, driverTip, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?)',
+						[t.id, request.body.company, request.body.driverTip, t.worker, '', t.destination.id, t.destination.address.number, t.destination.address.street, t.destination.address.city, t.destination.address.postalCode], 
+						function(error, rows)
+						{
+							if (error)
+								throw error
+							console.log('Task successfully added to database ID: ' + t.id)
+						}
+					)
+					response.redirect('/PiggyBack')
+				}
+
+				
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})
@@ -345,6 +399,15 @@ app.post('/PiggyBack/signin', function(request, response) {
 			response.render('signin', {pageTitle: 'Sign in', errors: ['Incorrect username or password'], username: username})
 		}
 	})
+})
+
+app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
+	response.send(request.params.check)
+	return next()
+})
+
+app.get('/PiggyBack/webhook', function(request, response) {
+	console.log(JSON.stringify(response))
 })
 
 // app.get('/PiggyBack/calculate', function(request, response) {

@@ -96,6 +96,10 @@ block content
 		
 		form#new(method='POST', action='/PiggyBack/new-task')
 			h3 Create new task:
+			p Company:
+			input(type='text', name='company', required, autocomplete='off')
+			p Driver Tip:
+			input(type='number', name='driverTip', autocomplete='off')
 			p Destination:
 			input(type='text', name='destination', required, autocomplete='off')
 			p Recipient:
