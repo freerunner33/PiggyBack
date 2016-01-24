@@ -401,20 +401,22 @@ app.post('/PiggyBack/signin', function(request, response) {
 	})
 })
 
-app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
-	console.log('Received a GET request from Onfleet!')
-	var str = request.originalUrl.split('=')[1]
-	response.send(str)
-	return next()
-})
-
 app.post('/PiggyBack/webhook/taskCompleted', function(request, response) {
 	console.log('Got a new task')
 	console.log(JSON.stringify(request.body))
 })
 
+
+
+// used to respond to webhook request
+app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
+	var str = request.originalUrl.split('=')[1]
+	response.send(str)
+	return next()
+})
+
+// used to send a webhook request
 app.get('/PiggyBack/sendwebhook', function(request, response) {
-	console.log('Sending webhook request')
 	onfleet.createWebHook('http://noahthomas.us/PiggyBack/webhook/taskCompleted', 0).then(function(data) {
 		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data)})
 	}).catch(function(error) {

@@ -210,7 +210,6 @@ function deleteWebHook(id) {
 	return request('webhooks/' + id, 'DELETE')
 }
 module.exports = {
-	request: request,
 	getOrganizationDetails: getOrganizationDetails, 
 	getDelegateeDetailsByID: getDelegateeDetailsByID,
 	getDelegateeDetailsByName: getDelegateeDetailsByName,
