@@ -408,13 +408,13 @@ app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
 
 app.get('/PiggyBack/sendwebhook', function(request, response) {
 	console.log('Sending webhook request')
+	console.log(JSON.stringify(request))
 	onfleet.request('webhooks', 'POST', {'url':'http://noahthomas.us/PiggyBack/webhook/taskCompleted', 'trigger':3}).then(function(data) {
 		console.log('Response from webhook request')
 		console.log(data)
 		response.redirect('/PiggyBack')
 	}).catch(function(error) {
-		var err = JSON.stringify(error) + '\n\n' + JSON.stringify(request)
-		response.render('error', {pageTitle: 'Error', error: err})
+		response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 	})
 })
 
