@@ -403,10 +403,8 @@ app.post('/PiggyBack/signin', function(request, response) {
 
 app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
 	console.log('Received a GET request from Onfleet!')
-	var str = request.originalUrl.split('?')[1]
-	console.log(request.originalUrl)
-	console.log(str)
-	response.send(request.params.check)
+	var str = request.originalUrl.split('=')[1]
+	response.send(str)
 	return next()
 })
 
