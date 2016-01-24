@@ -413,7 +413,8 @@ app.get('/PiggyBack/sendwebhook', function(request, response) {
 		console.log(data)
 		response.redirect('/PiggyBack')
 	}).catch(function(error) {
-		response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+		var err = JSON.stringify(error) + '\n\n' + JSON.stringify(request)
+		response.render('error', {pageTitle: 'Error', error: err})
 	})
 })
 
