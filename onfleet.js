@@ -11,8 +11,7 @@ function request(endpoint, method, data) {
 	return new Promise(function(resolve, reject) {
 		var request = https.request({
 			hostname: hostname,
-			// path: path + endpoint,
-			path: endpoint
+			path: path + endpoint,
 			method: method,
 			auth: apiKey
 		}, function(response) {
