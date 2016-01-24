@@ -408,6 +408,12 @@ app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
 	return next()
 })
 
+app.post('/PiggyBack/webhook/taskCompleted', function(request, response) {
+	console.log('Got a new task')
+	console.log(response.time)
+	console.log(response.taskId)
+})
+
 app.get('/PiggyBack/sendwebhook', function(request, response) {
 	console.log('Sending webhook request')
 	onfleet.createWebHook('http://noahthomas.us/PiggyBack/webhook/taskCompleted', 0).then(function(data) {
