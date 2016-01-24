@@ -410,7 +410,7 @@ app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
 
 app.post('/PiggyBack/webhook/taskCompleted', function(request, response) {
 	console.log('Got a new task')
-	console.log(JSON.stringify(response))
+	console.log(JSON.stringify(request.body))
 })
 
 app.get('/PiggyBack/sendwebhook', function(request, response) {
