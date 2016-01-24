@@ -403,15 +403,17 @@ app.post('/PiggyBack/signin', function(request, response) {
 
 app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
 	console.log('Received a GET request from Onfleet!')
-	console.log(request.params)
+	console.log(request.body)
+	console.log(request.ip)
+	console.log(request.method)
 	response.send(request.params.check)
 	return next()
 })
 
 app.get('/PiggyBack/sendwebhook', function(request, response) {
 	console.log('Sending webhook request')
-	onfleet.request('webhooks', 'POST', {'url':'http://noahthomas.us/PiggyBack/webhook/taskCompleted', 'trigger':0}).then(function(data) {
-		response.render('error', {pageTitle: 'Error', error: JSON.stringify(data)})
+	onfleet.createWebHook('http://noahthomas.us/webhook/taskCompleted', 0).then(function(data) {
+		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data)})
 	}).catch(function(error) {
 		response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 	})
