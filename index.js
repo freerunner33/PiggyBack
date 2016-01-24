@@ -408,7 +408,7 @@ app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
 
 app.get('/PiggyBack/sendwebhook', function(request, response) {
 	console.log('Sending webhook request')
-	console.log(JSON.stringify(request))
+	console.log(request)
 	onfleet.request('webhooks', 'POST', {'url':'http://noahthomas.us/PiggyBack/webhook/taskCompleted', 'trigger':3}).then(function(data) {
 		console.log('Response from webhook request')
 		console.log(data)
