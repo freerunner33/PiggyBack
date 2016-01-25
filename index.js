@@ -235,7 +235,7 @@ app.post('/PiggyBack/new-task', function(request, response) {
 			).then(function(t) {
 				var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 				var time = new Date();
-				if (t.didAutoAssign) { // get the worker's name
+				if (t.didAutoAssign) { // Get the worker's name
 					onfleet.getSingleWorkerByID(t.worker).then(function(w) {
 						connection.query('INSERT INTO Tasks (id, company, driverTip, month, day, year, hour, minute, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 							[
@@ -266,15 +266,30 @@ app.post('/PiggyBack/new-task', function(request, response) {
 					}).catch(function(error) {
 						response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 					})
-				} else { // leave the name blank
+				} else { // Leave the name blank
 					console.log('Task was not assigned...')
 					connection.query('INSERT INTO Tasks (id, company, driverTip, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?)',
-						[t.id, request.body.company, request.body.driverTip, t.worker, '', t.destination.id, t.destination.address.number, t.destination.address.street, t.destination.address.city, t.destination.address.postalCode], 
+						[
+							t.id, 								// task id
+							request.body.company,				// company (e.g. Yelp)
+							request.body.driverTip, 			// driver tip (e.g. $1.25)
+							months[time.getMonth()], 			// month
+							time.getDate(), 					// day
+							time.getFullYear(),					// year
+							time.getHours(),					// hour
+							time.getMinutes(),					// minute
+							t.worker, 							// worker id
+							'', 								// worker name
+							t.destination.id, 					// destination id
+							t.destination.address.number, 		// destination number 	(624)
+							t.destination.address.street, 		// destination street 	(Broadway)
+							t.destination.address.city, 		// destination city 	(San Diego)
+							t.destination.address.postalCode 	// destination zip code (92110)
+						], 
 						function(error, rows)
 						{
 							if (error)
 								throw error
-							console.log('Task successfully added to database ID: ' + t.id)
 						}
 					)
 					response.redirect('/PiggyBack')
@@ -312,7 +327,9 @@ app.post('/PiggyBack/signup', function(request, response) {
 		response.render('signup', {pageTitle: 'Sign up', errors: ['All fields must be completed'], username: username, firstname: firstname, lastname: lastname, phone: phone})
 		return
 	}
+	
 	errors = []
+	
 	if (!validator.isAlphanumeric(username))
 		errors.push('Username must contain only letters and numbers')
 	if (!validator.isAlpha(firstname))
@@ -339,8 +356,6 @@ app.post('/PiggyBack/signup', function(request, response) {
 			response.render('signup', {pageTitle: 'Sign up', errors: ['Username already taken'], username: username, firstname: firstname, lastname: lastname, phone: phone})
 			return
 		}
-		
-		// something weird here. Not inserting correctly
 		connection.query('INSERT INTO Users (username, firstname, lastname, password, phone) VALUES (?,?,?,?,?)',
 			[username, firstname, lastname, password, phone], function(error, rows) 
 			{
@@ -353,11 +368,10 @@ app.post('/PiggyBack/signup', function(request, response) {
 })
 
 app.get('/PiggyBack/signin', function(request, response) {
-	if (request.session.loggedin) {
+	if (request.session.loggedin)
 		response.render('signin', {pageTitle: 'Sign in', errors: ['Already signed in']})
-	} else {
+	else
 		response.render('signin', {pageTitle: 'Sign in'})
-	}
 })
 
 app.post('/PiggyBack/signin', function(request, response) {
@@ -375,7 +389,6 @@ app.post('/PiggyBack/signin', function(request, response) {
 		if (rows.length) {
 			request.session.loggedin = true
 			response.redirect('/PiggyBack')
-			// response.render('success', {pageTitle: 'Success', message: 'You have successfully signed in'})
 			return
 		} else {
 			response.render('signin', {pageTitle: 'Sign in', errors: ['Incorrect username or password'], username: username})
@@ -385,12 +398,10 @@ app.post('/PiggyBack/signin', function(request, response) {
 
 app.post('/PiggyBack/webhook/taskCompleted', function(request, response) {
 	console.log('Got a new task')
-	console.log(JSON.stringify(request.body))
+	console.log('\n' + JSON.stringify(request.body))
 })
 
-
-
-// used to respond to webhook request
+// Used to respond to webhook request
 app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
 	var str = request.originalUrl.split('=')[1]
 	response.send(str)
