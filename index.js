@@ -1,19 +1,64 @@
 
-require(preindex.js)
+// SETUP
 
+// Require the onfleet api, and the database js file
+var onfleet = require('./onfleet.js')
+var connection = require('./database.js')
+var signUpKey = require('./keys.js').signUpKey
+var yelpPass = require('./keys.js').yelpPass
+
+// npm modules that are required in
+var path = require('path')
+var express = require('express')
+var app = express()
+var http = require('http').Server(app)
+var validator = require('validator')
+var bcrypt = require('bcrypt')
+var uuid = require('node-uuid')
+var authorization = require('auth-header')
+
+// Used for session variables
+var session = require('express-session')
+
+// For use with file input and output
+var multer  = require('multer')
+// var upload = multer({ dest: 'assets/uploads/' })
+
+// For rendering the pages in the views folder
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'jade')
+
+// Use this for static builds, otherwise check nginx config
+app.use(express.static('assets'));
+
+// Body Parser used for the response.query
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
+// More session configuration
+app.use(session({
+  genid: function(request) {
+    return  uuid.v4()// use UUIDs for session IDs 
+  },
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}))
+
+// ROUTING
 app.get('/', function(request, response) {
-	if (request.session.views) {
+	if (request.session.views)
 		request.session.views++
-	} else {
-		request.session.views = 1
-	}
-	if (1)
-		response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'Yelp', password: 'success'})
 	else
-		response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'Yelp', password: 'fail'})
+		request.session.views = 1
+	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'Yelp', password: 'success'})
 })
 
 app.post('/PiggyBack', function(request, response) {
+	// Parsing basic authorization sent in post request
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
@@ -43,7 +88,6 @@ app.get('/destroy', function(request, response) {
 	})
 })
 
-// Main GET request listener
 app.get('/PiggyBack', function(request, response) {
 	if (request.session.loggedin) {
 		onfleet.getSingleTeamByName('TEST').then(function(team) {
@@ -75,8 +119,6 @@ app.get('/PiggyBack', function(request, response) {
 	}
 })
 
-
-// POST request listener for a call to create a new worker
 app.post('/PiggyBack/new-worker', function(request, response) {
 	if (request.session.loggedin) {
 		if (!request.body.name || !request.body.number)
@@ -103,8 +145,7 @@ app.post('/PiggyBack/new-worker', function(request, response) {
 	}
 })
 
-// POST request listener for a call to delete a worker
-	// need to pass in worker's id
+// Need to pass in worker's id
 app.post('/PiggyBack/delete-worker', function(request, response) {
 	if (request.session.loggedin) {
 		if (!request.body.id)
@@ -121,8 +162,7 @@ app.post('/PiggyBack/delete-worker', function(request, response) {
 	}
 })
 
-// POST request listener for a call to update a worker
-	// need to pass in worker's id and probably more
+// need to pass in worker's id and data you want to change
 app.post('/PiggyBack/update-worker', function(request, response) {
 	if (request.session.loggedin) {
 		if (!(request.body.id && request.body.name))
@@ -191,10 +231,7 @@ app.post('/PiggyBack/new-task', function(request, response) {
 				false,							// pickup task?
 				[],								// dependencies - array
 				request.body.notes,				// notes for task
-				// request.body.notes
-				{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}
-				// {request.body.autoAssign}
-				// TEST TEAM
+				{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// TEST TEAM
 			).then(function(t) {
 				var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 				var time = new Date();
@@ -202,20 +239,21 @@ app.post('/PiggyBack/new-task', function(request, response) {
 					onfleet.getSingleWorkerByID(t.worker).then(function(w) {
 						connection.query('INSERT INTO Tasks (id, company, driverTip, month, day, year, hour, minute, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 							[
-								t.id, request.body.company, 
-								request.body.driverTip, 
-								months[time.getMonth()], 
-								time.getDate(), 
-								time.getFullYear(),
-								time.getHours(),
-								time.getMinutes(),
-								t.worker, 
-								w.name, 
-								t.destination.id, 
-								t.destination.address.number, 
-								t.destination.address.street, 
-								t.destination.address.city, 
-								t.destination.address.postalCode
+								t.id, 								// task id
+								request.body.company,				// company (e.g. Yelp)
+								request.body.driverTip, 			// driver tip (e.g. $1.25)
+								months[time.getMonth()], 			// month
+								time.getDate(), 					// day
+								time.getFullYear(),					// year
+								time.getHours(),					// hour
+								time.getMinutes(),					// minute
+								t.worker, 							// worker id
+								w.name, 							// worker name
+								t.destination.id, 					// destination id
+								t.destination.address.number, 		// destination number 	(624)
+								t.destination.address.street, 		// destination street 	(Broadway)
+								t.destination.address.city, 		// destination city 	(San Diego)
+								t.destination.address.postalCode 	// destination zip code (92110)
 							], 
 							function(error, rows)
 							{
