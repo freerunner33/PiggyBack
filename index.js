@@ -1,63 +1,5 @@
-// Require the onfleet api, and the database js file
-var onfleet = require('./onfleet.js')
-var connection = require('./database.js')
-var signUpKey = require('./keys.js').signUpKey
-var yelpPass = require('./keys.js').yelpPass
-
-// npm modules that are required in
-var path = require('path')
-var express = require('express')
-var app = express()
-var http = require('http').Server(app)
-var validator = require('validator')
-var bcrypt = require('bcrypt')
-var uuid = require('node-uuid')
-var authorization = require('auth-header')
-
-// Used for session variables
-var session = require('express-session')
-
-// For use with file input and output
-var multer  = require('multer')
-// var upload = multer({ dest: 'assets/uploads/' })
-
-// For rendering the pages in the views folder
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'jade')
-
-// Use this for static builds, otherwise check nginx config
-app.use(express.static('assets'));
-
-// Body Parser used for the response.query
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() );
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-
-// More session configuration
-app.use(session({
-  genid: function(request) {
-    return  uuid.v4()// use UUIDs for session IDs 
-  },
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false
-}))
-
 
 app.get('/', function(request, response) {
-	// var header=request.headers['authorization']||'',
-	// 	token=header.split(/\s+/).pop()||'',
-	// 	auth=new Buffer(token, 'base64').toString(),
-	// 	parts=auth.split(/:/),
-	// 	username=parts[0],
-	// 	password=parts[1];
-
-	// response.writeHead(200, { 'Content-Type': 'text/plain' });
-	// response.write("{header:Test Page, username:" + username + ", password:" + password + "}");
-	// response.end();
-
 	if (request.session.views) {
 		request.session.views++
 	} else {
@@ -69,7 +11,7 @@ app.get('/', function(request, response) {
 		response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'Yelp', password: 'fail'})
 })
 
-app.post('/', function(request, response) {
+app.post('/PiggyBack', function(request, response) {
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
@@ -79,12 +21,12 @@ app.post('/', function(request, response) {
 
 	if (username == 'Yelp' && password == yelpPass) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' })
-		response.write('\nSuccess!\n')
+		response.write('Success!\n')
 		response.write(JSON.stringify(request.body) + '\n')
 		response.end()
 	} else {
 		response.writeHead(401, { 'Content-Type': 'text/plain' })
-		response.write('\nIncorrect credentials\n')
+		response.write('Incorrect credentials\n')
 		response.end()
 	}
 })
