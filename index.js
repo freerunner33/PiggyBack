@@ -1,4 +1,6 @@
 
+require(preindex.js)
+
 app.get('/', function(request, response) {
 	if (request.session.views) {
 		request.session.views++
