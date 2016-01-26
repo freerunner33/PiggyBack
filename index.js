@@ -49,8 +49,8 @@ app.use(session({
 }))
 
 // TESTING
-app.get('/PiggyBack/getWorkers', function(request, response) {
-	onfleet.getWorkers({teams: 'ylC5klVbtmEVrVlBfUYp9oeM'}).then(function(data) {
+app.get('/PiggyBack/listWorkers', function(request, response) {
+	onfleet.listWorkers({teams: 'ylC5klVbtmEVrVlBfUYp9oeM'}).then(function(data) {
 		response.render('error', {pageTitle: 'Error', error: JSON.stringify(data)})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
