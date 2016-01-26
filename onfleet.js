@@ -20,15 +20,15 @@ function request(endpoint, method, data) {
 				str += chunk
 			})
 			response.on('end', function() {
-				var data
+				var result
 				if (str.length)
-					data = JSON.parse(str)
+					result = JSON.parse(str)
 				
 				if (response.statusCode != 200) {
-					reject(data)
+					reject(result)
 				}
 				else {
-					resolve(data)
+					resolve(result)
 				}
 			})
 		})
@@ -89,6 +89,7 @@ function createNewWorker(name, phone, teams, vehicle) {
 	return request('workers', 'POST', {name: name, phone: phone, teams: teams, vehicle: vehicle})
 }
 function listWorkers(data) {
+	console.log(JSON.stringify(data))
 	return request('workers', 'GET', data)
 }
 function getSingleWorkerByID(id) {
