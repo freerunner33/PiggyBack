@@ -88,8 +88,8 @@ function deleteAdministratorByID(id) {
 function createNewWorker(name, phone, teams, vehicle) {
 	return request('workers', 'POST', {name: name, phone: phone, teams: teams, vehicle: vehicle})
 }
-function listWorkers() {
-	return request('workers', 'GET')
+function listWorkers(data) {
+	return request('workers', 'GET', data)
 }
 function getSingleWorkerByID(id) {
 	return request('workers/' + id, 'GET')
