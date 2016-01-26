@@ -51,7 +51,7 @@ app.use(session({
 // TESTING
 app.get('/PiggyBack/listWorkers', function(request, response) {
 	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
-		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data)})
+		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data.workers)})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 	})
