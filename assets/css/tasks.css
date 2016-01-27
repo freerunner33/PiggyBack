@@ -3,6 +3,15 @@ body {
 	color: #aaa;
 }
 
+section {
+	width: 100%;
+	border: 1px solid red;
+}
+div {
+	width: calc(25% - 4px);
+	border: 1px solid blue;
+}
+
 p {
 	width: calc(20%);
 	margin: 0.25em;
