@@ -232,7 +232,8 @@ app.post('/Piggyback/new-destination', function(request, response) {
 						}
 					)
 				console.log(JSON.stringify(d))
-				response.redirect('/Piggyback')
+				response.render('error', {pageTitle: 'Error', error: JSON.stringify(d)})
+				// response.redirect('/Piggyback')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})
