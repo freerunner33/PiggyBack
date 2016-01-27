@@ -3,3 +3,8 @@ p {
 	width: calc(20%);
 	margin: 0.25em;
 }
+
+input {
+	width: calc(20%);
+	margin: 0.25em;
+}
