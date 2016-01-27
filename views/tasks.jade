@@ -6,7 +6,7 @@ block stylesheets
 
 block content
 	section
-		form#new(method='POST', action='/PiggyBack/new-destination')
+		form#new(method='POST', action='/PiggyBack/new-task')
 			h1 Create New Task
 			div
 				h2 Location A
@@ -49,9 +49,11 @@ block content
 				p Driver Tip:
 				input(type='number', step='0.01', require, autocomplete='off')
 				p Complete Before
-				input(type='time', name='completeBefore')
+				input(type='time', name='completeBeforeTime')
+				input(type='date', name='completeBeforeDate')
 				p Complete After
-				input(type='time', name='completeAfter')
+				input(type='time', name='completeAfterTime')
+				input(type='date', name='completeAfterTime')
 				button(type='submit') Submit
 
 	h2 Current Tasks:
