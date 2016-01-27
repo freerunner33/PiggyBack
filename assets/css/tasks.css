@@ -1,5 +1,9 @@
-p {
+
+body {
 	color: #aaa;
+}
+
+p {
 	width: calc(20%);
 	margin: 0.25em;
 }
