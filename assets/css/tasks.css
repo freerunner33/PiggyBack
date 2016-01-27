@@ -12,7 +12,7 @@ div {
 	width: calc(25% - 2px);
 	border: 1px solid blue;
 	min-width: 20em;
-	padding: 0.5em;
+	padding: 1em;
 }
 
 p {
@@ -20,6 +20,6 @@ p {
 }
 
 input {
-	width: 80%;
+	width: calc(100% - 2em);
 	margin: 0.25em;
 }
