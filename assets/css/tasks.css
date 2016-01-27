@@ -12,7 +12,7 @@ section {
 div {
 	vertical-align: top;
 	display: inline-block;
-	width: calc(33.33% - 2px - 3em);
+	width: calc(33.33% - 2px - 2em);
 	border: 1px solid blue;
 	min-width: 15em;
 	padding: 1em;
