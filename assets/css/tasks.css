@@ -5,7 +5,7 @@ body {
 
 section {
 	width: calc(100% - 2em - 2px);
-	border: 1px solid red;
+	border: 1px solid rgb(237, 45, 135);
 	padding: 1em;
 }
 
@@ -13,7 +13,7 @@ div {
 	vertical-align: top;
 	display: inline-block;
 	width: calc(33.33% - 2px - 2em);
-	border: 1px solid blue;
+	border: 1px solid rgb(237, 45, 135);
 	min-width: 15em;
 	padding: 1em;
 }
