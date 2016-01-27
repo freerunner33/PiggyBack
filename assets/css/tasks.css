@@ -7,11 +7,12 @@ section {
 	width: 100%;
 	border: 1px solid red;
 }
+
 div {
 	display: inline-block;
-	width: calc(25% - 2px - 2em);
+	width: calc(25% - 2px - 2.5em);
 	border: 1px solid blue;
-	min-width: 20em;
+	min-width: 15em;
 	padding: 1em;
 }
 
