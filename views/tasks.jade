@@ -1,0 +1,64 @@
+
+extends pblayout
+
+block stylesheets
+	link(rel='stylesheet', href='assets/css/large.css')
+	link(rel='stylesheet', href='assets/css/small.css')
+
+block content
+	form#new(method='POST', action='/PiggyBack/new-destination')
+		h3 Create New Destination:
+		p Name:
+		input(type='text', name='name')
+		p Number:
+		input(type='number', name='number', required)
+		p Street:
+		input(type='text', name='street', required)
+		p Apartment:
+		input(type='text', name='apartment')
+		p City:
+		input(type='text', name='city', required)
+		p State:
+		input(type='text', name='state')
+		p Postal Code:
+		input(type='number', name='postalCode')
+		p Country:
+		input(type='text', name='country', required)
+		button(type='submit') Submit
+
+	h2 Current Tasks:
+	ul
+		if data.length
+			each task in data
+				li Task ID: #{task.id}
+				li Task State: #{task.state}
+				li Destination:
+				ul
+					li #{task.destination.address.number} #{task.destination.address.street}
+					li #{task.destination.address.city}, #{task.destination.address.state} #{task.destination.address.postalCode}
+				br
+		else
+			li No tasks at the moment
+		
+	form#new(method='POST', action='/PiggyBack/new-task')
+		h3 Create new task:
+		p Company:
+		input(type='text', name='company', required, autocomplete='off')
+		p Driver Tip:
+		input(type='number', step='0.01', name='driverTip', autocomplete='off')
+		p Destination:
+		input(type='text', name='destination', required, autocomplete='off')
+		p Recipient:
+		input(type='text', name='recipients', autocomplete='off')
+		p Complete After:
+		input(type='time', name='completeAfter')
+		p Complete Before:
+		input(type='time', name='completeBefore')
+		p Pickup Task?
+		input(type='checkbox', name='pickupTask')
+		p Dependencies:
+		input(type='text', name='dependencies', placeholder='Task IDs', autocomplete='off')
+		p Task Notes:
+		input(type='text', name='notes', placeholder='Notes', autocomplete='off')
+		br
+		button(type='submit') Submit

@@ -49,7 +49,7 @@ app.use(session({
 }))
 
 // TESTING
-app.get('/PiggyBack/test', function(request, response) {
+app.get('/Piggyback/test', function(request, response) {
 	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
 		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data.workers)})
 	}, function(error) {
@@ -64,10 +64,10 @@ app.get('/', function(request, response) {
 		request.session.views++
 	else
 		request.session.views = 1
-	response.render('index', {pageTitle: 'Home', views: request.session.views, username: 'Yelp', password: 'success'})
+	response.render('index', {pageTitle: 'Home', views: request.session.views})
 })
 
-app.post('/PiggyBack', function(request, response) {
+app.post('/Piggyback', function(request, response) {
 	// Parsing basic authorization sent in post request
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
@@ -98,101 +98,117 @@ app.get('/destroy', function(request, response) {
 	})
 })
 
-app.get('/PiggyBack', function(request, response) {
+app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
-		onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(team) {
-			onfleet.getOrganizationDetails().then(function(org) {
-				onfleet.getDestinationByID('IWU6PFSVyLhAbifvh3KnDxnZ').then(function(destination) {
-					onfleet.listTasks().then(function(tasks) {
-						onfleet.listWebHooks().then(function(webhooks) {
-							response.render(
-								'pbhome', {
-									pageTitle: 'PiggyBack', 
-									orgName: org.name, 
-									orgID: org.id,
-									orgEmail: org.email,
-									teamName: team.name,
-									teamID: team.id, 
-									teamWorkers: team.workers,
-									destination: destination,
-									tasks: tasks,
-									webhooks: webhooks
-								}
-							)
-						})
-					})
-				})
-			})
-		})
-	} else {
-		response.redirect('/PiggyBack/signin')
-	}
-})
-
-app.post('/PiggyBack/new-worker', function(request, response) {
-	if (request.session.loggedin) {
-		if (!request.body.name || !request.body.number)
-			response.redirect('/')
-		else {
-			onfleet.createNewWorker(
-				request.body.name,
-				request.body.number.replace(/[^0-9\+]/, ''),
-				['ylC5klVbtmEVrVlBfUYp9oeM'], 
-				{
-					type: 'CAR', 
-					description: 'Lamborghini', 
-					licensePlate: '333-ABC', 
-					color: 'black'
+		onfleet.listTasks().then(function(data) {
+			response.render(
+				'tasks', {
+					pageTitle: 'Piggyback Technologies',
+					data: data
 				}
-			).then(function(worker) {
-				response.redirect('/PiggyBack')
-			}).catch(function(error) {
-				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
-			})
+			)
+		}), function(error) {
+			response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 		}
 	} else {
-		response.redirect('/PiggyBack/signin')
+		response.redirect('/Piggyback/signin')
 	}
 })
+// app.get('/PiggyBack', function(request, response) {
+// 	if (request.session.loggedin) {
+// 		onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(team) {
+// 			onfleet.getOrganizationDetails().then(function(org) {
+// 				onfleet.getDestinationByID('IWU6PFSVyLhAbifvh3KnDxnZ').then(function(destination) {
+// 					onfleet.listTasks().then(function(tasks) {
+// 						onfleet.listWebHooks().then(function(webhooks) {
+// 							response.render(
+// 								'pbhome', {
+// 									pageTitle: 'PiggyBack', 
+// 									orgName: org.name, 
+// 									orgID: org.id,
+// 									orgEmail: org.email,
+// 									teamName: team.name,
+// 									teamID: team.id, 
+// 									teamWorkers: team.workers,
+// 									destination: destination,
+// 									tasks: tasks,
+// 									webhooks: webhooks
+// 								}
+// 							)
+// 						})
+// 					})
+// 				})
+// 			})
+// 		})
+// 	} else {
+// 		response.redirect('/PiggyBack/signin')
+// 	}
+// })
 
-// Need to pass in worker's id
-app.post('/PiggyBack/delete-worker', function(request, response) {
-	if (request.session.loggedin) {
-		if (!request.body.id)
-			response.redirect('/PiggyBack/')
-		else {
-			onfleet.deleteWorkerByID(request.body.id).then(function() {
-				response.redirect('/PiggyBack/')
-			}).catch(function(error) {
-				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
-			})
-		}
-	} else {
-		response.redirect('/PiggyBack/signin')
-	}
-})
+// app.post('/Piggyback/new-worker', function(request, response) {
+// 	if (request.session.loggedin) {
+// 		if (!request.body.name || !request.body.number)
+// 			response.redirect('/')
+// 		else {
+// 			onfleet.createNewWorker(
+// 				request.body.name,
+// 				request.body.number.replace(/[^0-9\+]/, ''),
+// 				['ylC5klVbtmEVrVlBfUYp9oeM'], 
+// 				{
+// 					type: 'CAR', 
+// 					description: 'Lamborghini', 
+// 					licensePlate: '333-ABC', 
+// 					color: 'black'
+// 				}
+// 			).then(function(worker) {
+// 				response.redirect('/Piggyback')
+// 			}).catch(function(error) {
+// 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+// 			})
+// 		}
+// 	} else {
+// 		response.redirect('/Piggyback/signin')
+// 	}
+// })
 
-// need to pass in worker's id and data you want to change
-app.post('/PiggyBack/update-worker', function(request, response) {
-	if (request.session.loggedin) {
-		if (!(request.body.id && request.body.name))
-			response.redirect('/PiggyBack')
-		else {
-			onfleet.updateWorkerByID(request.body.id, {name: request.body.name}).then(function() {
-				response.redirect('/PiggyBack')
-			}).catch(function(error) {
-				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
-			})
-		}
-	} else {
-		response.redirect('/PiggyBack/signin')
-	}
-})
+// // Need to pass in worker's id
+// app.post('/Piggyback/delete-worker', function(request, response) {
+// 	if (request.session.loggedin) {
+// 		if (!request.body.id)
+// 			response.redirect('/Piggyback/')
+// 		else {
+// 			onfleet.deleteWorkerByID(request.body.id).then(function() {
+// 				response.redirect('/Piggyback/')
+// 			}).catch(function(error) {
+// 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+// 			})
+// 		}
+// 	} else {
+// 		response.redirect('/Piggyback/signin')
+// 	}
+// })
 
-app.post('/PiggyBack/new-destination', function(request, response) {
+// // need to pass in worker's id and data you want to change
+// app.post('/Piggyback/update-worker', function(request, response) {
+// 	if (request.session.loggedin) {
+// 		if (!(request.body.id && request.body.name))
+// 			response.redirect('/Piggyback')
+// 		else {
+// 			onfleet.updateWorkerByID(request.body.id, {name: request.body.name}).then(function() {
+// 				response.redirect('/Piggyback')
+// 			}).catch(function(error) {
+// 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+// 			})
+// 		}
+// 	} else {
+// 		response.redirect('/Piggyback/signin')
+// 	}
+// })
+
+app.post('/Piggyback/new-destination', function(request, response) {
 	if (request.session.loggedin) {
 		if (!(request.body.number && request.body.street && request.body.city && request.body.country))
-		response.redirect('/PiggyBack')
+		response.redirect('/Piggyback')
 		else {
 			onfleet.createNewDestination(
 				{
@@ -216,20 +232,20 @@ app.post('/PiggyBack/new-destination', function(request, response) {
 						}
 					)
 				console.log(JSON.stringify(d))
-				response.redirect('/PiggyBack')
+				response.redirect('/Piggyback')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 			})
 		}
 	} else {
-		response.redirect('/PiggyBack/signin')
+		response.redirect('/Piggyback/signin')
 	}
 })
 
-app.post('/PiggyBack/new-task', function(request, response) {
+app.post('/Piggyback/new-task', function(request, response) {
 	if (request.session.loggedin) {
 		if (!(request.body.destination))
-			response.redirect('/PiggyBack')
+			response.redirect('/Piggyback')
 		else {
 			onfleet.createNewTask(
 				'~2FSQGbR0qSXi1v9kSQxtW4v',		// merchant
@@ -272,7 +288,7 @@ app.post('/PiggyBack/new-task', function(request, response) {
 								console.log('Task successfully added to database ID: ' + t.id)
 							}
 						)
-						response.redirect('/PiggyBack')
+						response.redirect('/Piggyback')
 					}).catch(function(error) {
 						response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 					})
@@ -302,7 +318,7 @@ app.post('/PiggyBack/new-task', function(request, response) {
 								throw error
 						}
 					)
-					response.redirect('/PiggyBack')
+					response.redirect('/Piggyback')
 				}
 
 				
@@ -311,15 +327,15 @@ app.post('/PiggyBack/new-task', function(request, response) {
 			})
 		}
 	} else {
-		response.redirect('/PiggyBack/signin')
+		response.redirect('/Piggyback/signin')
 	}
 })
 
-app.get('/PiggyBack/signup', function(request, response) {
+app.get('/Piggyback/signup', function(request, response) {
 	response.render('signup', {pageTitle: 'Sign up'})
 })
 
-app.post('/PiggyBack/signup', function(request, response) {
+app.post('/Piggyback/signup', function(request, response) {
 	var username = request.body.username
 	var firstname = request.body.firstname
 	var lastname = request.body.lastname
@@ -377,14 +393,14 @@ app.post('/PiggyBack/signup', function(request, response) {
 	})
 })
 
-app.get('/PiggyBack/signin', function(request, response) {
+app.get('/Piggyback/signin', function(request, response) {
 	if (request.session.loggedin)
 		response.render('signin', {pageTitle: 'Sign in', errors: ['Already signed in']})
 	else
 		response.render('signin', {pageTitle: 'Sign in'})
 })
 
-app.post('/PiggyBack/signin', function(request, response) {
+app.post('/Piggyback/signin', function(request, response) {
 	var username = request.body.username
 	var password = request.body.password
 
@@ -398,7 +414,7 @@ app.post('/PiggyBack/signin', function(request, response) {
 			throw error
 		if (rows.length) {
 			request.session.loggedin = true
-			response.redirect('/PiggyBack')
+			response.redirect('/Piggyback')
 			return
 		} else {
 			response.render('signin', {pageTitle: 'Sign in', errors: ['Incorrect username or password'], username: username})
@@ -406,50 +422,26 @@ app.post('/PiggyBack/signin', function(request, response) {
 	})
 })
 
-app.post('/PiggyBack/webhook/taskCompleted', function(request, response) {
+app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 	console.log('Got a new task')
 	console.log('\n' + JSON.stringify(request.body))
 })
 
 // Used to respond to webhook request
-app.get('/PiggyBack/webhook/taskCompleted', function(request, response, next) {
+app.get('/Piggyback/webhook/taskCompleted', function(request, response, next) {
 	var str = request.originalUrl.split('=')[1]
 	response.send(str)
 	return next()
 })
 
-// used to send a webhook request
-app.get('/PiggyBack/sendwebhook', function(request, response) {
-	onfleet.createWebHook('http://noahthomas.us/PiggyBack/webhook/taskCompleted', 0).then(function(data) {
+// Used to send a webhook request
+app.get('/Piggyback/sendwebhook', function(request, response) {
+	onfleet.createWebHook('http://noahthomas.us/Piggyback/webhook/taskCompleted', 0).then(function(data) {
 		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data)})
 	}).catch(function(error) {
 		response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 	})
 })
-
-// app.get('/PiggyBack/calculate', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		response.render('calculate', {pageTitle: 'Calculate', reqbody: 'no content uploaded'})
-// 	} else {
-// 		response.redirect('/PiggyBack/signin')
-// 	}
-// })
-
-// app.post('/PiggyBack/calculate', upload.single('testfile'), function(request, response) {
-// 	if (!request.session.loggedin) {
-// 		// req.file is the `avatar` file 
-// 	  	// req.body will hold the text fields, if there were any 
-// 		response.render('calculate', {
-// 			pageTitle: 'Calculate', 
-// 			reqbody: JSON.stringify(request.body),
-// 			reqfile: JSON.stringify(request.file),
-// 			other: JSON.stringify(response.locals.auth)
-// 			// need some way to access auth part of options on the request
-// 		})
-// 	} else {
-// 		response.redirect('/PiggyBack/signin')
-// 	}
-// })
 
 http.listen(8080, '127.0.0.1', function() {
 	console.log('listening on port 8080')
