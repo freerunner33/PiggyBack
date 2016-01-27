@@ -249,7 +249,7 @@ app.post('/PiggyBack/new-task', function(request, response) {
 					onfleet.getSingleWorkerByID(t.worker).then(function(w) {
 						connection.query('INSERT INTO Tasks (id, company, driverTip, month, day, year, hour, minute, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 							[
-								t.id, 								// task id
+								t.shortId, 								// task id
 								request.body.company,				// company (e.g. Yelp)
 								request.body.driverTip, 			// driver tip (e.g. $1.25)
 								months[time.getMonth()], 			// month
@@ -280,7 +280,7 @@ app.post('/PiggyBack/new-task', function(request, response) {
 					console.log('Task was not assigned...')
 					connection.query('INSERT INTO Tasks (id, company, driverTip, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?)',
 						[
-							t.id, 								// task id
+							t.shortId, 								// task id
 							request.body.company,				// company (e.g. Yelp)
 							request.body.driverTip, 			// driver tip (e.g. $1.25)
 							months[time.getMonth()], 			// month
