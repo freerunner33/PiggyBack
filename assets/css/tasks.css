@@ -4,7 +4,7 @@ body {
 }
 
 section {
-	width: 100%;
+	width: calc(100% - 2em - 2px);
 	border: 1px solid red;
 	padding: 1em;
 }
