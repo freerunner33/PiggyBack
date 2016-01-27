@@ -9,6 +9,7 @@ section {
 }
 
 div {
+	vertical-align: top;
 	display: inline-block;
 	width: calc(25% - 2px - 2.5em);
 	border: 1px solid blue;
