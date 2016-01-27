@@ -6,12 +6,13 @@ body {
 section {
 	width: 100%;
 	border: 1px solid red;
+	padding: 1em;
 }
 
 div {
 	vertical-align: top;
 	display: inline-block;
-	width: calc(33.33% - 2px - 2.5em);
+	width: calc(33.33% - 2px - 3em);
 	border: 1px solid blue;
 	min-width: 15em;
 	padding: 1em;
