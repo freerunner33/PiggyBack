@@ -9,7 +9,7 @@ section {
 }
 div {
 	display: inline-block;
-	width: calc(25% - 2px);
+	width: calc(25% - 2px - 2em);
 	border: 1px solid blue;
 	min-width: 20em;
 	padding: 1em;
