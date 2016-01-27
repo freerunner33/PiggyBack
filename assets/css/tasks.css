@@ -1,4 +1,5 @@
 p {
 	color: #aaa;
 	width: calc(20%);
+	margin: 0.25em;
 }
