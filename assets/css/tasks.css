@@ -5,7 +5,7 @@ body {
 
 section {
 	width: calc(100% - 2em - 2px);
-	border: 1px solid rgb(237, 45, 135);
+	/*border: 1px solid rgb(237, 45, 135);*/
 	padding: 1em;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(237, 45, 135, 0.5);
@@ -15,7 +15,7 @@ div {
 	vertical-align: top;
 	display: inline-block;
 	width: calc(33.33% - 2px - 2em);
-	border: 1px solid rgb(237, 45, 135);
+	/*border: 1px solid rgb(237, 45, 135);*/
 	min-width: 15em;
 	padding: 1em;
 	border-radius: 10px;
