@@ -20,9 +20,9 @@ block content
 				input(type='text', name='apartment')
 				p *City:
 				input(type='text', name='city', required)
-				p State:
+				p *State:
 				input(type='text', name='state')
-				p Postal Code:
+				p *Postal Code:
 				input(type='number', name='postalCode')
 				p *Country:
 				input(type='text', name='country', required)
@@ -38,9 +38,9 @@ block content
 				input(type='text', name='apartment')
 				p *City:
 				input(type='text', name='city', required)
-				p State:
+				p *State:
 				input(type='text', name='state')
-				p Postal Code:
+				p *Postal Code:
 				input(type='number', name='postalCode')
 				p *Country:
 				input(type='text', name='country', required)
@@ -70,25 +70,25 @@ block content
 		else
 			li No tasks at the moment
 
-	form#new(method='POST', action='/Piggyback/new-destination')
-		h3 Create new destination
-			p Name:
-			input(type='text', name='name')
-			p *Number:
-			input(type='number', name='number', required)
-			p *Street:
-			input(type='text', name='street', required)
-			p Apartment:
-			input(type='text', name='apartment')
-			p *City:
-			input(type='text', name='city', required)
-			p State:
-			input(type='text', name='state')
-			p Postal Code:
-			input(type='number', name='postalCode')
-			p *Country:
-			input(type='text', name='country', required)
-			button(type='submit') Submit
+	//- form#new(method='POST', action='/Piggyback/new-destination')
+	//- 	h3 Create new destination
+	//- 		p Name:
+	//- 		input(type='text', name='name')
+	//- 		p *Number:
+	//- 		input(type='number', name='number', required)
+	//- 		p *Street:
+	//- 		input(type='text', name='street', required)
+	//- 		p Apartment:
+	//- 		input(type='text', name='apartment')
+	//- 		p *City:
+	//- 		input(type='text', name='city', required)
+	//- 		p State:
+	//- 		input(type='text', name='state')
+	//- 		p Postal Code:
+	//- 		input(type='number', name='postalCode')
+	//- 		p *Country:
+	//- 		input(type='text', name='country', required)
+	//- 		button(type='submit') Submit
 		
 	form#new(method='POST', action='/Piggyback/new-task')
 		h3 Create new task:
