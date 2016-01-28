@@ -62,6 +62,12 @@ app.get('/Piggyback/test', function(request, response) {
 		}
 	})
 
+	onfleet.listDestinationsByID(['AYCg1myyuhme4DBuv*eUCqqY', 'C8j7A7oJiw6AKwDc6Rjj*aaR']).then(function(data) {
+		console.log('Successssss\n' + data)
+	}, function(error) {
+		console.log('Error\n' + error)
+	})
+
 	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
 		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data.workers)})
 	}, function(error) {
