@@ -140,6 +140,7 @@ function listDestinationsByID(arr) {
 	return new Promise(function(resolve, reject) {
 		for (var i in arr) {
 			getDestinationByID(arr[i]).then(function(data) {
+				resolve(data)
 				if (i < arr.length - 1)
 					temp.push(data)
 				else
