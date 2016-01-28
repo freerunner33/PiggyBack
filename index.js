@@ -58,18 +58,12 @@ app.get('/Piggyback/test', function(request, response) {
 			var d
 			for (var i in rows) {
 				d = rows[i]
-				html.push("{\n     ID: " + d.id + "    \t\nName: " + d.name + "}")
+				html.push("{ ID: " + d.id + "    \t\nName: " + d.name + "}")
 			}
 		}
 	})
 	// display the destinations in some sort of way...
-
-	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
-		html.push(JSON.stringify(data.workers))
-		response.render('error', {pageTitle: 'Success', errors: html})
-	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
-	})
+	response.render('error', {pageTitle: 'Success', errors: html})
 })
 
 
