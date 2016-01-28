@@ -135,19 +135,16 @@ function createNewDestination(address) {
 function getDestinationByID(id) {
 	return request('destinations/' + id, 'GET')
 }
-function listDestinationsByID(arr) {
-	return new Promise(function(resolve, reject) {
-		Promise.all(
-			[
-				getDestinationByID('AYCg1myyuhme4DBuv*eUCqqY'),
-				getDestinationByID('C8j7A7oJiw6AKwDc6Rjj*aaR')
-			]
-		).then(function(values) {
-			resolve(values)
-		}, function(error) {
-			reject('Error\n' + JSON.stringify(error))
+function promiseArray(arr, temp) {
+	if (arr.length == 0) {
+		return temp
+	} else {
+		getDestinationbyID(arr.shift()).then(function(data) {
+			temp.push()
 		})
-	})
+		temp.push(getDestinationByID(arr.shift()))
+		return promiseArray(arr, temp)
+	}
 }
 
 // RECIPIENTS

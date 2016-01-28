@@ -50,21 +50,14 @@ app.use(session({
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	connection.query('SELECT id FROM Destinations', function(error, rows) {
+	connection.query('SELECT * FROM Destinations', function(error, rows) {
 		if (error) 
 			throw error
 		if (rows.length) {
 			for (var i in rows) {
-				console.log(rows[i].id)
+				console.log(rows[i].id + ', ' + rows[i].name)
 			}
 		}
-	})
-
-	onfleet.listDestinationsByID(['AYCg1myyuhme4DBuv*eUCqqY', 'C8j7A7oJiw6AKwDc6Rjj*aaR']).then(function(data) {
-		console.log('Success')
-		console.log(JSON.stringify(data[0]))
-	}, function(error) {
-		console.log('Error')
 	})
 
 	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
