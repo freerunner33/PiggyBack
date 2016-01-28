@@ -52,13 +52,13 @@ app.use(session({
 app.get('/Piggyback/test', function(request, response) {
 	var html = ''
 	connection.query('SELECT id,name,number,street,apartment,city,state,postalCode,country FROM Destinations', function(error, rows) {
-		if (error) 
+		if (error)
 			throw error
 		if (rows.length) {
 			var d
 			for (var i in rows) {
 				d = rows[i]
-				html += '{\n\tID: ' + d.id + '\n\tName: ' + d.name + '\n}\n'
+				html += "{\n\tID: " + d.id + "\n\tName: " + d.name + "\n}\n"
 			}
 		}
 	})
