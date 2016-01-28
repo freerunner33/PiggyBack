@@ -60,10 +60,16 @@ app.get('/Piggyback/test', function(request, response) {
 				d = rows[i]
 				html.push("{ ID: " + d.id + "    \t\nName: " + d.name + "}")
 			}
-			response.render('error', {pageTitle: 'Success', errors: html})
 		}
 	})
 	// display the destinations in some sort of way...
+
+	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
+		html.push(JSON.stringify(data.workers))
+		response.render('error', {pageTitle: 'Success', errors: html})
+	}, function(error) {
+		response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
+	})
 })
 
 
@@ -110,19 +116,6 @@ app.get('/destroy', function(request, response) {
 app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
 		onfleet.listTasks().then(function(data) {
-			// connection.query('SELECT id,name,number,street,apartment,city,state,postalCode,country FROM Destinations', function(error, rows) {
-			// 	if (error)
-			// 		throw error
-			// 	if (rows.length) {
-			// 		var d
-			// 		for (var i=0; i < rows.length && i < 3; i++) {
-			// 			d = rows[i]
-			// 			html.push("{ ID: " + d.id + "    \t\nName: " + d.name + "}")
-			// 		}
-			// 		response.render('error', {pageTitle: 'Success', errors: html})
-			// 	}
-			// })
-
 			response.render(
 				'tasks', {
 					pageTitle: 'Piggyback Technologies',
@@ -420,7 +413,7 @@ app.get('/Piggyback/signin', function(request, response) {
 	if (request.session.loggedin)
 		response.render('signin', {pageTitle: 'Sign in', errors: ['Already signed in']})
 	else
-		response.render('signin', {pageTitle: 'Sign in', errors: [request.session.loggedin]})
+		response.render('signin', {pageTitle: 'Sign in'})
 })
 
 app.post('/Piggyback/signin', function(request, response) {
@@ -437,7 +430,6 @@ app.post('/Piggyback/signin', function(request, response) {
 			throw error
 		if (rows.length) {
 			request.session.loggedin = true
-			response.render('signin', {pageTitle: 'Success', errors: ['Successfully logged in', request.session.loggedin]})
 			response.redirect('/Piggyback')
 			return
 		} else {
