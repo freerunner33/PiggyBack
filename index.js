@@ -110,6 +110,19 @@ app.get('/destroy', function(request, response) {
 app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
 		onfleet.listTasks().then(function(data) {
+			connection.query('SELECT id,name,number,street,apartment,city,state,postalCode,country FROM Destinations', function(error, rows) {
+				if (error)
+					throw error
+				if (rows.length) {
+					var d
+					for (var i=0; i < rows.length && i < 3; i++) {
+						d = rows[i]
+						html.push("{ ID: " + d.id + "    \t\nName: " + d.name + "}")
+					}
+					response.render('error', {pageTitle: 'Success', errors: html})
+				}
+			})
+
 			response.render(
 				'tasks', {
 					pageTitle: 'Piggyback Technologies',
