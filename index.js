@@ -54,6 +54,7 @@ app.get('/Piggyback/test', function(request, response) {
 		if (error) 
 			throw error
 		if (rows.length) {
+			console.log(rows.length)
 			console.log(rows)
 			// response.render('error' {pageTitle:'Success', error: JSON.stringify(rows)})
 			return
