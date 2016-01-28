@@ -50,6 +50,23 @@ app.use(session({
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
+	connection.query('SELECT id FROM Locations', function(error, rows) {
+		if (error) 
+			throw error
+		if (rows.length) {
+			response.render('error' {pageTitle:'Success', error: JSON.stringify(rows)})
+			return
+		}
+		// connection.query('INSERT INTO Users (username, firstname, lastname, password, phone) VALUES (?,?,?,?,?)',
+		// 	[username, firstname, lastname, password, phone], function(error, rows) 
+		// 	{
+		// 		if (error)
+		// 			throw error
+		// 		response.render('success', {pageTitle: 'Success', message: 'You have successfully signed up'})
+		// 	}
+		// )
+	})
+
 	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
 		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data.workers)})
 	}, function(error) {
