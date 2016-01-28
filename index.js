@@ -121,20 +121,21 @@ app.get('/Piggyback', function(request, response) {
 				if (error)
 					throw error
 				if (rows.length) {
-					var d
-					for (var i in rows) {
-						d = rows[i]
-						html.push("{ ID: " + d.id + "    \t\nName: " + d.name + "}")
-					}
+					// var d
+					// for (var i in rows) {
+					// 	d = rows[i]
+					// 	html.push("{ ID: " + d.id + "    \t\nName: " + d.name + "}")
+					// }
+
+					response.render(
+						'tasks', {
+							pageTitle: 'Piggyback Technologies',
+							data: data,
+							dest: rows
+						}
+					)
 				}
 			})
-
-			response.render(
-				'tasks', {
-					pageTitle: 'Piggyback Technologies',
-					data: data
-				}
-			)
 		}), function(error) {
 			response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 		}
