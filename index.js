@@ -57,7 +57,7 @@ app.get('/Piggyback/test', function(request, response) {
 			console.log(rows.length)
 			console.log(rows)
 			for (var i in rows) {
-				console.log(rows[i])
+				console.log(rows[i].id)
 			}
 			// response.render('error' {pageTitle:'Success', error: JSON.stringify(rows)})
 			return
