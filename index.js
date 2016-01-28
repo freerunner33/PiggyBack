@@ -62,6 +62,7 @@ app.get('/Piggyback/test', function(request, response) {
 
 	onfleet.listDestinationsByID(['AYCg1myyuhme4DBuv*eUCqqY', 'C8j7A7oJiw6AKwDc6Rjj*aaR']).then(function(data) {
 		console.log('Success')
+		console.log(JSON.stringify(data))
 	}, function(error) {
 		console.log('Error')
 	})

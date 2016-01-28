@@ -143,8 +143,7 @@ function listDestinationsByID(arr) {
 				getDestinationByID('C8j7A7oJiw6AKwDc6Rjj*aaR')
 			]
 		).then(function(values) {
-			console.log('It worked:\n' + values)
-			resolve('It worked')
+			resolve(values)
 		}, function(error) {
 			reject('Error\n' + JSON.stringify(error))
 		})
