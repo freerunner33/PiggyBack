@@ -420,7 +420,7 @@ app.get('/Piggyback/signin', function(request, response) {
 	if (request.session.loggedin)
 		response.render('signin', {pageTitle: 'Sign in', errors: ['Already signed in']})
 	else
-		response.render('signin', {pageTitle: 'Sign in'})
+		response.render('signin', {pageTitle: 'Sign in', errors: [request.session.loggedin]})
 })
 
 app.post('/Piggyback/signin', function(request, response) {
