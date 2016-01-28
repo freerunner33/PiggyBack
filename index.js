@@ -60,10 +60,10 @@ app.get('/Piggyback/test', function(request, response) {
 				d = rows[i]
 				html.push("{ ID: " + d.id + "    \t\nName: " + d.name + "}")
 			}
+			response.render('error', {pageTitle: 'Success', errors: html})
 		}
 	})
 	// display the destinations in some sort of way...
-	response.render('error', {pageTitle: 'Success', errors: html})
 })
 
 
