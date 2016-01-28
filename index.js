@@ -65,9 +65,9 @@ app.get('/Piggyback/test', function(request, response) {
 	// display the destinations in some sort of way...
 
 	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
-		response.render('error', {pageTitle: 'Success', error: [JSON.stringify(data.workers), html]})
+		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data.workers), html]})
 	}, function(error) {
-		response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+		response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 	})
 })
 
@@ -122,7 +122,7 @@ app.get('/Piggyback', function(request, response) {
 				}
 			)
 		}), function(error) {
-			response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+			response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 		}
 	} else {
 		response.redirect('/Piggyback/signin')
@@ -177,7 +177,7 @@ app.get('/Piggyback', function(request, response) {
 // 			).then(function(worker) {
 // 				response.redirect('/Piggyback')
 // 			}).catch(function(error) {
-// 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+// 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 // 			})
 // 		}
 // 	} else {
@@ -194,7 +194,7 @@ app.get('/Piggyback', function(request, response) {
 // 			onfleet.deleteWorkerByID(request.body.id).then(function() {
 // 				response.redirect('/Piggyback/')
 // 			}).catch(function(error) {
-// 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+// 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 // 			})
 // 		}
 // 	} else {
@@ -211,7 +211,7 @@ app.get('/Piggyback', function(request, response) {
 // 			onfleet.updateWorkerByID(request.body.id, {name: request.body.name}).then(function() {
 // 				response.redirect('/Piggyback')
 // 			}).catch(function(error) {
-// 				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+// 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 // 			})
 // 		}
 // 	} else {
@@ -246,10 +246,10 @@ app.post('/Piggyback/new-destination', function(request, response) {
 						}
 					)
 				console.log(JSON.stringify(d))
-				response.render('error', {pageTitle: 'Error', error: JSON.stringify(d)})
+				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(d)})
 				// response.redirect('/Piggyback')
 			}).catch(function(error) {
-				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 			})
 		}
 	} else {
@@ -305,7 +305,7 @@ app.post('/Piggyback/new-task', function(request, response) {
 						)
 						response.redirect('/Piggyback')
 					}).catch(function(error) {
-						response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+						response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 					})
 				} else { // Leave the name blank
 					console.log('Task was not assigned...')
@@ -338,7 +338,7 @@ app.post('/Piggyback/new-task', function(request, response) {
 
 				
 			}).catch(function(error) {
-				response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 			})
 		}
 	} else {
@@ -452,9 +452,9 @@ app.get('/Piggyback/webhook/taskCompleted', function(request, response, next) {
 // Used to send a webhook request
 app.get('/Piggyback/sendwebhook', function(request, response) {
 	onfleet.createWebHook('http://noahthomas.us/Piggyback/webhook/taskCompleted', 0).then(function(data) {
-		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data)})
+		response.render('error', {pageTitle: 'Success', errors: JSON.stringify(data)})
 	}).catch(function(error) {
-		response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
+		response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 	})
 })
 
