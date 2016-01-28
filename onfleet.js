@@ -145,10 +145,10 @@ function listDestinationsByID(arr) {
 				reject(error)
 			})
 		}
-		if (temp.length == arr.length)
+		//if (temp.length == arr.length)
 			resolve(temp)
-		else
-			reject('One or more ids did not work')
+		//else
+		//	reject('One or more ids did not work')
 	})
 }
 
