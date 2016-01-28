@@ -138,18 +138,16 @@ function getDestinationByID(id) {
 function listDestinationsByID(arr) {
 	var temp = []
 	return new Promise(function(resolve, reject) {
+		console.log('Starting list of destinations')
 		for (var i in arr) {
+			console.log(i)
 			getDestinationByID(arr[i]).then(function(data) {
-				resolve(data)
-				if (i < arr.length - 1)
-					temp.push(data)
-				else
-					resolve(temp)
+				console.log(data)
 			}, function(error) {
 				reject(error)
 			})
 		}
-		reject('Finished for loop...')
+		reject('Finished looping over destinations')
 		// if (temp.length == arr.length)
 		// 	resolve(temp)
 		// else
