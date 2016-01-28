@@ -139,15 +139,14 @@ function listDestinationsByID(arr) {
 	return new Promise(function(resolve, reject) {
 		Promise.all(
 			[
-				getDestinationByID(arr[0]),
-				getDestinationByID(arr[1]),
-				getDestinationByID(arr[2])
+				getDestinationByID('AYCg1myyuhme4DBuv*eUCqqY'),
+				getDestinationByID('C8j7A7oJiw6AKwDc6Rjj*aaR')
 			]
 		).then(function(values) {
 			console.log(values)
 			resolve('It worked')
 		}, function(error) {
-			reject('Error\n' + error)
+			reject('Error\n' + JSON.stringify(error))
 		})
 	})
 }
