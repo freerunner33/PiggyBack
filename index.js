@@ -59,17 +59,7 @@ app.get('/Piggyback/test', function(request, response) {
 			for (var i in rows) {
 				console.log(rows[i].id)
 			}
-			// response.render('error' {pageTitle:'Success', error: JSON.stringify(rows)})
-			return
 		}
-		// connection.query('INSERT INTO Users (username, firstname, lastname, password, phone) VALUES (?,?,?,?,?)',
-		// 	[username, firstname, lastname, password, phone], function(error, rows) 
-		// 	{
-		// 		if (error)
-		// 			throw error
-		// 		response.render('success', {pageTitle: 'Success', message: 'You have successfully signed up'})
-		// 	}
-		// )
 	})
 
 	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {

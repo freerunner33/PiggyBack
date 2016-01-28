@@ -135,6 +135,22 @@ function createNewDestination(address) {
 function getDestinationByID(id) {
 	return request('destinations/' + id, 'GET')
 }
+function listDestinationsByID(arr) {
+	var temp = []
+	return new Promise(function(resolve, reject) {
+		for (var i in arr) {
+			getDestinationByID(arr[i]).then(function(data) {
+				temp.push(data)
+			}, function(error) {
+				reject(error)
+			})
+		}
+		if (temp.length == arr.length)
+			resolve(temp)
+		else
+			reject('One or more ids did not work')
+	})
+}
 
 // RECIPIENTS
 	// cannot be deleted once created
@@ -228,6 +244,7 @@ module.exports = {
 
 	createNewDestination: createNewDestination,
 	getDestinationByID: getDestinationByID,
+	listDestinationsByID: listDestinationsByID,
 
 	listTeams: listTeams, 
 	getSingleTeamByID: getSingleTeamByID,
