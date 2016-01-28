@@ -5,6 +5,7 @@ block stylesheets
 
 block content
 	h2 Error
-	p= error
+	each e in errors:
+		p= e
 	button(onclick='location.href="/PiggyBack"') Return to home
 	
