@@ -50,7 +50,7 @@ app.use(session({
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	var html = ''
+	var html = []
 	connection.query('SELECT id,name,number,street,apartment,city,state,postalCode,country FROM Destinations', function(error, rows) {
 		if (error)
 			throw error
@@ -58,7 +58,7 @@ app.get('/Piggyback/test', function(request, response) {
 			var d
 			for (var i in rows) {
 				d = rows[i]
-				html += "{\n\tID: " + d.id + "\n\tName: " + d.name + "\n}\n"
+				html.push("{ ID: " + d.id + "Name: " + d.name + "}")
 			}
 		}
 	})
