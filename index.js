@@ -58,7 +58,7 @@ app.get('/Piggyback/test', function(request, response) {
 			var d
 			for (var i in rows) {
 				d = rows[i]
-				html.push("{ ID: " + d.id + "Name: " + d.name + "}")
+				html.push("{\nID: " + d.id + "Name: " + d.name + "}")
 			}
 		}
 	})
