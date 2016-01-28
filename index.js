@@ -54,7 +54,8 @@ app.get('/Piggyback/test', function(request, response) {
 		if (error) 
 			throw error
 		if (rows.length) {
-			response.render('error' {pageTitle:'Success', error: JSON.stringify(rows)})
+			console.log(rows)
+			// response.render('error' {pageTitle:'Success', error: JSON.stringify(rows)})
 			return
 		}
 		// connection.query('INSERT INTO Users (username, firstname, lastname, password, phone) VALUES (?,?,?,?,?)',
