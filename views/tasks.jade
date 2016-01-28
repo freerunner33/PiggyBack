@@ -74,21 +74,21 @@ block content
 	form#new(method='POST', action='/Piggyback/new-destination')
 		h3 Create new destination
 			p Name:
-			input(type='text', name='name')
+			input(type='text', name='name', autocomplete='off')
 			p *Number:
-			input(type='number', name='number', required)
+			input(type='number', name='number', required, autocomplete='off')
 			p *Street:
-			input(type='text', name='street', required)
+			input(type='text', name='street', required, autocomplete='off')
 			p Apartment:
-			input(type='text', name='apartment')
+			input(type='text', name='apartment', autocomplete='off')
 			p *City:
-			input(type='text', name='city', required)
+			input(type='text', name='city', required, autocomplete='off')
 			p State:
-			input(type='text', name='state')
+			input(type='text', name='state', autocomplete='off')
 			p Postal Code:
-			input(type='number', name='postalCode')
+			input(type='number', name='postalCode', autocomplete='off')
 			p *Country:
-			input(type='text', name='country', required)
+			input(type='text', name='country', required, autocomplete='off')
 			button(type='submit') Submit
 		
 	form#new(method='POST', action='/Piggyback/new-task')
