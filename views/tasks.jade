@@ -75,8 +75,8 @@ block content
 	ul
 		if dest.length
 			each d in dest
-				li Destination ID: #{d.id}
-				li Destination Name: #{d.name}
+				li ID: #{d.id}
+				li Name: #{d.name}
 
 	form#new(method='POST', action='/Piggyback/new-destination')
 		h3 Create new destination
