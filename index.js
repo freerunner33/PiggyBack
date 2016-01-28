@@ -65,7 +65,8 @@ app.get('/Piggyback/test', function(request, response) {
 	// display the destinations in some sort of way...
 
 	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
-		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data.workers), html]})
+		html.push(JSON.stringify(data.workers))
+		response.render('error', {pageTitle: 'Success', errors: html})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 	})
