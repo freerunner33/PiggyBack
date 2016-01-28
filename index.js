@@ -50,18 +50,21 @@ app.use(session({
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
+	var destArr = []
 	connection.query('SELECT * FROM Destinations', function(error, rows) {
 		if (error) 
 			throw error
 		if (rows.length) {
 			for (var i in rows) {
 				console.log(rows[i].id + ', ' + rows[i].name)
+				destArr.push(rows[i])
 			}
 		}
 	})
+	// display the destinations in some sort of way...
 
 	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
-		response.render('error', {pageTitle: 'Success', error: JSON.stringify(data.workers)})
+		response.render('error', {pageTitle: 'Success', error: [JSON.stringify(data.workers), JSON.stringify(destArr)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', error: JSON.stringify(error)})
 	})
