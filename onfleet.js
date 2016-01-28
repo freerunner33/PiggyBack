@@ -136,22 +136,19 @@ function getDestinationByID(id) {
 	return request('destinations/' + id, 'GET')
 }
 function listDestinationsByID(arr) {
-	var temp = []
 	return new Promise(function(resolve, reject) {
-		console.log('Starting list of destinations')
-		for (var i in arr) {
-			console.log(i)
-			getDestinationByID(arr[i]).then(function(data) {
-				console.log(data)
-			}, function(error) {
-				reject(error)
-			})
-		}
-		reject('Finished looping over destinations')
-		// if (temp.length == arr.length)
-		// 	resolve(temp)
-		// else
-		// 	reject('One or more ids did not work')
+		Promise.all(
+			[
+				getDestinationByID(arr[0]),
+				getDestinationByID(arr[1]),
+				getDestinationByID(arr[2])
+			]
+		).then(function(values) {
+			console.log(values)
+			resolve('It worked')
+		}, function(error) {
+			reject('Error\n' + error)
+		})
 	})
 }
 

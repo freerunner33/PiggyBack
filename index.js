@@ -54,8 +54,6 @@ app.get('/Piggyback/test', function(request, response) {
 		if (error) 
 			throw error
 		if (rows.length) {
-			console.log(rows.length)
-			console.log(rows)
 			for (var i in rows) {
 				console.log(rows[i].id)
 			}
