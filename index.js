@@ -437,7 +437,7 @@ app.post('/Piggyback/signin', function(request, response) {
 			throw error
 		if (rows.length) {
 			request.session.loggedin = true
-			response.render('error', {pageTitle: 'Success', errors: ['Successfully logged in', request.session.loggedin]})
+			response.render('signin', {pageTitle: 'Success', errors: ['Successfully logged in', request.session.loggedin]})
 			response.redirect('/Piggyback')
 			return
 		} else {
