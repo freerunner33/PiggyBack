@@ -50,6 +50,8 @@ app.use(session({
   saveUninitialized: false
 }))
 
+
+
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
 	var html = []
@@ -95,7 +97,7 @@ app.post('/Piggyback', function(request, response) {
 
 	if (username == user1 && password == pass1) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' })
-		response.write('Success!\n')
+		response.write('Success!\nWill return JSON object of the task that was created.')
 		response.write(JSON.stringify(request.body) + '\n')
 		response.end()
 	} else {
@@ -239,7 +241,7 @@ app.get('/Piggyback', function(request, response) {
 app.post('/Piggyback/new-destination', function(request, response) {
 	if (request.session.loggedin) {
 		if (!(request.body.number && request.body.street && request.body.city && request.body.country))
-		response.redirect('/Piggyback')
+			response.redirect('/Piggyback')
 		else {
 			onfleet.createNewDestination(
 				{
@@ -254,17 +256,24 @@ app.post('/Piggyback/new-destination', function(request, response) {
 				}
 			).then(function(d) {
 					connection.query('INSERT INTO Destinations (id, name, number, street, apartment, city, state, postalCode, country) VALUES (?,?,?,?,?,?,?,?,?)',
-						[d.id, d.address.name, d.address.number, d.address.street, d.address.apartment, d.address.city, d.address.state, d.address.postalCode, d.address.country], 
-						function(error, rows) 
-						{
+						[
+							d.id, 
+							d.address.name, 
+							d.address.number, 
+							d.address.street, 
+							d.address.apartment, 
+							d.address.city, 
+							d.address.state, 
+							d.address.postalCode, 
+							d.address.country
+						], 
+						function(error, rows) {
 							if (error)
 								throw error
 							console.log('Location successfully added to database. ID: ' + d.id)
 						}
 					)
-				console.log(JSON.stringify(d))
-				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(d)})
-				// response.redirect('/Piggyback')
+				response.redirect('/Piggyback')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 			})
