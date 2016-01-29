@@ -97,7 +97,7 @@ app.post('/Piggyback', function(request, response) {
 
 	if (username == user1 && password == pass1) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' })
-		response.write('Success!\nWill return JSON object of the task that was created.')
+		response.write('Success!\n{\n\ttaskId:123456789\n\tDestination A:\n\tDestination B:\n}')
 		response.write(JSON.stringify(request.body) + '\n')
 		response.end()
 	} else {
