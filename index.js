@@ -95,7 +95,7 @@ app.post('/Piggyback', function(request, response) {
 	var username=parts[0]
 	var password=parts[1]
 
-	if (username == user1 && password == pass1) {
+	if (username == user1 && password == pass1 && request.body.destinationA && request.body.destinationB && request.body.driverTip) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' })
 		response.write('Success!\nExample return object\n{\n\ttaskId:123456789\n\tDestination A:\n\tDestination B:\n}\n')
 		// response.write(JSON.stringify(request.body) + '\n')
