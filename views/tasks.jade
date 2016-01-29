@@ -7,46 +7,53 @@ block stylesheets
 block content
 	section
 		a(href='/Piggyback/test') Test Button
-		form#new(method='POST', action='/Piggyback/new-task')
-			h1 Create New Task
+		form#new(method='POST', action='/Piggyback/jobs') 
+			h1 Create Job
 			div
 				h2 Location A
-				p Name:
-				input(type='text', name='name')
-				p *Number:
-				input(type='number', name='number', required)
-				p *Street:
-				input(type='text', name='street', required)
-				p Apartment:
-				input(type='text', name='apartment')
-				p *City:
-				input(type='text', name='city', required)
-				p *State:
-				input(type='text', name='state')
-				p *Postal Code:
-				input(type='number', name='postalCode')
-				p *Country:
-				input(type='text', name='country', required)
+				p Pickup waypoint:
+				input(type='text', name='pickup_waypoint', required)
+				p Dropoff waypoint:
+				input(type='text', name='dropoff_waypoint', required)
+				p Order ID:
+				input(type='text', name='order_id', required)
+				p Order Items:
+				input(type='text', name='order_items')
+				p Order Total:
+				input(type='number', step='0.01' name='order_total')
+				p Tip:
+				input(type='number', step='0.01' name='tip')
+				p Support Phone:
+				input(type='text', name='support_phone')
+				p Debug
+				input(type='number', name='debug')
+				
 			div
-				h2 Location B
-				p Name:
-				input(type='text', name='name')
-				p *Number:
-				input(type='number', name='number', required)
-				p *Street:
-				input(type='text', name='street', required)
-				p Apartment:
-				input(type='text', name='apartment')
-				p *City:
+				h2 Create Waypoint
+				p Address:
+				input(type='text', name='address', required)
+				p Address (line 2):
+				input(type='text', name='address')
+				p City:
 				input(type='text', name='city', required)
-				p *State:
-				input(type='text', name='state')
-				p *Postal Code:
-				input(type='number', name='postalCode')
-				p *Country:
-				input(type='text', name='country', required)
+				p State:
+				input(type='text', name='state', required)
+				p Zip Code:
+				input(type='number', name='zip', required)
+				p Name (of contact)
+				input(type='text', name='name', required)
+				p Phone (of contact)
+				input(type='number', name='phone', required)
+				p Email (of contact)
+				input(type='text', name='email')
+				p Location (object)
+				input(type='text', name='location', required)
+				p Arrive At: (required for pickup)
+				input(type='text', name='arrive_at', required)
+				p Special instructions:
+				input(type='text', name='special_instructions')
 			div
-				h2 Other Data
+				h2 Location:
 				p Driver Tip:
 				input(type='number', step='0.01', require, autocomplete='off')
 				p Complete Before
@@ -122,4 +129,3 @@ block content
 		input(type='text', name='notes', placeholder='Notes', autocomplete='off')
 		br
 		button(type='submit') Submit
-		
