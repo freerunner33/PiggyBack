@@ -81,8 +81,8 @@ block content
 
 	form#new(method='POST', action='/Piggyback/new-destination')
 		h3 Create new destination
-			p Name:
-			input(type='text', name='name', autocomplete='off')
+			p *Name:
+			input(type='text', name='name', required, autocomplete='off')
 			p *Number:
 			input(type='number', name='number', required, autocomplete='off')
 			p *Street:
