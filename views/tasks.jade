@@ -75,8 +75,8 @@ block content
 	ul
 		if dest.length
 			each d in dest
+				p #{d.name}
 				li ID: #{d.id}
-				li Name: #{d.name}
 				li Address: #{d.number} + ' ' + #{d.street} + ' ' + #{d.city} + ' ' + #{d.state}
 
 	form#new(method='POST', action='/Piggyback/new-destination')
