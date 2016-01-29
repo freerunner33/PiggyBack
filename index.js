@@ -97,11 +97,11 @@ app.post('/Piggyback', function(request, response) {
 
 	if (username == user1 && password == pass1 && request.body.destinationA && request.body.destinationB && request.body.driverTip) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' })
-		response.write('Success!\nExample return object\n')
+		response.write('\nSuccess!\nExample return object\n')
 		response.write('{\n\ttaskId: abc123def456ghi789\n')
 		response.write('\tDestination A: ' + request.body.destinationA + '\n')
 		response.write('\tDestination B: ' + request.body.destinationB + '\n')
-		response.write('\tDriver Tip: $' + request.body.driverTip + '\n}\n')
+		response.write('\tDriver Tip: $' + request.body.driverTip + '\n}\n\n')
 		response.end()
 	} else {
 		response.writeHead(401, { 'Content-Type': 'text/plain' })
