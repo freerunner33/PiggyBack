@@ -5,7 +5,9 @@
 var onfleet = require('./onfleet.js')
 var connection = require('./database.js')
 var signUpKey = require('./keys.js').signUpKey
-var yelpPass = require('./keys.js').yelpPass
+
+var user1 = require('./keys.js').user1
+var pass1 = require('./keys.js').pass1
 
 // npm modules that are required in
 var path = require('path')
@@ -91,7 +93,7 @@ app.post('/Piggyback', function(request, response) {
 	var username=parts[0]
 	var password=parts[1]
 
-	if (username == 'Yelp' && password == yelpPass) {
+	if (username == user1 && password == pass1) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' })
 		response.write('Success!\n')
 		response.write(JSON.stringify(request.body) + '\n')
