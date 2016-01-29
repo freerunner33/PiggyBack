@@ -7,6 +7,7 @@ var connection = require('./database.js')
 var signUpKey = require('./keys.js').signUpKey
 
 var user1 = require('./keys.js').user1
+
 var pass1 = require('./keys.js').pass1
 
 // npm modules that are required in
