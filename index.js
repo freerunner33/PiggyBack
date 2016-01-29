@@ -101,7 +101,7 @@ app.post('/Piggyback', function(request, response) {
 		response.write('{\n\ttaskId:123456789\n')
 		response.write('\tDestination A:' + request.body.destinationA + '\n')
 		response.write('\tDestination B:' + request.body.destinationB + '\n')
-		response.write('\tDriver Tip:' + request.body.driverTip + '}\n')
+		response.write('\tDriver Tip:' + request.body.driverTip + '\n}\n')
 		response.end()
 	} else {
 		response.writeHead(401, { 'Content-Type': 'text/plain' })
