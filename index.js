@@ -102,7 +102,7 @@ app.post('/Piggyback', function(request, response) {
 		response.end()
 	} else {
 		response.writeHead(401, { 'Content-Type': 'text/plain' })
-		response.write('Incorrect credentials\n' + username + ' ' + password + '\n')
+		response.write('Incorrect credentials\n' + username + ':' user1 + '\n' + password + ':' + pass1 + '\n')
 		response.end()
 	}
 })
