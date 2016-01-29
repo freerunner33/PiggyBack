@@ -77,6 +77,7 @@ block content
 			each d in dest
 				li ID: #{d.id}
 				li Name: #{d.name}
+				li Address: #{d.number} + ' ' + #{d.street} + ' ' + #{d.city} + ' ' + #{d.state}
 
 	form#new(method='POST', action='/Piggyback/new-destination')
 		h3 Create new destination
