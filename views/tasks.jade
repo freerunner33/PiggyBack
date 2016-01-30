@@ -12,60 +12,58 @@ block content
 			div#main
 				p Pickup waypoint:
 				div#smalldiv
-					p Address (line 1):
-					input(type='text', name='pickup_address', required, autocomplete='off')
+					p *Address (line 1):
+					input(type='text', name='pickup_address', required, autocomplete='off', value='624 Broadway')
 					p Address (line 2):
 					input(type='text', name='pickup_address2', autocomplete='off')
-					p City:
-					input(type='text', name='pickup_city', required, autocomplete='off')
-					p State:
-					input(type='text', name='pickup_state', required, autocomplete='off')
-					p Zip:
-					input(type='number', name='pickup_zip', required, autocomplete='off')
-					p Name (of contact):
-					input(type='text', name='pickup_name', required, autocomplete='off')
-					p Phone number (of contact):
-					input(type='number', name='pickup_phone', required, autocomplete='off')
+					p *City:
+					input(type='text', name='pickup_city', required, autocomplete='off', value='San Diego')
+					p *State:
+					input(type='text', name='pickup_state', required, autocomplete='off', value='California')
+					p *Zip:
+					input(type='number', name='pickup_zip', required, autocomplete='off', value='92101')
+					p *Name (of contact):
+					input(type='text', name='pickup_name', required, autocomplete='off', value='John')
+					p *Phone number (of contact):
+					input(type='number', name='pickup_phone', required, autocomplete='off', value='6199870845')
 					div#smalldiv
-						p Latitude:
+						p *Latitude:
 						input(type='number', name='pickup_latitude', required, autocomplete='off', value='32.715825')
-						p Longitude:
+						p *Longitude:
 						input(type='number', name='pickup_longitude', required, autocomplete='off', value='-117.158910')
-					p Arrive at:
+					p *Arrive at:
 					input(type='datetime-local', name='pickup_arrive_at', required, autocomplete='off')
 					p Special Instructions:
 					input(type='text', name='pickup_special_instructions', autocomplete='off')
-			
 			div#main
 				p Dropoff waypoint:
 				div#smalldiv
-					p Address (line 1):
-					input(type='text', name='dropoff_address', required, autocomplete='off')
+					p *Address (line 1):
+					input(type='text', name='dropoff_address', required, autocomplete='off', value='5998 Alcala Park')
 					p Address (line 2):
 					input(type='text', name='dropoff_address2', autocomplete='off')
-					p City:
-					input(type='text', name='dropoff_city', required, autocomplete='off')
-					p State:
-					input(type='text', name='dropoff_state', required, autocomplete='off')
-					p Zip:
-					input(type='number', name='dropoff_zip', required, autocomplete='off')
-					p Name (of contact):
-					input(type='text', name='dropoff_name', required, autocomplete='off')
-					p Phone number (of contact):
-					input(type='number', name='dropoff_phone', required, autocomplete='off')
+					p *City:
+					input(type='text', name='dropoff_city', required, autocomplete='off', value='San Diego')
+					p *State:
+					input(type='text', name='dropoff_state', required, autocomplete='off', value='California')
+					p *Zip:
+					input(type='number', name='dropoff_zip', required, autocomplete='off', value='92110')
+					p *Name (of contact):
+					input(type='text', name='dropoff_name', required, autocomplete='off', value='Noah')
+					p *Phone number (of contact):
+					input(type='number', name='dropoff_phone', required, autocomplete='off', value='9703084693')
 					div#smalldiv
-						p Latitude:
-						input(type='number', name='dropoff_latitude', required, autocomplete='off', value='32.715825')
-						p Longitude:
-						input(type='number', name='dropoff_longitude', required, autocomplete='off', value='-117.158910')
-					p Arrive at:
+						p *Latitude: 
+						input(type='number', name='dropoff_latitude', required, autocomplete='off', value='32.771970')
+						p *Longitude:
+						input(type='number', name='dropoff_longitude', required, autocomplete='off', value='-117.186308')
+					p *Arrive at:
 					input(type='datetime-local', name='dropoff_arrive_at', required, autocomplete='off')
 					p Special Instructions:
 					input(type='text', name='dropoff_special_instructions', autocomplete='off')
-			
 			div#main
-				p Order ID:
-				input(type='text', name='order_id', required)
+				p *Order ID:
+				input(type='text', name='order_id', required, value='123example456id')
 				p Order Items:
 				input(type='text', name='order_items')
 				p Order Total:
