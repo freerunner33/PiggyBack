@@ -13,11 +13,13 @@ section {
 div {
 	vertical-align: top;
 	display: inline-block;
-	width: calc(33.33% - 2em);
-	min-width: 15em;
 	padding: 1em;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(237, 45, 135, 0.5);
+}
+div#main {
+	width: calc(33.33% - 2em);
+	min-width: 15em;
 }
 
 p {
