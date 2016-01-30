@@ -3,6 +3,7 @@
 
 // Require the onfleet api, and the database js file
 var onfleet = require('./onfleet.js')
+var tz = require('./timezone.js')
 var connection = require('./database.js')
 var signUpKey = require('./keys.js').signUpKey
 
@@ -54,25 +55,10 @@ app.use(session({
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	var html = []
-	connection.query('SELECT id,name,number,street,apartment,city,state,postalCode,country FROM Destinations', function(error, rows) {
-		if (error)
-			throw error
-		if (rows.length) {
-			var d
-			for (var i in rows) {
-				d = rows[i]
-				html.push("{ ID: " + d.id + "    \t\nName: " + d.name + "}")
-			}
-		}
-	})
-	// display the destinations in some sort of way...
-
-	onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(data) {
-		html.push(JSON.stringify(data.workers))
-		response.render('error', {pageTitle: 'Success', errors: html})
+	tz.getTimeZone().then(function(data) {
+		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
 	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
+		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 	})
 })
 
@@ -347,7 +333,9 @@ app.post('/Piggyback/jobs', function(request, response) {
 		skipSMSNotifications: 'false',
 		skipPhoneNumberValidation: 'false'
 	}
-
+	// need to figure out timing stuff
+	// constructor puts in GMT format
+	
 	onfleet.createNewTask(
 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
