@@ -327,11 +327,11 @@ app.post('/Piggyback/jobs', function(request, response) {
 		support_phone: b.support_phone, 
 		debug: b.debug
 	}
-
+	var addressA = j.pickup_waypoint.address.split(' ', 1)
 	var destA = {
 		address: {
-			number: '624',
-			street: 'Broadway',
+			number: addressA[0],
+			street: addressA[1],
 			city: j.pickup_waypoint.city,
 			state: j.pickup_waypoint.state,
 			postalCode: j.pickup_waypoint.zip,
