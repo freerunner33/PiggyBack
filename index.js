@@ -294,12 +294,13 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var newjob = {pickup_waypoint: waypoint1, dropoff_waypoint: waypoint2, order_id: b.order_id, order_items: b.order_items, order_total: b.order_total, tip: b.tip, support_phone: b.support_phone, debug: b.debug}
 
 	var dest = {address: {name: 'USD', number: '5998', street: 'Alcala Park', apartment: '', city: 'San Diego', state: 'California', postalCode: '92110', country: 'USA'}}
-	
+	var recipient = {name: 'Noah', phone: '9703084693', notes: 'Dashingly handsome', skipSMSNotifications: 'false', skipPhoneNumberValidation: 'false'}
+
 	onfleet.createNewTask(
 		'~2FSQGbR0qSXi1v9kSQxtW4v',		// merchant
 		'~2FSQGbR0qSXi1v9kSQxtW4v',		// executor
 		dest,							// destination
-		[],								// recipients - array
+		[recipient],					// recipients - array
 		null,							// complete after - number
 		null,							// complete before - number
 		false,							// pickup task?
