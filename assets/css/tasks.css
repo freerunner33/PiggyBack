@@ -20,10 +20,10 @@ div {
 div#main {
 	width: calc(33.33% - 2em);
 	min-width: 15em;
+	background-color: blue;
 }
 div#smalldiv {
 	width: calc(100% + 1em);
-	background-color: blue;
 }
 
 p {
