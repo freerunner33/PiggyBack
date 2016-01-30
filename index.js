@@ -295,7 +295,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 
 	job = JSON.stringify(newjob)
 
-	response.render('error', {pageTitle: 'Success', errors: [newjob.order_id, newjob.pickup_waypoint)]})
+	response.render('error', {pageTitle: 'Success', errors: [newjob.order_id, newjob.pickup_waypoint]})
 	return
 	// This is what yelp will send to me, now need to convert it to onfleet code and log some into db
 	// email felipe about tip - for driver or food?
