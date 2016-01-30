@@ -22,6 +22,7 @@ div#main {
 	min-width: 15em;
 }
 div#smalldiv {
+	margin: 0.5em 0em;
 	width: calc(100% - 2em);
 }
 
