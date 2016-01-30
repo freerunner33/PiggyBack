@@ -340,27 +340,27 @@ app.post('/Piggyback/jobs', function(request, response) {
 		}, 
 		location: [j.pickup_waypoint.location.longitude, j.pickup_waypoint.location.latitude]
 	}
-	var recipient = {
-		name: 'Noah', 
-		phone: '9703084693', 
-		notes: 'Dashingly handsome', 
-		skipSMSNotifications: 'false', 
+	var recipientA = {
+		name: j.pickup_waypoint.name,
+		phone: j.pickup_waypoint.phone,
+		notes: null,
+		skipSMSNotifications: 'false',
 		skipPhoneNumberValidation: 'false'
 	}
 
 	onfleet.createNewTask(
-		'~2FSQGbR0qSXi1v9kSQxtW4v',		// merchant
-		'~2FSQGbR0qSXi1v9kSQxtW4v',		// executor
-		destA,							// destination
-		[recipient],					// recipients - array
-		null,							// complete after - number
-		null,							// complete before - number
-		false,							// pickup task?
-		[],								// dependencies - array
-		'Test task',					// notes for task
-		{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// TEST TEAM
+		'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
+		'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
+		destA,													// destination
+		[recipientA],											// recipients - array
+		null,													// complete after - number
+		null,													// complete before - number
+		true,													// pickup task?
+		[],														// dependencies - array
+		j.pickup_waypoint.special_instructions,					// notes for task
+		{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
 	).then(function(t) {
-		response.render('error', {pageTitle: 'Successful task create', errors: [JSON.stringify(t)]})
+		response.render('error', {pageTitle: 'Successful task create', errors: [JSON.stringify(t), j.pickup_waypoint.arrive_at, new Date(j.pickup_waypoint.arrive_at).getTime()]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Unsuccessful task create', errors: [JSON.stringify(error)]})
 	})
