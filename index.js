@@ -293,10 +293,27 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var waypoint2 = {address: b.dropoff_address, address2: b.dropoff_address2 , city: b.dropoff_city, state: b.dropoff_state, zip: b.dropoff_zip, name: b.dropoff_name, phone: b.dropoff_phone, email: b.dropoff_email, location: {latitude: b.dropoff_latitude, longitude: b.dropoff_longitude}, arrive_at: b.dropoff_arrive_at, special_instructions: b.dropoff_special_instructions}
 	var newjob = {pickup_waypoint: waypoint1, dropoff_waypoint: waypoint2, order_id: b.order_id, order_items: b.order_items, order_total: b.order_total, tip: b.tip, support_phone: b.support_phone, debug: b.debug}
 
-	job = JSON.stringify(newjob)
+	var dest = {name: 'USD', number: '5998', street: 'Alcala Park', apartment: '', city: 'San Diego', state: 'California', postalCode: '92110', country: 'USA'}
+	
+	onfleet.createNewTask(
+		'~2FSQGbR0qSXi1v9kSQxtW4v',		// merchant
+		'~2FSQGbR0qSXi1v9kSQxtW4v',		// executor
+		dest,							// destination
+		[],								// recipients - array
+		null,							// complete after - number
+		null,							// complete before - number
+		false,							// pickup task?
+		[],								// dependencies - array
+		'Test task',					// notes for task
+		{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// TEST TEAM
+	).then(function(t) {
+		response.render('error', {pageTitle: 'Successful task create', errors: [JSON.stringify(t)]})
+	}, function(error) {
+		response.render('error', {pageTitle: 'Unsuccessful task create', errors: [JSON.stringify(error)]})
+	})
 
-	response.render('error', {pageTitle: 'Success', errors: [newjob.order_id, newjob.pickup_waypoint]})
 	return
+
 	// This is what yelp will send to me, now need to convert it to onfleet code and log some into db
 	// email felipe about tip - for driver or food?
 
@@ -376,9 +393,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 						}
 					)
 					response.redirect('/Piggyback')
-				}
-
-				
+				}	
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 			})
