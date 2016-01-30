@@ -23,6 +23,7 @@ div#main {
 }
 div#smalldiv {
 	width: calc(100% + 1em);
+	background-color: blue;
 }
 
 p {
