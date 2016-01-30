@@ -303,7 +303,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		b.support_phone + ',debug:' + b.debug + '}'
 
 
-	response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(request.body), message]})
+	response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(request.body), JSON.stringify(message)]})
 	return
 	if (request.session.loggedin) {
 		if (!(request.body.destination))
