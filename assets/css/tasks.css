@@ -21,6 +21,9 @@ div#main {
 	width: calc(33.33% - 2em);
 	min-width: 15em;
 }
+div#smalldiv {
+	width: 100%;
+}
 
 p {
 	margin: 0.25em;
