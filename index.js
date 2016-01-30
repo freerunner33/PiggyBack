@@ -287,6 +287,8 @@ app.post('/Piggyback/new-destination', function(request, response) {
 })
 
 app.post('/Piggyback/jobs', function(request, response) {
+	alert(request.body)
+	return;
 	if (request.session.loggedin) {
 		if (!(request.body.destination))
 			response.redirect('/Piggyback')
