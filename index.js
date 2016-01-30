@@ -288,22 +288,16 @@ app.post('/Piggyback/new-destination', function(request, response) {
 
 app.post('/Piggyback/jobs', function(request, response) {
 	var b = request.body
-	var loc1 = '{latitude:' + b.pickup_latitude + ',longitude:' + b.pickup_longitude + '}'
-	var loc2 = '{latitude:' + b.dropoff_latitude + ',longitude:' + b.dropoff_longitude + '}'
 
-	var waypoint1 = '{address:' + b.pickup_address + ',address2:' + b.pickup_address2 + ',city:' + b.pickup_city + ',state:' + b.pickup_state + 
-		',zip:' + b.pickup_zip + ',name:' + b.pickup_name + ',phone:' + b.pickup_phone + ',email:' + b.pickup_email + loc1 + ',arrive_at:' + 
-		b.pickup_arrive_at + ',special_instructions:' + b.pickup_special_instructions + '}'
-	var waypoint2 = '{address:' + b.dropoff_address + ',address2:' + b.dropoff_address2 + ',city:' + b.dropoff_city + ',state:' + b.dropoff_state + 
-		',zip:' + b.dropoff_zip + ',name:' + b.dropoff_name + ',phone:' + b.dropoff_phone + ',email:' + b.dropoff_email + loc1 + ',arrive_at:' + 
-		b.dropoff_arrive_at + ',special_instructions:' + b.dropoff_special_instructions + '}'
+	var waypoint1 = {address: b.pickup_address, address2: b.pickup_address2 , city: b.pickup_city, state: b.pickup_state, zip: b.pickup_zip, name: b.pickup_name, phone: b.pickup_phone, email: b.pickup_email, {latitude: b.pickup_latitude, longitude: b.pickup_longitude}, arrive_at: b.pickup_arrive_at, special_instructions: b.pickup_special_instructions}
+	var waypoint1 = {address: b.dropoff_address, address2: b.dropoff_address2 , city: b.dropoff_city, state: b.dropoff_state, zip: b.dropoff_zip, name: b.dropoff_name, phone: b.dropoff_phone, email: b.dropoff_email, {latitude: b.dropoff_latitude, longitude: b.dropoff_longitude}, arrive_at: b.dropoff_arrive_at, special_instructions: b.dropoff_special_instructions}
 
 	var message = '{pickup_waypoint:' + waypoint1 + ',dropoff_waypoint:' + waypoint2 + ',order_id:' + b.order_id +
 		',order_items:' + b.order_items + ',order_total:' + b.order_total + ',tip:' + b.tip + ',support_phone:' + 
 		b.support_phone + ',debug:' + b.debug + '}'
 
 
-	response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(request.body), JSON.stringify(message)]})
+	response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(request.body), JSON.stringify(waypoint1)]})
 	return
 	if (request.session.loggedin) {
 		if (!(request.body.destination))
