@@ -289,22 +289,63 @@ app.post('/Piggyback/new-destination', function(request, response) {
 app.post('/Piggyback/jobs', function(request, response) {
 	var b = request.body
 
-	var waypoint1 = {address: b.pickup_address, address2: b.pickup_address2 , city: b.pickup_city, state: b.pickup_state, zip: b.pickup_zip, name: b.pickup_name, phone: b.pickup_phone, email: b.pickup_email, location: {latitude: b.pickup_latitude, longitude: b.pickup_longitude}, arrive_at: b.pickup_arrive_at, special_instructions: b.pickup_special_instructions}
-	var waypoint2 = {address: b.dropoff_address, address2: b.dropoff_address2 , city: b.dropoff_city, state: b.dropoff_state, zip: b.dropoff_zip, name: b.dropoff_name, phone: b.dropoff_phone, email: b.dropoff_email, location: {latitude: b.dropoff_latitude, longitude: b.dropoff_longitude}, arrive_at: b.dropoff_arrive_at, special_instructions: b.dropoff_special_instructions}
-	var newjob = {pickup_waypoint: waypoint1, dropoff_waypoint: waypoint2, order_id: b.order_id, order_items: b.order_items, order_total: b.order_total, tip: b.tip, support_phone: b.support_phone, debug: b.debug}
+	var waypoint1 = {
+		address: b.pickup_address, 
+		address2: b.pickup_address2, 
+		city: b.pickup_city, 
+		state: b.pickup_state, 
+		zip: b.pickup_zip, 
+		name: b.pickup_name, 
+		phone: b.pickup_phone, 
+		email: b.pickup_email, 
+		location: {latitude: b.pickup_latitude, 
+			longitude: b.pickup_longitude}, 
+		arrive_at: b.pickup_arrive_at, 
+		special_instructions: b.pickup_special_instructions
+	}
+	var waypoint2 = {
+		address: b.dropoff_address, 
+		address2: b.dropoff_address2 , 
+		city: b.dropoff_city, 
+		state: b.dropoff_state, 
+		zip: b.dropoff_zip, 
+		name: b.dropoff_name, 
+		phone: b.dropoff_phone, 
+		email: b.dropoff_email, 
+		location: {latitude: b.dropoff_latitude, 
+			longitude: b.dropoff_longitude}, 
+		arrive_at: b.dropoff_arrive_at, 
+		special_instructions: b.dropoff_special_instructions
+	}
+	var j = {
+		pickup_waypoint: waypoint1, 
+		dropoff_waypoint: waypoint2, 
+		order_id: b.order_id, 
+		order_items: b.order_items, 
+		order_total: b.order_total, 
+		tip: b.tip, 
+		support_phone: b.support_phone, 
+		debug: b.debug
+	}
 
 	var destA = {
-					address: {
-						number: '624', 
-						street: 'Broadway', 
-						city: 'San Diego', 
-						state: 'CA', 
-						postalCode: '92110', 
-						country: 'USA'
-					}, 
-					location: ['-117.158910', '32.715825']
-				}
-	var recipient = {name: 'Noah', phone: '9703084693', notes: 'Dashingly handsome', skipSMSNotifications: 'false', skipPhoneNumberValidation: 'false'}
+		address: {
+			number: '624',
+			street: 'Broadway',
+			city: j.pickup_waypoint.city,
+			state: j.pickup_waypoint.state,
+			postalCode: j.pickup_waypoint.zip,
+			country: 'USA'
+		}, 
+		location: [j.pickup_waypoint.location.longitude, j.pickup_waypoint.location.latitude]
+	}
+	var recipient = {
+		name: 'Noah', 
+		phone: '9703084693', 
+		notes: 'Dashingly handsome', 
+		skipSMSNotifications: 'false', 
+		skipPhoneNumberValidation: 'false'
+	}
 
 	onfleet.createNewTask(
 		'~2FSQGbR0qSXi1v9kSQxtW4v',		// merchant
