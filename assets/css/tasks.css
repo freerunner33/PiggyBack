@@ -18,12 +18,8 @@ div {
 	box-shadow: 0 0 10px rgba(237, 45, 135, 0.5);
 }
 div#main {
-	/*width: calc(33.33% - 2em);*/
+	width: calc(33.33% - 2em);
 	min-width: 15em;
-	background-color: blue;
-}
-div#smalldiv {
-	width: calc(100% + 1em);
 }
 
 p {
