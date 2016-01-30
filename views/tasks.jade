@@ -9,9 +9,9 @@ block content
 		a(href='/Piggyback/test') Test Button
 		form#new(method='POST', action='/Piggyback/jobs') 
 			h1 Create Job
-			div#main
+			div
 				p Pickup waypoint:
-				div#smalldiv
+				div
 					p Address (line 1):
 					input(type='text', name='pickup_address', required, autocomplete='off')
 					p Address (line 2):
@@ -26,7 +26,7 @@ block content
 					input(type='text', name='pickup_name', required, autocomplete='off')
 					p Phone number (of contact):
 					input(type='number', name='pickup_phone', required, autocomplete='off')
-					div#smalldiv
+					div
 						p Latitude:
 						input(type='number', name='pickup_latitude', required, autocomplete='off', value='32.715825')
 						p Longitude:
@@ -36,7 +36,7 @@ block content
 					p Special Instructions:
 					input(type='text', name='pickup_special_instructions', autocomplete='off')
 				p Dropoff waypoint:
-				div#smalldiv
+				div
 					p Address (line 1):
 					input(type='text', name='dropoff_address', required, autocomplete='off')
 					p Address (line 2):
@@ -51,7 +51,7 @@ block content
 					input(type='text', name='dropoff_name', required, autocomplete='off')
 					p Phone number (of contact):
 					input(type='number', name='dropoff_phone', required, autocomplete='off')
-					div#smalldiv
+					div
 						p Latitude:
 						input(type='number', name='dropoff_latitude', required, autocomplete='off', value='32.715825')
 						p Longitude:
