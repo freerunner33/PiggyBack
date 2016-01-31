@@ -8,6 +8,7 @@ var hostname = 'maps.googleapis.com'
 var path = '/maps/api/timezone/json'
 
 function request(method, data) {
+	console.log(path + '?location=' + data.latitude + ',' + data.longitude + '&timestamp=' + data.timestamp + '&key=' + apiKey)
 	return new Promise(function(resolve, reject) {
 		var request = https.request({
 			hostname: hostname,
