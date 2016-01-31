@@ -7,11 +7,11 @@ var https = require('https')
 var hostname = 'maps.googleapis.com'
 var path = '/maps/api/timezone/json'
 
-function request(endpoint, method, data) {
+function request(method, data) {
 	return new Promise(function(resolve, reject) {
 		var request = https.request({
 			hostname: hostname,
-			path: path + endpoint,
+			path: path,
 			method: method
 		}, function(response) {
 			var str = ''
@@ -33,6 +33,7 @@ function request(endpoint, method, data) {
 		})
 		if (data)
 			request.write(JSON.stringify(data))
+		console.log(request)
 		request.end()
 	})
 }
