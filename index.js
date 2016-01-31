@@ -342,6 +342,9 @@ app.post('/Piggyback/jobs', function(request, response) {
 
 	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 	var timeB = timeA + (15 * 60 * 1000)
+
+	console.log((new Date(timeA)))
+	console.log((new Date(timeB)))
 	// need to figure out timing stuff
 	// constructor puts in GMT format
 	
@@ -350,7 +353,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
 		destA,													// destination
 		[recipientA],											// recipients - array
-		timeB,													// complete after - number
+		timeA,													// complete after - number
 		timeA,													// complete before - number
 		true,													// pickup task?
 		[],														// dependencies - array
