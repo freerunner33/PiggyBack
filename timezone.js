@@ -12,8 +12,7 @@ function request(endpoint, method, data) {
 		var request = https.request({
 			hostname: hostname,
 			path: path + endpoint,
-			method: method,
-			auth: apiKey
+			method: method
 		}, function(response) {
 			var str = ''
 			response.on('data', function(chunk) {
