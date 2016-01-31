@@ -4,7 +4,7 @@ var apiKey = require('./keys.js').timezoneKey
 var Promise = require('promise')
 var https = require('https')
 
-var hostname = 'https://maps.googleapis.com'
+var hostname = 'maps.googleapis.com'
 var path = '/maps/api/timezone/json'
 
 function request(endpoint, method, data) {
