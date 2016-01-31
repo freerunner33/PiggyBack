@@ -41,7 +41,7 @@ function request(method, data) {
 }
 
 function getTimeZone() {
-	return request('', 'GET', {latitude: '39.6034810', longitude: '-119.6822510', timestamp: '1331766000', key: apiKey})
+	return request('GET', {latitude: '39.6034810', longitude: '-119.6822510', timestamp: '1331766000', key: apiKey})
 }
 
 module.exports = {getTimeZone: getTimeZone}
