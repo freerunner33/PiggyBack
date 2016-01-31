@@ -339,6 +339,10 @@ app.post('/Piggyback/jobs', function(request, response) {
 		skipSMSNotifications: 'false',
 		skipPhoneNumberValidation: 'false'
 	}
+
+	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
+	console.log(timeA)
+	console.log(j.pickup_waypoint.arrive_at)
 	// need to figure out timing stuff
 	// constructor puts in GMT format
 	
