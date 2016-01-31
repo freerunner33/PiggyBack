@@ -56,7 +56,7 @@ app.use(session({
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
 	tz.getTimeZone().then(function(data) {
-		response.render('error', {pageTitle: 'Successs', errors: [JSON.stringify(request.body)]})
+		response.render('error', {pageTitle: 'Successs', errors: [JSON.stringify(request)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 	})
