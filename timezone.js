@@ -13,6 +13,7 @@ function request(method, data) {
 		var request = https.request({
 			hostname: hostname,
 			path: path + '?location=39.6034810,-119.6822510&timestamp=1331161200&key=' + apiKey,
+			
 			// + data.latitude + ',' + data.longitude + '&timestamp=' + data.timestamp + '&key=' + apiKey,
 			method: method
 		}, function(response) {
