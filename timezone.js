@@ -12,7 +12,8 @@ function request(method, data) {
 	return new Promise(function(resolve, reject) {
 		var request = https.request({
 			hostname: hostname,
-			path: path + '?location=39.6034810,-119.6822510&timestamp=1331161200&key=AIzaSyC1DXxAHKBW10zZ3W1bYJhJpPv9cgtlDoM'// + data.latitude + ',' + data.longitude + '&timestamp=' + data.timestamp + '&key=' + apiKey,
+			path: path + '?location=39.6034810,-119.6822510&timestamp=1331161200&key=AIzaSyC1DXxAHKBW10zZ3W1bYJhJpPv9cgtlDoM'
+			// + data.latitude + ',' + data.longitude + '&timestamp=' + data.timestamp + '&key=' + apiKey,
 			method: method
 		}, function(response) {
 			var str = ''
@@ -39,7 +40,7 @@ function request(method, data) {
 }
 
 function getTimeZone() {
-	return request('', 'POST', {latitude: '39.6034810', longitude: '-119.6822510', timestamp: '1331766000', key: apiKey})
+	return request('', 'GET', {latitude: '39.6034810', longitude: '-119.6822510', timestamp: '1331766000', key: apiKey})
 }
 
 module.exports = {getTimeZone: getTimeZone}
