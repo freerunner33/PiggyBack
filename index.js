@@ -342,7 +342,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
 		destA,													// destination
 		[recipientA],											// recipients - array
-		null,													// complete after - number
+		1454255004000,													// complete after - number
 		null,													// complete before - number
 		true,													// pickup task?
 		[],														// dependencies - array
