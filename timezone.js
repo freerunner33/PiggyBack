@@ -33,7 +33,6 @@ function request(method, data) {
 		})
 		if (data)
 			request.write(JSON.stringify(data))
-		console.log(request)
 		request.end()
 	})
 }
