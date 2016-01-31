@@ -12,8 +12,7 @@ function request(method, data) {
 	return new Promise(function(resolve, reject) {
 		var request = https.request({
 			hostname: hostname,
-			path: path + '?location=39.6034810,-119.6822510&timestamp=1331161200&key=' + apiKey,
-			
+			path: path + '?location='+ data.latitude + ',' + data.longitude + '&timestamp=' + data.timestamp + '&key=' + apiKey,
 			// + data.latitude + ',' + data.longitude + '&timestamp=' + data.timestamp + '&key=' + apiKey,
 			method: method
 		}, function(response) {
