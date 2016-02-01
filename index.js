@@ -341,10 +341,10 @@ app.post('/Piggyback/jobs', function(request, response) {
 		skipPhoneNumberValidation: 'false'
 	}
 
-	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
+	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime() - 28800000
 	var timeB = timeA + (15 * 60 * 1000)
 
-	console.log(dateFormat(timeA, "longtime", true))
+	// console.log(dateFormat(timeA, "longtime", true))
 
 	// need to convert to utc
 	
