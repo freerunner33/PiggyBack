@@ -343,33 +343,36 @@ app.post('/Piggyback/jobs', function(request, response) {
 
 	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 	var timeB = timeA + (15 * 60 * 1000)
-
-	// console.log(dateFormat(timeA, "longtime", true))
-
-	// need to convert to utc
 	
-	console.log('given:')
-	console.log((new Date(timeA)))
-	console.log((new Date(timeB)))
-	console.log('converted:')
-	console.log((new Date(timeA - 28800000)))
-	console.log((new Date(timeB - 28800000)))
-	
-	onfleet.createNewTask(
-		'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
-		'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
-		destA,													// destination
-		[recipientA],											// recipients - array
-		timeA,													// complete after - number
-		timeB,													// complete before - number
-		true,													// pickup task?
-		[],														// dependencies - array
-		j.pickup_waypoint.special_instructions,					// notes for task
-		{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
-	).then(function(t) {
-		response.render('error', {pageTitle: 'Successful task create', errors: [JSON.stringify(t), j.pickup_waypoint.arrive_at, new Date(j.pickup_waypoint.arrive_at).getTime()]})
+	// test
+	// 12:15pm -> 4:15 am : subtracted 8 hours
+	// Onfleet expects UTC
+	// to convert to UTC, make call to tz 
+	// and add 8 hours for pt
+
+	tz.getTimeZone().then(function(timezone) {
+		timeA = timeA - timezone.rawOffset
+		timeB = timeB - timezone.rawOffset
+		
+		onfleet.createNewTask(
+			'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
+			'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
+			destA,													// destination
+			[recipientA],											// recipients - array
+			timeA,													// complete after - number
+			timeB,													// complete before - number
+			true,													// pickup task?
+			[],														// dependencies - array
+			j.pickup_waypoint.special_instructions,					// notes for task
+			{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
+		).then(function(t) {
+			response.render('error', {pageTitle: 'Successful task create', errors: [JSON.stringify(t)]})
+		}, function(error) {
+			response.render('error', {pageTitle: 'Unsuccessful task create', errors: [JSON.stringify(error)]})
+		})
+
 	}, function(error) {
-		response.render('error', {pageTitle: 'Unsuccessful task create', errors: [JSON.stringify(error)]})
+		response.render('error', {pageTitle: 'Error with timezone', errors: [JSON.stringify(error)]})
 	})
 
 	return
