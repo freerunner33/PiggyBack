@@ -367,7 +367,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 			j.pickup_waypoint.special_instructions,					// notes for task
 			{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
 		).then(function(t) {
-			response.render('error', {pageTitle: 'Successful task create', errors: [JSON.stringify(t)]})
+			response.render('error', {pageTitle: 'Successful task create', errors: [JSON.stringify(t), t.didAutoAssign]})
 		}, function(error) {
 			response.render('error', {pageTitle: 'Unsuccessful task create', errors: [JSON.stringify(error)]})
 		})
