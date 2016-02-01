@@ -344,7 +344,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 	var timeB = timeA + (15 * 60 * 1000)
 
-	console.log(dateFormat(timeA, "longtime", true))
+	// console.log(dateFormat(timeA, "longtime", true))
 
 	// need to convert to utc
 	
