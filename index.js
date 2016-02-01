@@ -55,17 +55,17 @@ app.use(session({
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	onfleet.getSingleWorkerByID('ta0qIezLTkxMdkTxNyd*q4FH').then(function(data) {
-		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
-	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-	})
-
-	// tz.getTimeZone().then(function(data) {
-	// 	response.render('error', {pageTitle: 'Success >', errors: [JSON.stringify(data)]})
+	// onfleet.getSingleWorkerByID('ta0qIezLTkxMdkTxNyd*q4FH').then(function(data) {
+	// 	response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
 	// }, function(error) {
 	// 	response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 	// })
+
+	tz.getTimeZone().then(function(data) {
+		response.render('error', {pageTitle: 'Success >', errors: [JSON.stringify(data)]})
+	}, function(error) {
+		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+	})
 })
 
 
@@ -343,10 +343,10 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 	var timeB = timeA + (15 * 60 * 1000)
 
+	// need to convert to utc
+
 	console.log((new Date(timeA)))
 	console.log((new Date(timeB)))
-	// need to figure out timing stuff
-	// constructor puts in GMT format
 	
 	onfleet.createNewTask(
 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
@@ -354,7 +354,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		destA,													// destination
 		[recipientA],											// recipients - array
 		timeA,													// complete after - number
-		timeA,													// complete before - number
+		timeB,													// complete before - number
 		true,													// pickup task?
 		[],														// dependencies - array
 		j.pickup_waypoint.special_instructions,					// notes for task
