@@ -341,15 +341,19 @@ app.post('/Piggyback/jobs', function(request, response) {
 		skipPhoneNumberValidation: 'false'
 	}
 
-	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime() - 28800000
+	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 	var timeB = timeA + (15 * 60 * 1000)
 
 	// console.log(dateFormat(timeA, "longtime", true))
 
 	// need to convert to utc
 	
+	console.log('given:')
 	console.log((new Date(timeA)))
 	console.log((new Date(timeB)))
+	console.log('converted:')
+	console.log((new Date(timeA - 28800000)))
+	console.log((new Date(timeB - 28800000)))
 	
 	onfleet.createNewTask(
 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
