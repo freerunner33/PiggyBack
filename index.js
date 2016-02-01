@@ -19,6 +19,7 @@ var validator = require('validator')
 var bcrypt = require('bcrypt')
 var uuid = require('node-uuid')
 var authorization = require('auth-header')
+var dateFormat = require('dateformat');
 
 // Used for session variables
 var session = require('express-session')
@@ -343,8 +344,10 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 	var timeB = timeA + (15 * 60 * 1000)
 
-	// need to convert to utc
+	console.log(dateFormat(timeA, "longtime", true))
 
+	// need to convert to utc
+	
 	console.log((new Date(timeA)))
 	console.log((new Date(timeB)))
 	
