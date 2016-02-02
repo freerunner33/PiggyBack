@@ -195,51 +195,6 @@ app.post('/Piggyback/delete-task', function(request, response) {
 	}
 })
 
-// app.post('/Piggyback/new-destination', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		if (!(request.body.number && request.body.street && request.body.city && request.body.country))
-// 			response.redirect('/Piggyback')
-// 		else {
-// 			onfleet.createNewDestination(
-// 				{
-// 					name: request.body.name,
-// 					number: request.body.number,
-// 					street: request.body.street,
-// 					apartment: request.body.apartment,
-// 					city: request.body.city,
-// 					state: request.body.state,
-// 					postalCode: request.body.postalCode,
-// 					country: request.body.country
-// 				}
-// 			).then(function(d) {
-// 					connection.query('INSERT INTO Destinations (id, name, number, street, apartment, city, state, postalCode, country) VALUES (?,?,?,?,?,?,?,?,?)',
-// 						[
-// 							d.id, 
-// 							d.address.name, 
-// 							d.address.number, 
-// 							d.address.street, 
-// 							d.address.apartment, 
-// 							d.address.city, 
-// 							d.address.state, 
-// 							d.address.postalCode, 
-// 							d.address.country
-// 						], 
-// 						function(error, rows) {
-// 							if (error)
-// 								throw error
-// 							console.log('Location successfully added to database. ID: ' + d.id)
-// 						}
-// 					)
-// 				response.redirect('/Piggyback')
-// 			}).catch(function(error) {
-// 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
-// 			})
-// 		}
-// 	} else {
-// 		response.redirect('/Piggyback/signin')
-// 	}
-// })
-
 app.post('/Piggyback/jobs', function(request, response) {
 	var b = request.body
 	var waypoint1 = {
@@ -340,7 +295,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 			true,													// pickup task?
 			[],														// dependencies - array
 			j.pickup_waypoint.special_instructions,					// notes for task
-			{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
+			{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id: TEST
 		).then(function(taskA) {
 			// create new task with dependencies, and add this task to this workers tasks
 			onfleet.createNewTask(
@@ -354,35 +309,38 @@ app.post('/Piggyback/jobs', function(request, response) {
 				[taskA.id],											// dependencies - array
 				j.dropoff_waypoint.special_instructions				// notes for task
 			).then(function(taskB) {
-				// need to assign this task to the worker
+				// first add to database
 				onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
-					worker.tasks.push(taskB.id)
-					onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-						
-						connection.query('INSERT INTO Tasks (id, company, driverTip, month, day, year, hour, minute, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-							[
-								j.order_id,
-								taskA.shortId,
-								'Yelp',
-								'pickup',
-								new Date(timeA + (timezone.rawoffset * 1000)),		// completeAfter
-								new Date(timeB + (timezone.rawoffset * 1000)),		// completeBefore
-								worker.id,
-								worker.name,
-								taskA.destination.address.number + ' ' + taskA.destination.address.street + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
-							], 
-							function(error, rows)
-							{
-								if (error)
-									throw error
-								console.log('Task successfully added to database ID: ' + taskA.id)
-							}
-						)
+					connection.query('INSERT INTO Tasks (shortId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+						[
+							taskA.shortId,										// shortId
+							j.order_id,											// yelpId
+							'Yelp',												// company
+							j.tip,												// driverTip
+							'pickup',											// taskType
+							new Date(timeA + (timezone.rawoffset * 1000)),		// completeAfter	- in UTC
+							new Date(timeB + (timezone.rawoffset * 1000)),		// completeBefore	- in UTC
+							worker.id,											// workerId
+							worker.name,										// workerName
+							taskA.destination.address.number + ' ' + taskA.destination.address.street + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
+							null,												// completionTime
+							null												// didSucceed
+						], 
+						function(error, rows)
+						{
+							if (error)
+								throw error
+							console.log('Task successfully added to database ID: ' + taskA.id)
 
-						response.redirect('/Piggyback')
-					}, function(error) {
-						response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error updating worker']})
-					})
+							// need to assign this task to the worker
+							worker.tasks.push(taskB.id)
+							onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
+								response.redirect('/Piggyback')
+							}, function(error) {
+								response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error updating worker']})
+							})
+						}
+					)
 				}, function(error) {
 					response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error getting worker']})
 				})
