@@ -325,7 +325,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 							(dateB).toISOString(),											// completeBefore	- in UTC
 							worker.id,														// workerId
 							worker.name,													// workerName
-							'destination', //taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
+							'' + taskA.destination.address.postalCode, //taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
 							null,															// completionTime
 							null															// didSucceed
 						], 
