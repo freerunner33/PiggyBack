@@ -341,7 +341,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 			[],														// dependencies - array
 			j.pickup_waypoint.special_instructions,					// notes for task
 			{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
-		).then(function(t) {
+		).then(function(taskA) {
 			// create new task with dependencies, and add this task to this workers tasks
 			onfleet.createNewTask(
 				'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
@@ -351,14 +351,19 @@ app.post('/Piggyback/jobs', function(request, response) {
 				timeA,													// complete after - number
 				timeC,													// complete before - number
 				false,													// pickup task?
-				[t.id],													// dependencies - array
+				[taskA.id],													// dependencies - array
 				j.dropoff_waypoint.special_instructions					// notes for task
-			).then(function(t2) {
+			).then(function(taskB) {
 				// need to assign this task to the worker
-				onfleet.updateWorkerByID(t.worker, {tasks: [t2.id]}).then(function() {
-					response.redirect('/Piggyback')
+				onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
+					worker.tasks.push(taskB.id)
+					onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
+						response.redirect('/Piggyback')
+					}, function(error) {
+						response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error updating worker']})
+					})
 				}, function(error) {
-					response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error when adding dropoff task']})
+					response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error getting worker']})
 				})
 			}, function(error) {
 				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task B']})
