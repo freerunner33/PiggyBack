@@ -216,58 +216,12 @@ app.post('/Piggyback/delete-task', function(request, response) {
 	}
 })
 
-// // need to pass in worker's id and data you want to change
-// app.post('/Piggyback/update-worker', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		if (!(request.body.id && request.body.name))
-// 			response.redirect('/Piggyback')
-// 		else {
-// 			onfleet.updateWorkerByID(request.body.id, {name: request.body.name}).then(function() {
-// 				response.redirect('/Piggyback')
-// 			}).catch(function(error) {
-// 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
-// 			})
-// 		}
-// 	} else {
-// 		response.redirect('/Piggyback/signin')
-// 	}
-// })
-
-app.post('/Piggyback/new-destination', function(request, response) {
+app.post('/Piggyback/update-worker', function(request, response) {
 	if (request.session.loggedin) {
-		if (!(request.body.number && request.body.street && request.body.city && request.body.country))
+		if (!(request.body.id && request.body.name))
 			response.redirect('/Piggyback')
 		else {
-			onfleet.createNewDestination(
-				{
-					name: request.body.name,
-					number: request.body.number,
-					street: request.body.street,
-					apartment: request.body.apartment,
-					city: request.body.city,
-					state: request.body.state,
-					postalCode: request.body.postalCode,
-					country: request.body.country
-				}
-			).then(function(d) {
-					connection.query('INSERT INTO Destinations (id, name, number, street, apartment, city, state, postalCode, country) VALUES (?,?,?,?,?,?,?,?,?)',
-						[
-							d.id, 
-							d.address.name, 
-							d.address.number, 
-							d.address.street, 
-							d.address.apartment, 
-							d.address.city, 
-							d.address.state, 
-							d.address.postalCode, 
-							d.address.country
-						], 
-						function(error, rows) {
-							if (error)
-								throw error
-							console.log('Location successfully added to database. ID: ' + d.id)
-						}
-					)
+			onfleet.updateWorkerByID(request.body.id, {tasks: ['id of task']}).then(function() {
 				response.redirect('/Piggyback')
 			}).catch(function(error) {
 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
@@ -278,9 +232,53 @@ app.post('/Piggyback/new-destination', function(request, response) {
 	}
 })
 
+// app.post('/Piggyback/new-destination', function(request, response) {
+// 	if (request.session.loggedin) {
+// 		if (!(request.body.number && request.body.street && request.body.city && request.body.country))
+// 			response.redirect('/Piggyback')
+// 		else {
+// 			onfleet.createNewDestination(
+// 				{
+// 					name: request.body.name,
+// 					number: request.body.number,
+// 					street: request.body.street,
+// 					apartment: request.body.apartment,
+// 					city: request.body.city,
+// 					state: request.body.state,
+// 					postalCode: request.body.postalCode,
+// 					country: request.body.country
+// 				}
+// 			).then(function(d) {
+// 					connection.query('INSERT INTO Destinations (id, name, number, street, apartment, city, state, postalCode, country) VALUES (?,?,?,?,?,?,?,?,?)',
+// 						[
+// 							d.id, 
+// 							d.address.name, 
+// 							d.address.number, 
+// 							d.address.street, 
+// 							d.address.apartment, 
+// 							d.address.city, 
+// 							d.address.state, 
+// 							d.address.postalCode, 
+// 							d.address.country
+// 						], 
+// 						function(error, rows) {
+// 							if (error)
+// 								throw error
+// 							console.log('Location successfully added to database. ID: ' + d.id)
+// 						}
+// 					)
+// 				response.redirect('/Piggyback')
+// 			}).catch(function(error) {
+// 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
+// 			})
+// 		}
+// 	} else {
+// 		response.redirect('/Piggyback/signin')
+// 	}
+// })
+
 app.post('/Piggyback/jobs', function(request, response) {
 	var b = request.body
-
 	var waypoint1 = {
 		address: b.pickup_address, 
 		address2: b.pickup_address2, 
@@ -306,7 +304,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 		email: b.dropoff_email, 
 		location: {latitude: b.dropoff_latitude, 
 			longitude: b.dropoff_longitude}, 
-		arrive_at: b.dropoff_arrive_at, 
 		special_instructions: b.dropoff_special_instructions
 	}
 	var j = {
@@ -319,12 +316,13 @@ app.post('/Piggyback/jobs', function(request, response) {
 		support_phone: b.support_phone, 
 		debug: b.debug
 	}
+	/////////////////////////////////
 
-	var strSplit = j.pickup_waypoint.address.indexOf(' ')
+	var dropoffSplit = j.pickup_waypoint.address.indexOf(' ')
 	var destA = {
 		address: {
-			number: j.pickup_waypoint.address.substr(0, strSplit),
-			street: j.pickup_waypoint.address.substr(strSplit),
+			number: j.pickup_waypoint.address.substr(0, dropoffSplit),
+			street: j.pickup_waypoint.address.substr(dropoffSplit),
 			city: j.pickup_waypoint.city,
 			state: j.pickup_waypoint.state,
 			postalCode: j.pickup_waypoint.zip,
@@ -332,6 +330,20 @@ app.post('/Piggyback/jobs', function(request, response) {
 		}, 
 		location: [j.pickup_waypoint.location.longitude, j.pickup_waypoint.location.latitude]
 	}
+	var dropoffSplit = j.dropoff_waypoint.address.indexOf(' ')
+	var destB = {
+		address: {
+			number: j.dropoff_waypoint.address.substr(0, pickupSplit),
+			street: j.dropoff_waypoint.address.substr(dropoffSplit),
+			city: j.dropoff_waypoint.city,
+			state: j.dropoff_waypoint.state,
+			postalCode: j.dropoff_waypoint.zip,
+			country: 'USA'
+		}, 
+		location: [j.dropoff_waypoint.location.longitude, j.dropoff_waypoint.location.latitude]
+		}
+	}
+
 	var recipientA = {
 		name: j.pickup_waypoint.name,
 		phone: j.pickup_waypoint.phone,
@@ -339,13 +351,22 @@ app.post('/Piggyback/jobs', function(request, response) {
 		skipSMSNotifications: 'false',
 		skipPhoneNumberValidation: 'false'
 	}
+	var recipientB = {
+		name: j.dropoff_waypoint.name,
+		phone: j.dropoff_waypoint.phone,
+		notes: null,
+		skipSMSNotifications: 'false',
+		skipPhoneNumberValidation: 'false'
+	}
 
 	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 	var timeB = timeA + (15 * 60 * 1000)
+	var timeC = timeA + (40 * 60 *)
 	
 	tz.getTimeZone().then(function(timezone) {
 		timeA = timeA - (timezone.rawOffset * 1000)
 		timeB = timeB - (timezone.rawOffset * 1000)
+		
 		onfleet.createNewTask(
 			'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
 			'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
@@ -358,16 +379,32 @@ app.post('/Piggyback/jobs', function(request, response) {
 			j.pickup_waypoint.special_instructions,					// notes for task
 			{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
 		).then(function(t) {
-			onfleet.getSingleWorkerByID(t.worker).then(function(worker) {
-				response.render('error', {pageTitle: 'Worker', errors: [JSON.stringify(worker)]})
+			// create new task with dependencies, and add this task to this workers tasks
+			onfleet.createNewTask(
+				'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
+				'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
+				destB,													// destination
+				[recipientB],											// recipients - array
+				timeA,													// complete after - number
+				timeC,													// complete before - number
+				false,													// pickup task?
+				[t.id],													// dependencies - array
+				j.dropoff_waypoint.special_instructions					// notes for task
+			).then(function(t2) {
+				// need to assign this task to the worker
+				onfleet.updateWorkerByID(t.worker, {tasks: [t2.id]}).then(function() {
+					response.redirect('/Piggyback')
+				}, function(error) {
+					response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error when adding dropoff task']})
+				})
 			}, function(error) {
-				response.render('error', {pageTitle: 'Could not get worker', errors: [JSON.stringify(error)]})
+				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task B']})
 			})
 		}, function(error) {
-			response.render('error', {pageTitle: 'Unsuccessful task create', errors: [JSON.stringify(error)]})
+			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task A']})
 		})
 	}, function(error) {
-		response.render('error', {pageTitle: 'Error with timezone', errors: [JSON.stringify(error)]})
+		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error with timezone']})
 	})
 
 	return
