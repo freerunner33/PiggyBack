@@ -56,7 +56,17 @@ app.use(session({
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	onfleet.getSingleTask('FsWNbrYNcvVpLpm6pSm92lMz').then(function(task) {
+	onfleet.createNewTask(
+		'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
+		'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
+		destB,													// destination
+		[recipientB],											// recipients - array
+		timeA,													// complete after - number
+		timeC,													// complete before - number
+		false,													// pickup task?
+		[t.id],													// dependencies - array
+		j.dropoff_waypoint.special_instructions					// notes for task
+	).then(function(task) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(task)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
