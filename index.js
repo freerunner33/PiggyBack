@@ -204,10 +204,10 @@ app.get('/Piggyback', function(request, response) {
 app.post('/Piggyback/delete-task', function(request, response) {
 	if (request.session.loggedin) {
 		if (!request.body.id)
-			response.redirect('/Piggyback/')
+			response.redirect('/Piggyback')
 		else {
 			onfleet.deleteTask(request.body.id).then(function() {
-				response.redirect('/Piggyback/')
+				response.redirect('/Piggyback')
 			}, function(error) {
 				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 			})
