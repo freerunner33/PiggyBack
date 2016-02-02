@@ -55,21 +55,39 @@ app.use(session({
 
 
 // TESTING
-app.get('/Piggyback/test', function(request, response) {
+app.get('/Piggyback/pickup-task', function(request, response) {
 	onfleet.createNewTask(
 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
-		destB,													// destination
-		[recipientB],											// recipients - array
-		timeA,													// complete after - number
-		timeC,													// complete before - number
-		false,													// pickup task?
-		[t.id],													// dependencies - array
-		j.dropoff_waypoint.special_instructions					// notes for task
+		'n03HZa7KvR0R2L3EPHFYEbpq',								// destination
+		[],														// recipients - array
+		null,													// complete after - number
+		null,													// complete before - number
+		true,													// pickup task?
+		[],														// dependencies - array
+		'Test task'												// notes for task
 	).then(function(task) {
-		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(task)]})
+		response.render('error', {pageTitle: 'Error', errors: ['Success', JSON.stringify(task)]})
 	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+		response.render('error', {pageTitle: 'Error', errors: ['Error', JSON.stringify(error)]})
+	})
+})
+
+app.get('/Piggyback/dropoff-task', function(request, response) {
+	onfleet.createNewTask(
+		'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
+		'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
+		'C8j7A7oJiw6AKwDc6Rjj*aaR',								// destination
+		[],														// recipients - array
+		null,													// complete after - number
+		null,													// complete before - number
+		false,													// pickup task?
+		[],														// dependencies - array
+		'Test task'												// notes for task
+	).then(function(task) {
+		response.render('error', {pageTitle: 'Error', errors: ['Success', JSON.stringify(task)]})
+	}, function(error) {
+		response.render('error', {pageTitle: 'Error', errors: ['Error', JSON.stringify(error)]})
 	})
 })
 
