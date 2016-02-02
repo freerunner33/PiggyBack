@@ -281,6 +281,9 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var timeC = timeA + (40 * 60 * 1000)
 	
 	tz.getTimeZone().then(function(timezone) {
+		var dateA = new Date(timeA)
+		var dateB = new Date(timeB)
+		var dateC = new DAte(timeC)
 		timeA = timeA - (timezone.rawOffset * 1000)
 		timeB = timeB - (timezone.rawOffset * 1000)
 		timeC = timeC - (timezone.rawOffset * 1000)
@@ -318,8 +321,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 							'Yelp',															// company
 							j.tip,															// driverTip
 							'pickup',														// taskType
-							(new Date(timeA + (timezone.rawoffset * 1000))).toString(),		// completeAfter	- in UTC
-							(new Date(timeB + (timezone.rawoffset * 1000))).toString(),		// completeBefore	- in UTC
+							(dateA).toString(),												// completeAfter	- in UTC
+							(dateB).toString(),												// completeBefore	- in UTC
 							worker.id,														// workerId
 							worker.name,													// workerName
 							'destination', //taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
