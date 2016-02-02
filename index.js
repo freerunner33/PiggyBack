@@ -95,13 +95,14 @@ app.get('/Piggyback/dropoff-task', function(request, response) {
 app.get('/Piggyback/assign-task', function(request, response) {
 	onfleet.getSingleWorkerByID('ta0qIezLTkxMdkTxNyd*q4FH').then(function(worker) {
 		if (worker.tasks.indexOf('JWt32Wqiy19qRdeYCzHgA29J') < 0){
-			response.render('error', {pageTitle: 'Error', errors: ['Already contains this task']})
-		} else {
-			onfleet.updateWorkerByID(worker.id, {tasks: ['XUeH0vt9hhaaB7kH9Py0gsom']}).then(function() {
+			worker.tasks.push('JWt32Wqiy19qRdeYCzHgA29J')
+			onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
 				response.redirect('/Piggyback')
 			}, function(error) {
 				response.render('error', {pageTitle: 'Error', errors: ['Error', JSON.stringify(error)]})
 			})
+		} else {
+			response.render('error', {pageTitle: 'Error', errors: ['Already contains this task']})
 		}
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: ['Error', JSON.stringify(error)]})
