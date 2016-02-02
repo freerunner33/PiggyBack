@@ -281,6 +281,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 	tz.getTimeZone().then(function(timezone) {
 		timeA = timeA - (timezone.rawOffset * 1000)
 		timeB = timeB - (timezone.rawOffset * 1000)
+		timeC = timeC - (timezone.rawOffset * 1000)
 		
 		onfleet.createNewTask(
 			'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
