@@ -325,7 +325,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 							(dateB).toISOString(),											// completeBefore	- in UTC
 							worker.id,														// workerId
 							worker.name,													// workerName
-							'' + taskA.destination.address.postalCode, //taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
+							'' + taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
 							null,															// completionTime
 							null															// didSucceed
 						], 
@@ -349,7 +349,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 										(dateC).toISOString(),											// completeBefore	- in UTC
 										worker.id,														// workerId
 										worker.name,													// workerName
-										'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state, // + ' ' + task.destination.address.postalCode,
+										'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
 										null,															// completionTime
 										null															// didSucceed
 									], 
