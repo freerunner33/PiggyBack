@@ -37,7 +37,7 @@ block content
 					p *Arrive at:
 					input(type='datetime-local', name='pickup_arrive_at', required, autocomplete='off', value='2016-05-05T12:30')
 					p Special Instructions:
-					input(type='text', name='pickup_special_instructions', autocomplete='off')
+					input(type='text', name='pickup_special_instructions', autocomplete='off', value='Noodles & Company order for Noah')
 			div#main
 				p Dropoff waypoint:
 				div#smalldiv
@@ -61,18 +61,18 @@ block content
 						p *Longitude:
 						input(type='number', name='dropoff_longitude', required, autocomplete='off', value='-117.186308')
 					p Special Instructions:
-					input(type='text', name='dropoff_special_instructions', autocomplete='off')
+					input(type='text', name='dropoff_special_instructions', autocomplete='off', value='Please dropoff in front of the University Center')
 			div#main
 				p *Order ID:
 				input(type='text', name='order_id', required, value='123example456id')
 				p Order Items:
-				input(type='text', name='order_items')
+				input(type='text', name='order_items', value='[Buttered Noodles, Pesto Cavatappi]')
 				p Order Total:
-				input(type='number', step='0.01' name='order_total')
+				input(type='number', step='0.01' name='order_total', value='12.53')
 				p Tip:
-				input(type='number', step='0.01' name='tip')
+				input(type='number', step='0.01' name='tip', value='2.00')
 				p Support Phone:
-				input(type='text', name='support_phone')
+				input(type='text', name='support_phone', value='9703084693')
 				p Debug
 				input(type='number', name='debug')
 				button(type='submit') Submit
