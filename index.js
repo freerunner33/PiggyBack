@@ -344,17 +344,9 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 	var timeB = timeA + (15 * 60 * 1000)
 	
-	// test
-	// 12:15pm -> 4:15 am : subtracted 8 hours
-	// Onfleet expects UTC
-	// to convert to UTC, make call to tz 
-	// and add 8 hours for pt
-
 	tz.getTimeZone().then(function(timezone) {
-
 		timeA = timeA - (timezone.rawOffset * 1000)
 		timeB = timeB - (timezone.rawOffset * 1000)
-		
 		onfleet.createNewTask(
 			'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
 			'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
@@ -367,11 +359,14 @@ app.post('/Piggyback/jobs', function(request, response) {
 			j.pickup_waypoint.special_instructions,					// notes for task
 			{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
 		).then(function(t) {
-			response.render('error', {pageTitle: 'Successful task create', errors: [JSON.stringify(t), t.didAutoAssign]})
+			onfleet.getSingleWorkerByID(t.worker).then(function(worker) {
+				response.render('error', {pageTitle: 'Worker', errors: [JSON.stringify(worker)]})
+			}, function(error) {
+				response.render('error', {pageTitle: 'Could not get worker', errors: [JSON.stringify(error)]})
+			})
 		}, function(error) {
 			response.render('error', {pageTitle: 'Unsuccessful task create', errors: [JSON.stringify(error)]})
 		})
-
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error with timezone', errors: [JSON.stringify(error)]})
 	})
