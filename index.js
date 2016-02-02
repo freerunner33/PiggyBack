@@ -318,11 +318,11 @@ app.post('/Piggyback/jobs', function(request, response) {
 							'Yelp',												// company
 							j.tip,												// driverTip
 							'pickup',											// taskType
-							'completeAfter', // new Date(timeA + (timezone.rawoffset * 1000)),		// completeAfter	- in UTC
-							'completeBefore', // new Date(timeB + (timezone.rawoffset * 1000)),		// completeBefore	- in UTC
+							new Date(timeA + (timezone.rawoffset * 1000)),		// completeAfter	- in UTC
+							new Date(timeB + (timezone.rawoffset * 1000)),		// completeBefore	- in UTC
 							worker.id,											// workerId
 							worker.name,										// workerName
-							taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
+							'destination', //taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
 							null,												// completionTime
 							null												// didSucceed
 						], 
