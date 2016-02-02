@@ -79,8 +79,8 @@ block content
 
 	h2 Current Tasks:
 	ul
-		if data.length
-			each task in data
+		if tasks.length
+			each task in tasks
 				if task.state < 3
 					li Task ID: #{task.id}
 					li Task State: #{task.state}
@@ -89,7 +89,9 @@ block content
 						li #{task.destination.address.number} #{task.destination.address.street}
 						li #{task.destination.address.city}, #{task.destination.address.state} #{task.destination.address.postalCode}
 					li Dependencies: #{task.dependencies}
-					li Complete after: #{(new Date(task.completeAfter))}
+					li Complete after: #{(new Date(task.completeAfter)).getMonth()}
+					li Complete after: #{(new Date(task.completeAfter)).getDate()}
+					li Complete after: #{(new Date(task.completeAfter)).getFullYear()}
 					li Complete before: #{task.completeBefore}
 					li
 						form(method='POST', action='/Piggyback/delete-task')
