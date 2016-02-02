@@ -200,22 +200,22 @@ app.get('/Piggyback', function(request, response) {
 // 	}
 // })
 
-// // Need to pass in worker's id
-// app.post('/Piggyback/delete-worker', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		if (!request.body.id)
-// 			response.redirect('/Piggyback/')
-// 		else {
-// 			onfleet.deleteWorkerByID(request.body.id).then(function() {
-// 				response.redirect('/Piggyback/')
-// 			}).catch(function(error) {
-// 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
-// 			})
-// 		}
-// 	} else {
-// 		response.redirect('/Piggyback/signin')
-// 	}
-// })
+// Need to pass in worker's id
+app.post('/Piggyback/delete-task', function(request, response) {
+	if (request.session.loggedin) {
+		if (!request.body.id)
+			response.redirect('/Piggyback/')
+		else {
+			onfleet.deleteTask(request.body.id).then(function() {
+				response.redirect('/Piggyback/')
+			}, function(error) {
+				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
+			})
+		}
+	} else {
+		response.redirect('/Piggyback/signin')
+	}
+})
 
 // // need to pass in worker's id and data you want to change
 // app.post('/Piggyback/update-worker', function(request, response) {
