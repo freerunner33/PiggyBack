@@ -319,10 +319,10 @@ app.post('/Piggyback/jobs', function(request, response) {
 							taskA.shortId,													// shortId
 							j.order_id,														// yelpId
 							'Yelp',															// company
-							j.tip,															// driverTip
+							null,															// driverTip
 							'pickup',														// taskType
-							(dateA).toISOString(),												// completeAfter	- in UTC
-							(dateB).toISOString(),												// completeBefore	- in UTC
+							(dateA).toISOString(),											// completeAfter	- in UTC
+							(dateB).toISOString(),											// completeBefore	- in UTC
 							worker.id,														// workerId
 							worker.name,													// workerName
 							'destination', //taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
@@ -333,12 +333,34 @@ app.post('/Piggyback/jobs', function(request, response) {
 						{
 							if (error)
 								throw error
-							console.log('Task successfully added to database ID: ' + taskA.id)
+							console.log('Task A successfully added to database ID: ' + taskA.id)
 
 							// need to assign this task to the worker
 							worker.tasks.push(taskB.id)
 							onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-								response.redirect('/Piggyback')
+								connection.query('INSERT INTO Tasks (shortId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+									[
+										taskB.shortId,													// shortId
+										j.order_id,														// yelpId
+										'Yelp',															// company
+										j.tip,															// driverTip
+										'dropoff',														// taskType
+										(dateA).toISOString(),											// completeAfter	- in UTC
+										(dateC).toISOString(),											// completeBefore	- in UTC
+										worker.id,														// workerId
+										worker.name,													// workerName
+										'destination', //taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
+										null,															// completionTime
+										null															// didSucceed
+									], 
+									function(error, rows)
+									{
+										if (error)
+											throw error
+										console.log('Task B successfully added to database ID: ' + taskB.id)
+										response.redirect('/Piggyback')
+									}
+								)
 							}, function(error) {
 								response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error updating worker']})
 							})
