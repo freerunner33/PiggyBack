@@ -79,8 +79,8 @@ block content
 
 	h2 Current Tasks:
 	ul
-		if data.length
-			each task in data
+		if tasks.length
+			each task in tasks
 				if task.state < 3
 					li Task ID: #{task.id}
 					li Task State: #{task.state}
