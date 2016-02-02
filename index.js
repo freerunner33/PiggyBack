@@ -344,20 +344,41 @@ app.post('/Piggyback/jobs', function(request, response) {
 		).then(function(taskA) {
 			// create new task with dependencies, and add this task to this workers tasks
 			onfleet.createNewTask(
-				'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
-				'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
-				destB,													// destination
-				[recipientB],											// recipients - array
-				timeA,													// complete after - number
-				timeC,													// complete before - number
-				false,													// pickup task?
-				[taskA.id],													// dependencies - array
-				j.dropoff_waypoint.special_instructions					// notes for task
+				'~2FSQGbR0qSXi1v9kSQxtW4v',							// merchant
+				'~2FSQGbR0qSXi1v9kSQxtW4v',							// executor
+				destB,												// destination
+				[recipientB],										// recipients - array
+				timeA,												// complete after - number
+				timeC,												// complete before - number
+				false,												// pickup task?
+				[taskA.id],											// dependencies - array
+				j.dropoff_waypoint.special_instructions				// notes for task
 			).then(function(taskB) {
 				// need to assign this task to the worker
 				onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
 					worker.tasks.push(taskB.id)
 					onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
+						
+						connection.query('INSERT INTO Tasks (id, company, driverTip, month, day, year, hour, minute, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+							[
+								j.order_id,
+								taskA.shortId,
+								'Yelp',
+								'pickup',
+								new Date(timeA + (timezone.rawoffset * 1000)),		// completeAfter
+								new Date(timeB + (timezone.rawoffset * 1000)),		// completeBefore
+								worker.id,
+								worker.name,
+								taskA.destination.address.number + ' ' + taskA.destination.address.street + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
+							], 
+							function(error, rows)
+							{
+								if (error)
+									throw error
+								console.log('Task successfully added to database ID: ' + taskA.id)
+							}
+						)
+
 						response.redirect('/Piggyback')
 					}, function(error) {
 						response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error updating worker']})
@@ -401,31 +422,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 				var time = new Date();
 				if (t.didAutoAssign) { // Get the worker's name
 					onfleet.getSingleWorkerByID(t.worker).then(function(w) {
-						connection.query('INSERT INTO Tasks (id, company, driverTip, month, day, year, hour, minute, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-							[
-								t.shortId, 								// task id
-								request.body.company,				// company (e.g. Yelp)
-								request.body.driverTip, 			// driver tip (e.g. $1.25)
-								months[time.getMonth()], 			// month
-								time.getDate(), 					// day
-								time.getFullYear(),					// year
-								time.getHours(),					// hour
-								time.getMinutes(),					// minute
-								t.worker, 							// worker id
-								w.name, 							// worker name
-								t.destination.id, 					// destination id
-								t.destination.address.number, 		// destination number 	(624)
-								t.destination.address.street, 		// destination street 	(Broadway)
-								t.destination.address.city, 		// destination city 	(San Diego)
-								t.destination.address.postalCode 	// destination zip code (92110)
-							], 
-							function(error, rows)
-							{
-								if (error)
-									throw error
-								console.log('Task successfully added to database ID: ' + t.id)
-							}
-						)
+						
 						response.redirect('/Piggyback')
 					}).catch(function(error) {
 						response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})

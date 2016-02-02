@@ -25,19 +25,16 @@ CREATE TABLE IF NOT EXISTS Destinations (
 );
 
 CREATE TABLE IF NOT EXISTS Tasks (
-	id VARCHAR(64) PRIMARY KEY NOT NULL,
+	shortId VARCHAR(64) PRIMARY KEY NOT NULL,
+	yelpId VARCHAR(64) NOT NULL,
 	company VARCHAR(64) NOT NULL,
 	driverTip VARCHAR(64) DEFAULT '0',
-	month VARCHAR(64) NOT NULL,
-	day INT NOT NULL,
-	year INT NOT NULL,
-	hour INT NOT NULL,
-	minute INT NOT NULL,
+	taskType VARCHAR(64) NOT NULL,
+	completeAfter VARCHAR(64) NOT NULL,
+	completeBefore VARCHAR(64) NOT NULL,
 	workerId VARCHAR(64) NOT NULL,
 	workerName VARCHAR(64) NOT NULL,
-	destId VARCHAR(64) NOT NULL, 
-	destNumber INT NOT NULL,
-	destStreet VARCHAR(64) NOT NULL,
-	destCity VARCHAR(64) NOT NULL,
-	destPostalCode INT NOT NULL
+	destination VARCHAR(64) NOT NULL,
+	completionTime VARCHAR(64),
+	didSucceed VARCHAR(64)
 )
