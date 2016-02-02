@@ -83,13 +83,23 @@ app.get('/Piggyback/dropoff-task', function(request, response) {
 		null,													// complete after - number
 		null,													// complete before - number
 		false,													// pickup task?
-		[],														// dependencies - array
+		['XUeH0vt9hhaaB7kH9Py0gsom'],							// dependencies - array
 		'Test task'												// notes for task
 	).then(function(task) {
 		response.render('error', {pageTitle: 'Error', errors: ['Success', JSON.stringify(task)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: ['Error', JSON.stringify(error)]})
 	})
+})
+
+app.get('/Piggyback/assign-task', function(request, response) {
+	// for assigning the second task
+	onfleet.updateWorkerByID('ta0qIezLTkxMdkTxNyd*q4FH', {tasks: ['']}).then(function() {
+		response.redirect('/Piggyback')
+	}, function(error) {
+		response.render('error', {pageTitle: 'Error', errors: ['Error', JSON.stringify(error)]})
+	})
+
 })
 
 
