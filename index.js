@@ -367,7 +367,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 						}
 					)
 				}, function(error) {
-					response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error getting worker']})
+					response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error getting worker', 'No worker online']})
 				})
 			}, function(error) {
 				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task B']})
@@ -378,74 +378,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error with timezone']})
 	})
-
-	return
-	////////////////////////
-
-	// This is what yelp will send to me, now need to convert it to onfleet code and log some into db
-	// email felipe about tip - for driver or food?
-
-	if (request.session.loggedin) {
-		if (!(request.body.destination))
-			response.redirect('/Piggyback')
-		else {
-			onfleet.createNewTask(
-				'~2FSQGbR0qSXi1v9kSQxtW4v',		// merchant
-				'~2FSQGbR0qSXi1v9kSQxtW4v',		// executor
-				request.body.destination,		// destination
-				[request.body.recipients],		// recipients - array
-				null,							// complete after - number
-				null,							// complete before - number
-				false,							// pickup task?
-				[],								// dependencies - array
-				request.body.notes,				// notes for task
-				{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// TEST TEAM
-			).then(function(t) {
-				var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-				var time = new Date();
-				if (t.didAutoAssign) { // Get the worker's name
-					onfleet.getSingleWorkerByID(t.worker).then(function(w) {
-						
-						response.redirect('/Piggyback')
-					}).catch(function(error) {
-						response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
-					})
-				} else { // Leave the name blank
-					console.log('Task was not assigned...')
-					connection.query('INSERT INTO Tasks (id, company, driverTip, workerId, workerName, destId, destNumber, destStreet, destCity, destPostalCode) VALUES (?,?,?,?,?,?,?,?,?,?)',
-						[
-							t.shortId, 								// task id
-							request.body.company,				// company (e.g. Yelp)
-							request.body.driverTip, 			// driver tip (e.g. $1.25)
-							months[time.getMonth()], 			// month
-							time.getDate(), 					// day
-							time.getFullYear(),					// year
-							time.getHours(),					// hour
-							time.getMinutes(),					// minute
-							t.worker, 							// worker id
-							'', 								// worker name
-							t.destination.id, 					// destination id
-							t.destination.address.number, 		// destination number 	(624)
-							t.destination.address.street, 		// destination street 	(Broadway)
-							t.destination.address.city, 		// destination city 	(San Diego)
-							t.destination.address.postalCode 	// destination zip code (92110)
-						], 
-						function(error, rows)
-						{
-							if (error)
-								throw error
-						}
-					)
-					response.redirect('/Piggyback')
-				}	
-			}).catch(function(error) {
-				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
-			})
-		}
-	} else {
-		response.redirect('/Piggyback/signin')
-	}
 })
+
 
 app.get('/Piggyback/signup', function(request, response) {
 	response.render('signup', {pageTitle: 'Sign up'})
