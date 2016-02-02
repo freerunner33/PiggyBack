@@ -56,8 +56,8 @@ app.use(session({
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	tz.getTimeZone().then(function(data) {
-		response.render('error', {pageTitle: 'Success >', errors: [JSON.stringify(data)]})
+	onfleet.getSingleTask('FsWNbrYNcvVpLpm6pSm92lMz').then(function(task) {
+		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(task)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 	})
@@ -237,8 +237,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
 	var destA = {
 		address: {
-			number: j.pickup_waypoint.address.substr(0, dropoffSplit),
-			street: j.pickup_waypoint.address.substr(dropoffSplit),
+			number: j.pickup_waypoint.address.substr(0, pickupSplit),
+			street: j.pickup_waypoint.address.substr(pickupSplit),
 			city: j.pickup_waypoint.city,
 			state: j.pickup_waypoint.state,
 			postalCode: j.pickup_waypoint.zip,
@@ -249,7 +249,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var dropoffSplit = j.dropoff_waypoint.address.indexOf(' ')
 	var destB = {
 		address: {
-			number: j.dropoff_waypoint.address.substr(0, pickupSplit),
+			number: j.dropoff_waypoint.address.substr(0, dropoffSplit),
 			street: j.dropoff_waypoint.address.substr(dropoffSplit),
 			city: j.dropoff_waypoint.city,
 			state: j.dropoff_waypoint.state,
