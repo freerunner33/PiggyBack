@@ -81,17 +81,18 @@ block content
 	ul
 		if data.length
 			each task in data
-				li Task ID: #{task.id}
-				li Task State: #{task.state}
-				li Destination:
-				ul
-					li #{task.destination.address.number} #{task.destination.address.street}
-					li #{task.destination.address.city}, #{task.destination.address.state} #{task.destination.address.postalCode}
-				li
-					form(method='POST', action='/Piggyback/delete-task')
-						input(type='hidden', name='id', value=task.id)
-						button(type='submit') Delete Task
-				br
+				if task.state < 3
+					li Task ID: #{task.id}
+					li Task State: #{task.state}
+					li Destination:
+					ul
+						li #{task.destination.address.number} #{task.destination.address.street}
+						li #{task.destination.address.city}, #{task.destination.address.state} #{task.destination.address.postalCode}
+					li
+						form(method='POST', action='/Piggyback/delete-task')
+							input(type='hidden', name='id', value=task.id)
+							button(type='submit') Delete Task
+					br
 		else
 			li No tasks at the moment
 

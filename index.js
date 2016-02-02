@@ -200,7 +200,6 @@ app.get('/Piggyback', function(request, response) {
 // 	}
 // })
 
-// Need to pass in worker's id
 app.post('/Piggyback/delete-task', function(request, response) {
 	if (request.session.loggedin) {
 		if (!request.body.id)
