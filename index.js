@@ -283,7 +283,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 	tz.getTimeZone().then(function(timezone) {
 		var dateA = new Date(timeA)
 		var dateB = new Date(timeB)
-		var dateC = new DAte(timeC)
+		var dateC = new Date(timeC)
 		timeA = timeA - (timezone.rawOffset * 1000)
 		timeB = timeB - (timezone.rawOffset * 1000)
 		timeC = timeC - (timezone.rawOffset * 1000)
