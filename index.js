@@ -65,7 +65,8 @@ app.get('/Piggyback/pickup-task', function(request, response) {
 		null,													// complete before - number
 		true,													// pickup task?
 		[],														// dependencies - array
-		'Test task'												// notes for task
+		'Test task',											// notes for task
+		{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
 	).then(function(task) {
 		response.render('error', {pageTitle: 'Error', errors: ['Success', JSON.stringify(task)]})
 	}, function(error) {
