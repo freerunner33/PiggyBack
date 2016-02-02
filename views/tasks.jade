@@ -90,7 +90,7 @@ block content
 						li #{task.destination.address.city}, #{task.destination.address.state} #{task.destination.address.postalCode}
 					li Dependencies: #{task.dependencies}
 					li Complete after: #{(new Date(task.completeAfter))}
-					li Complete before: #{task.completeBefore}
+					li Complete before: #{new Date(task.completeBefore)}
 					li
 						form(method='POST', action='/Piggyback/delete-task')
 							input(type='hidden', name='id', value=task.id)
