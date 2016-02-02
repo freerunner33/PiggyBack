@@ -209,7 +209,7 @@ app.post('/Piggyback/delete-task', function(request, response) {
 			onfleet.deleteTask(request.body.id).then(function() {
 				response.redirect('/Piggyback/')
 			}, function(error) {
-				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
+				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 			})
 		}
 	} else {
