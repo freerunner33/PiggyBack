@@ -333,7 +333,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 						{
 							if (error)
 								throw error
-							console.log('Task A successfully added to database ID: ' + taskA.id)
+							console.log('Task A successfully added to database ID: ' + taskA.shortId)
 
 							// need to assign this task to the worker
 							worker.tasks.push(taskB.id)
@@ -357,8 +357,13 @@ app.post('/Piggyback/jobs', function(request, response) {
 									{
 										if (error)
 											throw error
-										console.log('Task B successfully added to database ID: ' + taskB.id)
-										response.redirect('/Piggyback')
+										console.log('Task B successfully added to database ID: ' + taskB.shortId)
+										
+										response.writeHead(200, { 'Content-Type': 'application/json' })
+										var json = JSON.stringify({job_id: taskB.shortId})
+										response.end(json)
+
+										// response.redirect('/Piggyback')
 									}
 								)
 							}, function(error) {
