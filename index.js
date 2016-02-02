@@ -56,12 +56,6 @@ app.use(session({
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	// onfleet.getSingleWorkerByID('ta0qIezLTkxMdkTxNyd*q4FH').then(function(data) {
-	// 	response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
-	// }, function(error) {
-	// 	response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-	// })
-
 	tz.getTimeZone().then(function(data) {
 		response.render('error', {pageTitle: 'Success >', errors: [JSON.stringify(data)]})
 	}, function(error) {
@@ -121,12 +115,6 @@ app.get('/Piggyback', function(request, response) {
 				if (error)
 					throw error
 				if (rows.length) {
-					// var d
-					// for (var i in rows) {
-					// 	d = rows[i]
-					// 	html.push("{ ID: " + d.id + "    \t\nName: " + d.name + "}")
-					// }
-
 					response.render(
 						'tasks', {
 							pageTitle: 'Piggyback Technologies',
@@ -136,69 +124,13 @@ app.get('/Piggyback', function(request, response) {
 					)
 				}
 			})
-		}), function(error) {
+		}, function(error) {
 			response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
-		}
+		})
 	} else {
 		response.redirect('/Piggyback/signin')
 	}
 })
-// app.get('/PiggyBack', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		onfleet.getSingleTeamByID('ylC5klVbtmEVrVlBfUYp9oeM').then(function(team) {
-// 			onfleet.getOrganizationDetails().then(function(org) {
-// 				onfleet.getDestinationByID('IWU6PFSVyLhAbifvh3KnDxnZ').then(function(destination) {
-// 					onfleet.listTasks().then(function(tasks) {
-// 						onfleet.listWebHooks().then(function(webhooks) {
-// 							response.render(
-// 								'pbhome', {
-// 									pageTitle: 'PiggyBack', 
-// 									orgName: org.name, 
-// 									orgID: org.id,
-// 									orgEmail: org.email,
-// 									teamName: team.name,
-// 									teamID: team.id, 
-// 									teamWorkers: team.workers,
-// 									destination: destination,
-// 									tasks: tasks,
-// 									webhooks: webhooks
-// 								}
-// 							)
-// 						})
-// 					})
-// 				})
-// 			})
-// 		})
-// 	} else {
-// 		response.redirect('/PiggyBack/signin')
-// 	}
-// })
-
-// app.post('/Piggyback/new-worker', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		if (!request.body.name || !request.body.number)
-// 			response.redirect('/')
-// 		else {
-// 			onfleet.createNewWorker(
-// 				request.body.name,
-// 				request.body.number.replace(/[^0-9\+]/, ''),
-// 				['ylC5klVbtmEVrVlBfUYp9oeM'], 
-// 				{
-// 					type: 'CAR', 
-// 					description: 'Lamborghini', 
-// 					licensePlate: '333-ABC', 
-// 					color: 'black'
-// 				}
-// 			).then(function(worker) {
-// 				response.redirect('/Piggyback')
-// 			}).catch(function(error) {
-// 				response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
-// 			})
-// 		}
-// 	} else {
-// 		response.redirect('/Piggyback/signin')
-// 	}
-// })
 
 app.post('/Piggyback/delete-task', function(request, response) {
 	if (request.session.loggedin) {
@@ -325,7 +257,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 			country: 'USA'
 		}, 
 		location: [j.dropoff_waypoint.location.longitude, j.dropoff_waypoint.location.latitude]
-		}
 	}
 
 	var recipientA = {
@@ -376,11 +307,11 @@ app.post('/Piggyback/jobs', function(request, response) {
 				j.dropoff_waypoint.special_instructions					// notes for task
 			).then(function(t2) {
 				// need to assign this task to the worker
-	//			onfleet.updateWorkerByID(t.worker, {tasks: [t2.id]}).then(function() {
+				onfleet.updateWorkerByID(t.worker, {tasks: [t2.id]}).then(function() {
 					response.redirect('/Piggyback')
-	//			}, function(error) {
-	//				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error when adding dropoff task']})
-	//			})
+				}, function(error) {
+					response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error when adding dropoff task']})
+				})
 			}, function(error) {
 				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task B']})
 			})
