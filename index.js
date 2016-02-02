@@ -313,18 +313,18 @@ app.post('/Piggyback/jobs', function(request, response) {
 				onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
 					connection.query('INSERT INTO Tasks (shortId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
 						[
-							taskA.shortId,										// shortId
-							j.order_id,											// yelpId
-							'Yelp',												// company
-							j.tip,												// driverTip
-							'pickup',											// taskType
-							new Date(timeA + (timezone.rawoffset * 1000)),		// completeAfter	- in UTC
-							new Date(timeB + (timezone.rawoffset * 1000)),		// completeBefore	- in UTC
-							worker.id,											// workerId
-							worker.name,										// workerName
+							taskA.shortId,													// shortId
+							j.order_id,														// yelpId
+							'Yelp',															// company
+							j.tip,															// driverTip
+							'pickup',														// taskType
+							(new Date(timeA + (timezone.rawoffset * 1000))).toString(),		// completeAfter	- in UTC
+							(new Date(timeB + (timezone.rawoffset * 1000))).toString(),		// completeBefore	- in UTC
+							worker.id,														// workerId
+							worker.name,													// workerName
 							'destination', //taskA.destination.address.number + ' ' + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + task.destination.address.postalCode,
-							null,												// completionTime
-							null												// didSucceed
+							null,															// completionTime
+							null															// didSucceed
 						], 
 						function(error, rows)
 						{
