@@ -234,7 +234,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 	}
 	/////////////////////////////////
 
-	var dropoffSplit = j.pickup_waypoint.address.indexOf(' ')
+	var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
 	var destA = {
 		address: {
 			number: j.pickup_waypoint.address.substr(0, dropoffSplit),
