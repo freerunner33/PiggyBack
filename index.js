@@ -351,42 +351,42 @@ app.post('/Piggyback/jobs', function(request, response) {
 		timeA = timeA - (timezone.rawOffset * 1000)
 		timeB = timeB - (timezone.rawOffset * 1000)
 		
-		// onfleet.createNewTask(
-		// 	'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
-		// 	'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
-		// 	destA,													// destination
-		// 	[recipientA],											// recipients - array
-		// 	timeA,													// complete after - number
-		// 	timeB,													// complete before - number
-		// 	true,													// pickup task?
-		// 	[],														// dependencies - array
-		// 	j.pickup_waypoint.special_instructions,					// notes for task
-		// 	{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
-		// ).then(function(t) {
-		// 	// create new task with dependencies, and add this task to this workers tasks
-		// 	onfleet.createNewTask(
-		// 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
-		// 		'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
-		// 		destB,													// destination
-		// 		[recipientB],											// recipients - array
-		// 		timeA,													// complete after - number
-		// 		timeC,													// complete before - number
-		// 		false,													// pickup task?
-		// 		[t.id],													// dependencies - array
-		// 		j.dropoff_waypoint.special_instructions					// notes for task
-		// 	).then(function(t2) {
-		// 		// need to assign this task to the worker
-		// 		onfleet.updateWorkerByID(t.worker, {tasks: [t2.id]}).then(function() {
-		// 			response.redirect('/Piggyback')
-		// 		}, function(error) {
-		// 			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error when adding dropoff task']})
-		// 		})
-		// 	}, function(error) {
-		// 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task B']})
-		// 	})
-		// }, function(error) {
-		// 	response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task A']})
-		// })
+		onfleet.createNewTask(
+			'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
+			'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
+			destA,													// destination
+			[recipientA],											// recipients - array
+			timeA,													// complete after - number
+			timeB,													// complete before - number
+			true,													// pickup task?
+			[],														// dependencies - array
+			j.pickup_waypoint.special_instructions,					// notes for task
+			{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id
+		).then(function(t) {
+			// create new task with dependencies, and add this task to this workers tasks
+			onfleet.createNewTask(
+				'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
+				'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
+				destB,													// destination
+				[recipientB],											// recipients - array
+				timeA,													// complete after - number
+				timeC,													// complete before - number
+				false,													// pickup task?
+				[t.id],													// dependencies - array
+				j.dropoff_waypoint.special_instructions					// notes for task
+			).then(function(t2) {
+				// need to assign this task to the worker
+	//			onfleet.updateWorkerByID(t.worker, {tasks: [t2.id]}).then(function() {
+					response.redirect('/Piggyback')
+	//			}, function(error) {
+	//				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error when adding dropoff task']})
+	//			})
+			}, function(error) {
+				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task B']})
+			})
+		}, function(error) {
+			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task A']})
+		})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error with timezone']})
 	})
