@@ -185,62 +185,65 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 		response.write(JSON.stringify({error: 'Incorrect path format'}))
 		response.end()
 	} else {
-		onfleet.getSingleTask(path[3]).then(function(task) {
-			connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
-				if (error)
-					throw error
-				if (rows.length) {
-					// get worker details
-					onfleet.getSingleWorkerByID(rows[0].workerName).then(function(worker) {
-						// if (worker.location) {
-						// 	var loc = {latitude: worker.location[1], longitude: worker.location[0]}
-						// } else {
-						// 	var loc = null
-						// }
-						// // not responding with text... blank object
-						// response.writeHead(200, {'Content-Type': 'application/json'})
-						// var json = JSON.stringify(
-						// 	{
-						// 		job_id: task.shortId,
-						// 		order_id: rows[0].yelpId,
-						// 		status_code: 53,				// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
-						// 		status: 'at_dropoff',			// AND THIS
-						// 		log: [
-						// 			{
-						// 				status_code: 51,
-						// 				status: 'at_pickup',
-						// 				timestamp: '2016-05-02T12:30:00-0800'		// NEED TO LOCALIZE
-						// 			},
-						// 			{
-						// 				status_code: 53,
-						// 				status: 'at_dropoff',
-						// 				timestamp: '2016-05-02T12:45:00-0800'		// LOCALIZE
-						// 			}
-						// 		],
-						// 		driver: {
-						// 			name: worker.name,
-						// 			location: loc,
-						// 			phone: worker.phone
-						// 		}
-						// 	}
-						// )
-						response.end('json')
-					}, function(error) {
-						response.writeHead(400, { 'Content-Type': 'application/json' })
-						response.write(JSON.stringify(error))
-						response.end()
-					})
-				} else {
-					response.writeHead(400, { 'Content-Type': 'application/json' })
-					response.write(JSON.stringify({ error: 'Task not found in database'}))
-					response.end()
-				}
-			})
-		}, function(error) {
-			response.writeHead(400, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify(error))
-			response.end()
-		})
+		response.writeHead(200, {'Content-Type': 'application/json'})
+		response.write(JSON.stringify(error))
+		response.end()
+		// onfleet.getSingleTask(path[3]).then(function(task) {
+		// 	connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
+		// 		if (error)
+		// 			throw error
+		// 		if (rows.length) {
+		// 			// get worker details
+		// 			onfleet.getSingleWorkerByID(rows[0].workerName).then(function(worker) {
+		// 				if (worker.location) {
+		// 					var loc = {latitude: worker.location[1], longitude: worker.location[0]}
+		// 				} else {
+		// 					var loc = null
+		// 				}
+		// 				// not responding with text... blank object
+		// 				response.writeHead(200, {'Content-Type': 'application/json'})
+		// 				var json = JSON.stringify(
+		// 					{
+		// 						job_id: task.shortId,
+		// 						order_id: rows[0].yelpId,
+		// 						status_code: 53,				// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
+		// 						status: 'at_dropoff',			// AND THIS
+		// 						log: [
+		// 							{
+		// 								status_code: 51,
+		// 								status: 'at_pickup',
+		// 								timestamp: '2016-05-02T12:30:00-0800'		// NEED TO LOCALIZE
+		// 							},
+		// 							{
+		// 								status_code: 53,
+		// 								status: 'at_dropoff',
+		// 								timestamp: '2016-05-02T12:45:00-0800'		// LOCALIZE
+		// 							}
+		// 						],
+		// 						driver: {
+		// 							name: worker.name,
+		// 							location: loc,
+		// 							phone: worker.phone
+		// 						}
+		// 					}
+		// 				)
+		// 				response.end(json)
+		// 			}, function(error) {
+		// 				response.writeHead(400, { 'Content-Type': 'application/json' })
+		// 				response.write(JSON.stringify(error))
+		// 				response.end()
+		// 			})
+		// 		} else {
+		// 			response.writeHead(400, { 'Content-Type': 'application/json' })
+		// 			response.write(JSON.stringify({ error: 'Task not found in database'}))
+		// 			response.end()
+		// 		}
+		// 	})
+		// }, function(error) {
+		// 	response.writeHead(400, { 'Content-Type': 'application/json' })
+		// 	response.write(JSON.stringify(error))
+		// 	response.end()
+		// })
 	}
 })
 
