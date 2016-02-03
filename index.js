@@ -192,7 +192,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 				if (rows.length) {
 					// get worker details
 					response.writeHead(200, {'Content-Type': 'application/json'})
-					response.write(JSON.stringify({error: rows[0].workerName}))
+					response.write(JSON.stringify({random: rows[0].workerName}))
 					response.end()
 					// onfleet.getSingleWorkerByID(rows[0].workerName).then(function(worker) {
 					// 	if (worker.location) {
