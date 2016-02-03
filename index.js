@@ -186,7 +186,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 		response.end()
 	} else {
 		response.writeHead(200, {'Content-Type': 'application/json'})
-		response.write(JSON.stringify({error: 'error'}))
+		response.write(JSON.stringify({error: path[3]}))
 		response.end()
 		// onfleet.getSingleTask(path[3]).then(function(task) {
 		// 	connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
