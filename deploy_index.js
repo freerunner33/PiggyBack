@@ -1,4 +1,5 @@
 
+//	1. Creating a new job: 
 app.post('/Piggyback/jobs', function(request, response) {
 	var b = request.body
 	var waypoint1 = {
@@ -191,4 +192,11 @@ app.post('/Piggyback/jobs', function(request, response) {
 		response.write(JSON.stringify(error))
 		response.end()
 	})
+})
+
+// 2. Deleting a job:
+app.delete('/Piggyback/jobs/*', function(request, response) {
+	response.writeHead(200, { 'Content-Type': 'application/json' })
+	response.write(JSON.stringify({path: request.url}))
+	response.end
 })

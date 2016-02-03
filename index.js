@@ -385,6 +385,12 @@ app.post('/Piggyback/jobs', function(request, response) {
 	})
 })
 
+app.delete('/Piggyback/jobs/*', function(request, response) {
+	response.writeHead(200, { 'Content-Type': 'application/json' })
+	response.write(JSON.stringify({path: request.url}))
+	response.end
+})
+
 app.get('/Piggyback/signup', function(request, response) {
 	response.render('signup', {pageTitle: 'Sign up'})
 })
