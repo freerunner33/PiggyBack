@@ -197,7 +197,11 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 						} else {
 							var loc = null
 						}
-						response.writeHead(200, { 'Content-Type': 'application/json' })
+						response.writeHead(400, { 'Content-Type': 'application/json' })
+						response.write(JSON.stringify(error))
+						response.end()
+
+						//	response.writeHead(200, { 'Content-Type': 'application/json' })
 						// response.write(
 						// 	JSON.stringify(
 						// 		{
@@ -225,8 +229,8 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 						// 		}
 						// 	)
 						// )
-						response.write(JSON.stringify({error: 'hi'}))
-						response.end()
+						// response.write(JSON.stringify({error: 'hi'}))
+						// response.end()
 					}, function(error) {
 						response.writeHead(400, { 'Content-Type': 'application/json' })
 						response.write(JSON.stringify(error))
