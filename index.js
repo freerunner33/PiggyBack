@@ -198,33 +198,33 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 							var loc = null
 						}
 						response.writeHead(200, { 'Content-Type': 'application/json' })
-						response.write(
-							JSON.stringify(
-								{
-									job_id: task.shortId,
-									order_id: rows[0].yelpId,
-									status_code: 53,				// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
-									status: 'at_dropoff',			// AND THIS
-									log: [
-										{
-											status_code: 51,
-											status: 'at_pickup',
-											timestamp: '2016-05-02T12:30:00-0800'		// NEED TO LOCALIZE
-										},
-										{
-											status_code: 53,
-											status: 'at_dropoff',
-											timestamp: '2016-05-02T12:45:00-0800'		// LOCALIZE
-										}
-									],
-									driver: {
-										name: worker.name,
-										location: loc,
-										phone: worker.phone
-									}
-								}
-							)
-						)
+						// response.write(
+						// 	JSON.stringify(
+						// 		{
+						// 			job_id: task.shortId,
+						// 			order_id: rows[0].yelpId,
+						// 			status_code: 53,				// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
+						// 			status: 'at_dropoff',			// AND THIS
+						// 			log: [
+						// 				{
+						// 					status_code: 51,
+						// 					status: 'at_pickup',
+						// 					timestamp: '2016-05-02T12:30:00-0800'		// NEED TO LOCALIZE
+						// 				},
+						// 				{
+						// 					status_code: 53,
+						// 					status: 'at_dropoff',
+						// 					timestamp: '2016-05-02T12:45:00-0800'		// LOCALIZE
+						// 				}
+						// 			],
+						// 			driver: {
+						// 				name: worker.name,
+						// 				location: loc,
+						// 				phone: worker.phone
+						// 			}
+						// 		}
+						// 	)
+						// )
 						response.write('hi')
 						response.end()
 					}, function(error) {
