@@ -373,6 +373,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 					)
 				}, function(error) {
 					// do something with the task here... just simply add it to the queue
+					throw error
 					response.writeHead(400, { 'Content-Type': 'application/json'})
 					response.write(JSON.stringify(error))
 					response.end()
