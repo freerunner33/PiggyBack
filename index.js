@@ -542,60 +542,60 @@ app.post('/Piggyback/signin', function(request, response) {
 })
 
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
-	console.log('WEBHOOK: taskStarted\nID 0: Task started by worker.')
+	console.log('\nWEBHOOK: taskStarted\nID 0: Task started by worker.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskEta', function(request, response) {
-	console.log('WEBHOOK: taskEta\nID 1: Worker ETA less than or equal to notification threshold.')
+	console.log('\nWEBHOOK: taskEta\nID 1: Worker ETA less than or equal to notification threshold.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskArrival', function(request, response) {
-	console.log('WEBHOOK: taskArrival\nID 2: Worker arriving, 150 meters away or closer.')
+	console.log('\nWEBHOOK: taskArrival\nID 2: Worker arriving, 150 meters away or closer.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
-	console.log('WEBHOOK: taskCompleted\nID 3: Task completed by worker.')
+	console.log('\nWEBHOOK: taskCompleted\nID 3: Task completed by worker.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskFailed', function(request, response) {
-	console.log('WEBHOOK: taskFailed\nID 4: Task failed.')
+	console.log('\nWEBHOOK: taskFailed\nID 4: Task failed.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
-	console.log('WEBHOOK: workerDuty\nID 5: Worker status changed.')
+	console.log('\nWEBHOOK: workerDuty\nID 5: Worker status changed.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	console.log('WEBHOOK: taskCreated\nID 6: New task created.')
+	console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
-	console.log('WEBHOOK: taskUpdated\nID 7: Task updated.')
+	console.log('\nWEBHOOK: taskUpdated\nID 7: Task updated.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
-	console.log('WEBHOOK: taskDeleted\nID 8: Task deleted.')
+	console.log('\nWEBHOOK: taskDeleted\nID 8: Task deleted.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
-	console.log('WEBHOOK: taskAssigned\nID 9: Task assigned to worker.')
+	console.log('\nWEBHOOK: taskAssigned\nID 9: Task assigned to worker.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
-	console.log('WEBHOOK: taskUnassigned\nID 10: Task unassigned from worker.')
+	console.log('\nWEBHOOK: taskUnassigned\nID 10: Task unassigned from worker.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 
 
 // Used to respond to webhook request
-app.get('/Piggyback/webhook/taskCreated', function(request, response, next) {
+app.get('/Piggyback/webhook/taskUpdated', function(request, response, next) {
 	response.send(request.originalUrl.split('=')[1])
 	return next()
 })
 
 // Used to send a webhook request
 app.get('/Piggyback/sendwebhook', function(request, response) {
-	onfleet.createWebHook('http://107.170.198.205/Piggyback/webhook/taskCreated', 6).then(function(data) {
+	onfleet.createWebHook('http://107.170.198.205/Piggyback/webhook/taskUpdated', 7).then(function(data) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
