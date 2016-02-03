@@ -178,7 +178,8 @@ app.get('/Piggyback', function(request, response) {
 	}
 })
 
-app.post('/Piggyback/delete-task', function(request, response) {
+// do delete instead
+app.delete('/Piggyback/delete-task', function(request, response) {
 	if (request.session.loggedin) {
 		if (!request.body.id)
 			response.redirect('/Piggyback')
@@ -361,49 +362,41 @@ app.post('/Piggyback/jobs', function(request, response) {
 										response.writeHead(200, { 'Content-Type': 'application/json' })
 										var json = JSON.stringify({job_id: taskB.shortId})
 										response.end(json)
-
-										// response.redirect('/Piggyback')
 									}
 								)
 							}, function(error) {
-								// could not add task to worker? Not sure what to do here...
-								response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error updating worker']})
+								// DROPOFF TASK NOT ADDED TO WORKER
+								response.writeHead(400, { 'Content-Type': 'application/json' })
+								response.write(JSON.stringify(error))
+								response.end()
 							})
 						}
 					)
 				}, function(error) {
-					// do something with the task here... just simply add it to the queue
-					//console.error(err.stack);
-  					response.status(400).send('Something broke!');
-					
-					// response.writeHead(400, { 'Content-Type': 'application/json'})
-					// response.write(JSON.stringify(error))
-					// response.end()
-					// response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error getting worker', 'No worker online']})
+					// NOT AUTO ASSIGNED TO A WORKER
+					response.writeHead(400, { 'Content-Type': 'application/json' })
+					response.write(JSON.stringify(error))
+					response.end()
 				})
 			}, function(error) {
-				response.writeHead(200, { 'Content-Type': 'text/plain' })
+				// ERROR CREATING DROPOFF TASK
+				response.writeHead(400, { 'Content-Type': 'application/json' })
 				response.write(JSON.stringify(error))
-				response.write('Error creating dropoff task')
 				response.end()
-				// response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating dropoff task']})
 			})
 		}, function(error) {
-			response.writeHead(200, { 'Content-Type': 'text/plain' })
+			// ERROR CREATING PICKUP TASK
+			response.writeHead(400, { 'Content-Type': 'application/json' })
 			response.write(JSON.stringify(error))
-			response.write('Error creating pickup task')
 			response.end()
-			// response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating pickup task']})
 		})
 	}, function(error) {
-		response.writeHead(200, { 'Content-Type': 'text/plain' })
+		// ERROR GETTING TIMEZONE
+		response.writeHead(400, { 'Content-Type': 'application/json' })
 		response.write(JSON.stringify(error))
-		response.write('Error getting timezone')
 		response.end()
-		// response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error with timezone']})
 	})
 })
-
 
 app.get('/Piggyback/signup', function(request, response) {
 	response.render('signup', {pageTitle: 'Sign up'})

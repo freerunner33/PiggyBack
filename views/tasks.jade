@@ -92,7 +92,7 @@ block content
 					li Complete after: #{new Date(task.completeAfter).toISOString()}
 					li Complete before: #{new Date(task.completeBefore).toISOString()}
 					li
-						form(method='POST', action='/Piggyback/delete-task')
+						form(method='DELETE', action='/Piggyback/delete-task')
 							input(type='hidden', name='id', value=task.id)
 							button(type='submit') Delete Task
 					br
@@ -107,46 +107,3 @@ block content
 				li ID: #{d.id}
 				li #{d.number} #{d.street} 
 				li #{d.city}, #{d.state} #{d.postalCode}
-
-	//- form#new(method='POST', action='/Piggyback/new-destination')
-	//- 	h3 Create new destination
-	//- 		p *Name:
-	//- 		input(type='text', name='name', required, autocomplete='off')
-	//- 		p *Number:
-	//- 		input(type='number', name='number', required, autocomplete='off')
-	//- 		p *Street:
-	//- 		input(type='text', name='street', required, autocomplete='off')
-	//- 		p Apartment:
-	//- 		input(type='text', name='apartment', autocomplete='off')
-	//- 		p *City:
-	//- 		input(type='text', name='city', required, autocomplete='off')
-	//- 		p State:
-	//- 		input(type='text', name='state', autocomplete='off')
-	//- 		p Postal Code:
-	//- 		input(type='number', name='postalCode', autocomplete='off')
-	//- 		p *Country:
-	//- 		input(type='text', name='country', required, autocomplete='off')
-	//- 		button(type='submit') Submit
-		
-	//- form#new(method='POST', action='/Piggyback/new-task')
-	//- 	h3 Create new task:
-	//- 	p Company:
-	//- 	input(type='text', name='company', required, autocomplete='off')
-	//- 	p Driver Tip:
-	//- 	input(type='number', step='0.01', name='driverTip', autocomplete='off')
-	//- 	p Destination:
-	//- 	input(type='text', name='destination', required, autocomplete='off', value='IWU6PFSVyLhAbifvh3KnDxnZ')
-	//- 	p Recipient:
-	//- 	input(type='text', name='recipients', autocomplete='off')
-	//- 	p Complete After:
-	//- 	input(type='time', name='completeAfter')
-	//- 	p Complete Before:
-	//- 	input(type='time', name='completeBefore')
-	//- 	p Pickup Task?
-	//- 	input(type='checkbox', name='pickupTask')
-	//- 	p Dependencies:
-	//- 	input(type='text', name='dependencies', placeholder='Task IDs', autocomplete='off')
-	//- 	p Task Notes:
-	//- 	input(type='text', name='notes', placeholder='Notes', autocomplete='off')
-	//- 	br
-	//- 	button(type='submit') Submit
