@@ -92,7 +92,7 @@ block content
 					li Complete after: #{new Date(task.completeAfter).toISOString()}
 					li Complete before: #{new Date(task.completeBefore).toISOString()}
 					li
-						form(method='DELETE', action='/Piggyback/delete-task')
+						form(method='POST', action='/Piggyback/delete-task')
 							input(type='hidden', name='id', value=task.id)
 							button(type='submit') Delete Task
 					br

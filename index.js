@@ -178,20 +178,16 @@ app.get('/Piggyback', function(request, response) {
 	}
 })
 
-// do delete instead
-app.delete('/Piggyback/delete-task', function(request, response) {
-	if (request.session.loggedin) {
-		if (!request.body.id)
+// do delete instead when deployed
+app.post('/Piggyback/delete-task', function(request, response) {
+	if (!request.body.id)
+		response.redirect('/Piggyback')
+	else {
+		onfleet.deleteTask(request.body.id).then(function() {
 			response.redirect('/Piggyback')
-		else {
-			onfleet.deleteTask(request.body.id).then(function() {
-				response.redirect('/Piggyback')
-			}, function(error) {
-				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-			})
-		}
-	} else {
-		response.redirect('/Piggyback/signin')
+		}, function(error) {
+			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+		})
 	}
 })
 
@@ -235,7 +231,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 		debug: b.debug
 	}
 	/////////////////////////////////
-
 	var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
 	var destA = {
 		address: {
@@ -279,7 +274,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 	var timeB = timeA + (15 * 60 * 1000)
 	var timeC = timeA + (40 * 60 * 1000)
-	
 	tz.getTimeZone().then(function(timezone) {
 		timeA = timeA - (timezone.rawOffset * 1000)
 		timeB = timeB - (timezone.rawOffset * 1000)
@@ -287,7 +281,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 		var dateA = new Date(timeA)
 		var dateB = new Date(timeB)
 		var dateC = new Date(timeC)
-		
 		onfleet.createNewTask(
 			'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
 			'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
@@ -300,7 +293,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 			j.pickup_waypoint.special_instructions,					// notes for task
 			{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id: TEST
 		).then(function(taskA) {
-			// create new task with dependencies, and add this task to this workers tasks
 			onfleet.createNewTask(
 				'~2FSQGbR0qSXi1v9kSQxtW4v',							// merchant
 				'~2FSQGbR0qSXi1v9kSQxtW4v',							// executor
@@ -312,7 +304,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 				[taskA.id],											// dependencies - array
 				j.dropoff_waypoint.special_instructions				// notes for task
 			).then(function(taskB) {
-				// first add to database
 				onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
 					connection.query('INSERT INTO Tasks (shortId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
 						[
@@ -333,8 +324,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 						{
 							if (error)
 								throw error
-							console.log('Task A successfully added to database ID: ' + taskA.shortId)
-
 							// need to assign this task to the worker
 							worker.tasks.push(taskB.id)
 							onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
@@ -357,11 +346,9 @@ app.post('/Piggyback/jobs', function(request, response) {
 									{
 										if (error)
 											throw error
-										console.log('Task B successfully added to database ID: ' + taskB.shortId)
-										
 										response.writeHead(200, { 'Content-Type': 'application/json' })
-										var json = JSON.stringify({job_id: taskB.shortId})
-										response.end(json)
+										response.write(JSON.stringify({job_id: taskB.shortId}))
+										response.end()
 									}
 								)
 							}, function(error) {
