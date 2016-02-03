@@ -386,9 +386,22 @@ app.post('/Piggyback/jobs', function(request, response) {
 })
 
 app.delete('/Piggyback/jobs/*', function(request, response) {
-	response.writeHead(200, { 'Content-Type': 'application/json' })
-	response.write(JSON.stringify({path: request.url.split('/')[3]}))
-	response.end()
+	var path = request.url.split('/')
+	if (path.length != 4)
+		response.writeHead(400, {'Content-Type': 'application/json'})
+		response.write(JSON.stringify({error: 'Incorrect path format'}))
+		response.end()
+	else {
+		onfleet.deleteTask(path[3]).then(function() {
+			response.writeHead(200, { 'Content-Type': 'application/json' })
+			response.write(JSON.stringify({id: path[3]}))
+			response.end()
+		}, function(error) {
+			response.writeHead(400, { 'Content-Type': 'application/json' })
+			response.write(JSON.stringify({error: error}))
+			response.end()
+		})
+	}
 })
 
 app.get('/Piggyback/signup', function(request, response) {
