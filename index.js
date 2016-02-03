@@ -216,7 +216,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 											status: 'at_dropoff',
 											timestamp: '2016-05-02T12:45:00-0800'		// LOCALIZE
 										}
-									]
+									],
 									driver: {
 										name: worker.name,
 										location: loc,
