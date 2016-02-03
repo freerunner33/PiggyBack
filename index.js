@@ -107,7 +107,6 @@ app.get('/Piggyback/assign-task', function(request, response) {
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: ['Error', JSON.stringify(error)]})
 	})
-
 })
 
 
@@ -367,21 +366,38 @@ app.post('/Piggyback/jobs', function(request, response) {
 									}
 								)
 							}, function(error) {
+								// could not add task to worker? Not sure what to do here...
 								response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error updating worker']})
 							})
 						}
 					)
 				}, function(error) {
-					response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error getting worker', 'No worker online']})
+					// do something with the task here... just simply add it to the queue
+					response.writeHead(400, { 'Content-Type': 'application/json'})
+					response.write(JSON.stringify(error))
+					response.end()
+					// response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error getting worker', 'No worker online']})
 				})
 			}, function(error) {
-				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task B']})
+				response.writeHead(200, { 'Content-Type': 'text/plain' })
+				response.write(JSON.stringify(error))
+				response.write('Error creating dropoff task')
+				response.end()
+				// response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating dropoff task']})
 			})
 		}, function(error) {
-			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating task A']})
+			response.writeHead(200, { 'Content-Type': 'text/plain' })
+			response.write(JSON.stringify(error))
+			response.write('Error creating pickup task')
+			response.end()
+			// response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error creating pickup task']})
 		})
 	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error with timezone']})
+		response.writeHead(200, { 'Content-Type': 'text/plain' })
+		response.write(JSON.stringify(error))
+		response.write('Error getting timezone')
+		response.end()
+		// response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error), 'Error with timezone']})
 	})
 })
 
