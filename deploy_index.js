@@ -202,14 +202,23 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 		response.write(JSON.stringify({error: 'Incorrect path format'}))
 		response.end()
 	} else {
-		onfleet.deleteTask(path[3]).then(function() {
-			response.writeHead(200, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify({job_id: path[3]}))
-			response.end()
-		}, function(error) {
-			response.writeHead(400, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify(error))
-			response.end()
+		// first delete the pickup, then dropoff
+		onfleet.getSingleTask(path[3]).then(function(taskB) {
+			onfleet.deleteTask(taskB.dependencies[0]).then(function() {
+				onfleet.deleteTask(taskB.id).then(function() {
+					response.writeHead(200, { 'Content-Type': 'application/json' })
+					response.write(JSON.stringify({job_id: path[3]}))
+					response.end()
+				}, function(error) {
+					response.writeHead(400, { 'Content-Type': 'application/json' })
+					response.write(JSON.stringify(error))
+					response.end()
+				})
+			}, function(error) {
+				response.writeHead(400, { 'Content-Type': 'application/json' })
+				response.write(JSON.stringify(error))
+				response.end()
+			})
 		})
 	}
 })
