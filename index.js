@@ -192,12 +192,12 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 				if (rows.length) {
 					// get worker details
 					onfleet.getSingleWorkerByID(rows[0].workerName).then(function(worker) {
-						// if (worker.location) {
-						// 	var loc = {latitude: worker.location[1], longitude: worker.location[0]}
-						// } else {
-						// 	var loc = null
-						// }
-						// response.writeHead(200, { 'Content-Type': 'application/json' })
+						if (worker.location) {
+							var loc = {latitude: worker.location[1], longitude: worker.location[0]}
+						} else {
+							var loc = null
+						}
+						response.writeHead(200, { 'Content-Type': 'application/json' })
 						// response.write(JSON.stringify(
 						// 	{
 						// 		job_id: task.shortId,
@@ -223,7 +223,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 						// 		}
 						// 	}
 						// ))
-						// response.end()
+						response.end()
 					}, function(error) {
 						response.writeHead(400, { 'Content-Type': 'application/json' })
 						response.write(JSON.stringify(error))
