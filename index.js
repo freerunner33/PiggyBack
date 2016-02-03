@@ -588,14 +588,14 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 
 
 // Used to respond to webhook request
-app.get('/Piggyback/webhook/taskAssigned', function(request, response, next) {
+app.get('/Piggyback/webhook/taskUnassigned', function(request, response, next) {
 	response.send(request.originalUrl.split('=')[1])
 	return next()
 })
 
 // Used to send a webhook request
 app.get('/Piggyback/sendwebhook', function(request, response) {
-	onfleet.createWebHook('http://107.170.198.205/Piggyback/webhook/taskAssigned', 9).then(function(data) {
+	onfleet.createWebHook('http://107.170.198.205/Piggyback/webhook/taskUnassigned', 10).then(function(data) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
