@@ -52,8 +52,6 @@ app.use(session({
   saveUninitialized: false
 }))
 
-
-
 // TESTING
 app.get('/Piggyback/pickup-task', function(request, response) {
 	onfleet.createNewTask(
@@ -108,7 +106,6 @@ app.get('/Piggyback/assign-task', function(request, response) {
 		response.render('error', {pageTitle: 'Error', errors: ['Error', JSON.stringify(error)]})
 	})
 })
-
 
 // ROUTING
 app.get('/', function(request, response) {
@@ -178,6 +175,7 @@ app.get('/Piggyback', function(request, response) {
 	}
 })
 
+// requesting information about
 app.get('/Piggyback/jobs/*', function(request, response) {
 	var path = request.url.split('/')
 	if (path.length != 4) {
@@ -513,6 +511,7 @@ app.post('/Piggyback/signup', function(request, response) {
 	})
 })
 
+// SIGNIN AND SIGNUP
 app.get('/Piggyback/signin', function(request, response) {
 	if (request.session.loggedin)
 		response.render('signin', {pageTitle: 'Sign in', errors: ['Already signed in']})
@@ -542,13 +541,54 @@ app.post('/Piggyback/signin', function(request, response) {
 	})
 })
 
+app.post('/Piggyback/webhook/taskStarted', function(request, response) {
+	console.log('WEBHOOK: taskStarted\nID 0: Task started by worker.')
+	console.log('\n' + JSON.stringify(request.body))
+})
+app.post('/Piggyback/webhook/taskEta', function(request, response) {
+	console.log('WEBHOOK: taskEta\nID 1: Worker ETA less than or equal to notification threshold.')
+	console.log('\n' + JSON.stringify(request.body))
+})
+app.post('/Piggyback/webhook/taskArrival', function(request, response) {
+	console.log('WEBHOOK: taskArrival\nID 2: Worker arriving, 150 meters away or closer.')
+	console.log('\n' + JSON.stringify(request.body))
+})
 app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
-	console.log('Got a new task')
+	console.log('WEBHOOK: taskCompleted\nID 3: Task completed by worker.')
+	console.log('\n' + JSON.stringify(request.body))
+})
+app.post('/Piggyback/webhook/taskFailed', function(request, response) {
+	console.log('WEBHOOK: taskFailed\nID 4: Task failed.')
+	console.log('\n' + JSON.stringify(request.body))
+})
+app.post('/Piggyback/webhook/workerDuty', function(request, response) {
+	console.log('WEBHOOK: workerDuty\nID 5: Worker status changed.')
+	console.log('\n' + JSON.stringify(request.body))
+})
+app.post('/Piggyback/webhook/taskCreated', function(request, response) {
+	console.log('WEBHOOK: taskCreated\nID 6: New task created.')
+	console.log('\n' + JSON.stringify(request.body))
+})
+app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
+	console.log('WEBHOOK: taskUpdated\nID 7: Task updated.')
+	console.log('\n' + JSON.stringify(request.body))
+})
+app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
+	console.log('WEBHOOK: taskDeleted\nID 8: Task deleted.')
+	console.log('\n' + JSON.stringify(request.body))
+})
+app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
+	console.log('WEBHOOK: taskAssigned\nID 9: Task assigned to worker.')
+	console.log('\n' + JSON.stringify(request.body))
+})
+app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
+	console.log('WEBHOOK: taskUnassigned\nID 10: Task unassigned from worker.')
 	console.log('\n' + JSON.stringify(request.body))
 })
 
+
 // Used to respond to webhook request
-app.get('/Piggyback/webhook/taskCompleted', function(request, response, next) {
+app.get('/Piggyback/webhook/taskStarted', function(request, response, next) {
 	var str = request.originalUrl.split('=')[1]
 	response.send(str)
 	return next()
@@ -556,9 +596,9 @@ app.get('/Piggyback/webhook/taskCompleted', function(request, response, next) {
 
 // Used to send a webhook request
 app.get('/Piggyback/sendwebhook', function(request, response) {
-	onfleet.createWebHook('http://noahthomas.us/Piggyback/webhook/taskCompleted', 0).then(function(data) {
+	onfleet.createWebHook('107.170.198.205/Piggyback/webhook/taskStarted', 0).then(function(data) {
 		response.render('error', {pageTitle: 'Success', errors: JSON.stringify(data)})
-	}).catch(function(error) {
+	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
 	})
 })
