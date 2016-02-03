@@ -225,6 +225,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 								}
 							)
 						)
+						response.write('hi')
 						response.end()
 					}, function(error) {
 						response.writeHead(400, { 'Content-Type': 'application/json' })
