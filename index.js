@@ -193,7 +193,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 					// get worker details
 					onfleet.getSingleWorkerByID(rows[0].workerName).then(function(worker) {
 						response.writeHead(200, {'Content-Type': 'application/json'})
-						response.write(JSON.stringify({error: worker.location}))
+						response.write(JSON.stringify({error: path[3]}))
 						response.end()
 						// if (worker.location) {
 						// 	var loc = {latitude: worker.location[1], longitude: worker.location[0]}
