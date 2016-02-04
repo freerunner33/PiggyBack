@@ -198,7 +198,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 app.delete('/Piggyback/jobs/*', function(request, response) {
 	var path = request.url.split('/')
 	if (path.length != 4) {
-		response.writeHead(400, {'Content-Type': 'application/json'})
+		response.writeHead(405, {'Content-Type': 'application/json'})
 		response.write(JSON.stringify({error: 'Incorrect path format'}))
 		response.end()
 	} else {
@@ -210,15 +210,19 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 					response.write(JSON.stringify({job_id: path[3]}))
 					response.end()
 				}, function(error) {
-					response.writeHead(400, { 'Content-Type': 'application/json' })
-					response.write(JSON.stringify(error))
+					response.writeHead(405, { 'Content-Type': 'application/json' })
+					response.write(JSON.stringify({error: 'Task could not be deleted.'}))
 					response.end()
 				})
 			}, function(error) {
-				response.writeHead(400, { 'Content-Type': 'application/json' })
-				response.write(JSON.stringify(error))
+				response.writeHead(405, { 'Content-Type': 'application/json' })
+				response.write(JSON.stringify({error: 'Task could not be deleted.'}))
 				response.end()
 			})
+		}, function(error) {
+			response.writeHead(404, { 'Content-Type': 'application/json' })
+			response.write(JSON.stringify({error: 'Job id not found.'}))
+			response.end()
 		})
 	}
 })
