@@ -563,7 +563,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 			})
 		} else {
 			var str = '40:' + request.body.time
-			connection.query('UPDATE Tasks SET status="?" WHERE taskId="?"', ['status', request.body.taskId], function(error, rows) {
+			connection.query('UPDATE Tasks SET status="bob" WHERE taskId="3qvInrm4vtriMiAzJ*z4urTN"', ['status', request.body.taskId], function(error, rows) {
 				if (error)
 					throw error
 				console.log('2. Successfully updated task: ' + request.body.taskId)
