@@ -561,7 +561,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 				console.log('1. Successfully updated task: ' + request.body.taskId)
 			})
 		} else {
-			var str = 'bob' // '40:' + request.body.time
+			var str = 'something' // '40:' + request.body.time
 			var query = 'UPDATE Tasks SET status="' + str + '" WHERE yelpId="123example456id"'
 			console.log(query)
 			connection.query(query, function(error, rows) {
