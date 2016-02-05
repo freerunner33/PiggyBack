@@ -547,8 +547,8 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
+	// console.log(JSON.stringify(request.body))
 	
 	connection.query('SELECT status FROM Tasks where taskId=?', [request.body.taskId], function(error, rows) {
 		if (error)
@@ -567,6 +567,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 				if (error)
 					throw error
 				console.log('2. Successfully updated task: ' + request.body.taskId)
+				console.log(rows)
 			})
 		}
 	})
