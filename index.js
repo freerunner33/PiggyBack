@@ -568,7 +568,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 				if (error)
 					throw error
 				console.log('2. Successfully updated task: ' + request.body.taskId)
-				console.log(rows[0])
+				console.log(rows)
 			})
 		}
 	})
