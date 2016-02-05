@@ -414,7 +414,13 @@ app.post('/Piggyback/jobs', function(request, response) {
 
 function checkWayPoint(wp, pickup) {
 	if (wp.address && wp.city && wp.state && wp.zip && wp.name && wp.phone && wp.location) {
-		return true
+		if (pickup) {
+			console.log('PICKUP')
+			return true
+		} else {
+			console.log('DROPOFF')
+			return true
+		}
 	} else {
 		return false
 	}
