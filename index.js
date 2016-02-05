@@ -69,11 +69,19 @@ app.get('/Piggyback/test', function(request, response) {
 	        // A sample response from sending an SMS message is here (click "JSON" to see how the data appears in JavaScript):
 	        // http://www.twilio.com/docs/api/rest/sending-sms#example-1
 	        console.log('PHONE STUFF')
-	        console.log(responseData.from); // outputs "+14506667788"
-	        console.log(responseData.body); // outputs "word to your mother."
-	    }
-	});
+	        console.log(responseData.from) // outputs "+14506667788"
+	        console.log(responseData.body) // outputs "word to your mother."
 
+	        response.render('error', {pageTitle: 'Success phone', errors: [JSON.stringify(responseData)]})
+	    }
+	})
+})
+
+app.post('/Piggyback/twilio', function(request, response) {
+	console.log('BODY')
+	console.log(request.body)
+	console.log('\nREQUEST')
+	console.log(request)
 })
 
 
