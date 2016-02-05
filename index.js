@@ -212,46 +212,47 @@ app.post('/Piggyback/delete-task', function(request, response) {
 })
 
 app.post('/Piggyback/jobs', function(request, response) {
-	if (request.session.loggedin) {
-		var b = request.body
-		var waypoint1 = {
-			address: b.pickup_address, 
-			address2: b.pickup_address2, 
-			city: b.pickup_city, 
-			state: b.pickup_state, 
-			zip: b.pickup_zip, 
-			name: b.pickup_name, 
-			phone: b.pickup_phone, 
-			email: b.pickup_email, 
-			location: {latitude: b.pickup_latitude, 
-				longitude: b.pickup_longitude}, 
-			arrive_at: b.pickup_arrive_at, 
-			special_instructions: b.pickup_special_instructions
-		}
-		var waypoint2 = {
-			address: b.dropoff_address, 
-			address2: b.dropoff_address2 , 
-			city: b.dropoff_city, 
-			state: b.dropoff_state, 
-			zip: b.dropoff_zip, 
-			name: b.dropoff_name, 
-			phone: b.dropoff_phone, 
-			email: b.dropoff_email, 
-			location: {latitude: b.dropoff_latitude, 
-				longitude: b.dropoff_longitude}, 
-			special_instructions: b.dropoff_special_instructions
-		}
-		var j = {
-			pickup_waypoint: waypoint1, 
-			dropoff_waypoint: waypoint2, 
-			order_id: b.order_id, 
-			order_items: b.order_items, 
-			order_total: b.order_total, 
-			tip: b.tip, 
-			support_phone: b.support_phone, 
-			debug: b.debug
-		}
-		/////////////////////////////////
+	var b = request.body
+	var waypoint1 = {
+		address: b.pickup_address, 
+		address2: b.pickup_address2, 
+		city: b.pickup_city, 
+		state: b.pickup_state, 
+		zip: b.pickup_zip, 
+		name: b.pickup_name, 
+		phone: b.pickup_phone, 
+		email: b.pickup_email, 
+		location: {latitude: b.pickup_latitude, 
+			longitude: b.pickup_longitude}, 
+		arrive_at: b.pickup_arrive_at, 
+		special_instructions: b.pickup_special_instructions
+	}
+	var waypoint2 = {
+		address: b.dropoff_address, 
+		address2: b.dropoff_address2 , 
+		city: b.dropoff_city, 
+		state: b.dropoff_state, 
+		zip: b.dropoff_zip, 
+		name: b.dropoff_name, 
+		phone: b.dropoff_phone, 
+		email: b.dropoff_email, 
+		location: {latitude: b.dropoff_latitude, 
+			longitude: b.dropoff_longitude}, 
+		special_instructions: b.dropoff_special_instructions
+	}
+	var j = {
+		pickup_waypoint: waypoint1, 
+		dropoff_waypoint: waypoint2, 
+		order_id: b.order_id, 
+		order_items: b.order_items, 
+		order_total: b.order_total, 
+		tip: b.tip, 
+		support_phone: b.support_phone, 
+		debug: b.debug
+	}
+	/////////////////////////////////
+
+	if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false)) {
 		var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
 		var destA = {
 			address: {
@@ -404,10 +405,21 @@ app.post('/Piggyback/jobs', function(request, response) {
 			response.write(JSON.stringify(error))
 			response.end()
 		})
-	} else {
-		response.redirect('/Piggyback/signin')
 	}
+	response.writeHead(400, { 'Content-Type': 'application/json' })
+	response.write(JSON.stringify({error: 'Missing some variable'}))
+	response.end()
 })
+
+function checkWayPoint(wp, pickup) {
+	if (wp && wp.address && wp.city && wp.state && wp.zip && wp.name && wp.phone && wp.location)
+		if (pickup)
+			if (wp.arrive_at)
+				return true
+			else
+				return true
+	return false
+} 
 
 app.get('/Piggyback/signup', function(request, response) {
 	response.render('signup', {pageTitle: 'Sign up'})
