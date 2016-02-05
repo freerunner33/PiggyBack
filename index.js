@@ -252,7 +252,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 	}
 	/////////////////////////////////
 
-	if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false)) {
+	if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
 		var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
 		var destA = {
 			address: {
@@ -421,7 +421,6 @@ function checkWayPoint(wp, pickup) {
 				return false
 		else
 			return true
-		
 	else
 		return false
 } 
