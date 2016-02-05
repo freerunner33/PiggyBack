@@ -564,6 +564,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 		} else {
 			var str = '40:' + request.body.time
 			var query = 'UPDATE Tasks SET status="' + str + '" WHERE taskId="' + request.body.taskId + '"'
+			console.log(query)
 			connection.query(query, function(error, rows) {
 				if (error)
 					throw error
