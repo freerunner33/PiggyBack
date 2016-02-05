@@ -41,7 +41,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 	}
 	/////////////////////////////////
 
-	if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false)) {
+	if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
 		var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
 		var destA = {
 			address: {
@@ -116,9 +116,10 @@ app.post('/Piggyback/jobs', function(request, response) {
 					j.dropoff_waypoint.special_instructions				// notes for task
 				).then(function(taskB) {
 					onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
-						connection.query('INSERT INTO Tasks (shortId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+						connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 							[
 								taskA.shortId,													// shortId
+								taskA.id,														// taskId
 								j.order_id,														// yelpId
 								'Yelp',															// company
 								null,															// driverTip
@@ -138,20 +139,21 @@ app.post('/Piggyback/jobs', function(request, response) {
 								// need to assign this task to the worker
 								worker.tasks.push(taskB.id)
 								onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-									connection.query('INSERT INTO Tasks (shortId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+									connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 										[
-											taskB.shortId,													// shortId
-											j.order_id,														// yelpId
-											'Yelp',															// company
-											j.tip,															// driverTip
-											'dropoff',														// taskType
-											(dateA).toISOString(),											// completeAfter	- in UTC
-											(dateC).toISOString(),											// completeBefore	- in UTC
-											worker.id,														// workerId
-											worker.name,													// workerName
+											taskB.shortId,										// shortId
+											taskB.id,											// taskId
+											j.order_id,											// yelpId
+											'Yelp',												// company
+											j.tip,												// driverTip
+											'dropoff',											// taskType
+											(dateA).toISOString(),								// completeAfter	- in UTC
+											(dateC).toISOString(),								// completeBefore	- in UTC
+											worker.id,											// workerId
+											worker.name,										// workerName
 											'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
-											null,															// completionTime
-											null															// didSucceed
+											null,												// completionTime
+											null												// didSucceed
 										], 
 										function(error, rows)
 										{
@@ -194,21 +196,26 @@ app.post('/Piggyback/jobs', function(request, response) {
 			response.write(JSON.stringify(error))
 			response.end()
 		})
+	} else {
+		// ERROR MISSING SOME VARIABLE
+		response.writeHead(400, { 'Content-Type': 'application/json' })
+		response.write(JSON.stringify({error: 'Missing some variable.'}))
+		response.end()
 	}
-	response.writeHead(400, { 'Content-Type': 'application/json' })
-	response.write(JSON.stringify({error: 'Missing some variable'}))
-	response.end()
 })
 
 function checkWayPoint(wp, pickup) {
-	if (wp && wp.address && wp.city && wp.state && wp.zip && wp.name && wp.phone && wp.location)
+	if (wp.address && wp.city && wp.state && wp.zip && wp.name && wp.phone && wp.location)
 		if (pickup)
 			if (wp.arrive_at)
 				return true
 			else
-				return true
-	return false
-} 
+				return false
+		else
+			return true
+	else
+		return false
+}
 
 // 2. Deleting a job:
 app.delete('/Piggyback/jobs/*', function(request, response) {

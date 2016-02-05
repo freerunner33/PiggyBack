@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS Destinations (
 
 CREATE TABLE IF NOT EXISTS Tasks (
 	shortId VARCHAR(64) PRIMARY KEY NOT NULL,
+	taskId VARCHAR(64) NOT NULL,
 	yelpId VARCHAR(64) NOT NULL,
 	company VARCHAR(64) NOT NULL,
 	driverTip VARCHAR(64) DEFAULT '0',
@@ -36,5 +37,6 @@ CREATE TABLE IF NOT EXISTS Tasks (
 	workerName VARCHAR(64) NOT NULL,
 	destination VARCHAR(64) NOT NULL,
 	completionTime VARCHAR(64),
-	didSucceed VARCHAR(64)
+	didSucceed VARCHAR(64),
+	status VARCHAR(1024)
 )

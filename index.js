@@ -327,9 +327,10 @@ app.post('/Piggyback/jobs', function(request, response) {
 					j.dropoff_waypoint.special_instructions				// notes for task
 				).then(function(taskB) {
 					onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
-						connection.query('INSERT INTO Tasks (shortId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+						connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 							[
 								taskA.shortId,													// shortId
+								taskA.id,														// taskId
 								j.order_id,														// yelpId
 								'Yelp',															// company
 								null,															// driverTip
@@ -349,20 +350,21 @@ app.post('/Piggyback/jobs', function(request, response) {
 								// need to assign this task to the worker
 								worker.tasks.push(taskB.id)
 								onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-									connection.query('INSERT INTO Tasks (shortId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+									connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 										[
-											taskB.shortId,													// shortId
-											j.order_id,														// yelpId
-											'Yelp',															// company
-											j.tip,															// driverTip
-											'dropoff',														// taskType
-											(dateA).toISOString(),											// completeAfter	- in UTC
-											(dateC).toISOString(),											// completeBefore	- in UTC
-											worker.id,														// workerId
-											worker.name,													// workerName
+											taskB.shortId,										// shortId
+											taskB.id,											// taskId
+											j.order_id,											// yelpId
+											'Yelp',												// company
+											j.tip,												// driverTip
+											'dropoff',											// taskType
+											(dateA).toISOString(),								// completeAfter	- in UTC
+											(dateC).toISOString(),								// completeBefore	- in UTC
+											worker.id,											// workerId
+											worker.name,										// workerName
 											'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
-											null,															// completionTime
-											null															// didSucceed
+											null,												// completionTime
+											null												// didSucceed
 										], 
 										function(error, rows)
 										{
@@ -406,8 +408,9 @@ app.post('/Piggyback/jobs', function(request, response) {
 			response.end()
 		})
 	} else {
+		// ERROR MISSING SOME VARIABLE
 		response.writeHead(400, { 'Content-Type': 'application/json' })
-		response.write(JSON.stringify({error: 'Missing some variable'}))
+		response.write(JSON.stringify({error: 'Missing some variable.'}))
 		response.end()
 	}
 })
@@ -517,6 +520,8 @@ app.post('/Piggyback/signin', function(request, response) {
 	})
 })
 
+
+
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 	console.log('\nWEBHOOK: taskStarted\nID 0: Task started by worker.')
 	console.log(JSON.stringify(request.body))
@@ -544,6 +549,26 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
 	console.log(JSON.stringify(request.body))
+	
+	connection.query('SELECT status FROM Tasks where taskId=?', [request.body.taskId], function(error, rows) {
+		if (error)
+			throw error
+		if (rows.length) {
+			var str = rows.status + '|40:' + request.body.time
+			connection.query('UPDATE Tasks SET status=? WHERE taskID=?', [str, request.body.taskId], function(error, rows) {
+				if (error)
+					throw error
+				console.log('Successfully updated task: ' + request.body.taskId)
+			})
+		} else {
+			var str = '40:' + request.body.time
+			connection.query('UPDATE Tasks SET status=? WHERE taskID=?', [str, request.body.taskId], function(error, rows) {
+				if (error)
+					throw error
+				console.log('Successfully updated task: ' + request.body.taskId)
+			})
+		}
+	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 	console.log('\nWEBHOOK: taskUpdated\nID 7: Task updated.')
