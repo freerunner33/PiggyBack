@@ -547,14 +547,8 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	// console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
-	// console.log(JSON.stringify(request.body))
-	
-	connection.query('UPDATE Tasks SET status="status 2" WHERE taskId="?"', [request.body.taskId], function(error, rows) {
-		if (error)
-			throw error
-		console.log(rows)
-	})
+	console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
+	console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 	console.log('\nWEBHOOK: taskUpdated\nID 7: Task updated.')
@@ -563,6 +557,12 @@ app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	console.log('\nWEBHOOK: taskDeleted\nID 8: Task deleted.')
 	console.log(JSON.stringify(request.body))
+
+	connection.query('UPDATE Tasks SET status="status 2"', function(error, rows) {
+		if (error)
+			throw error
+		console.log(rows)
+	})
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	console.log('\nWEBHOOK: taskAssigned\nID 9: Task assigned to worker.')
