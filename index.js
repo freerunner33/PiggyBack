@@ -579,9 +579,7 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 // Used to respond to webhook request
 app.get('/Piggyback/webhook/taskCreated', function(request, response, next) {
 	console.log('PARAMS')
-	console.log(request.params)
-	console.log('\nREQUEST')
-	console.log(request)
+	console.log(request.query.check)
 	// response.send(request.originalUrl.split('=')[1])
 	return next()
 })
