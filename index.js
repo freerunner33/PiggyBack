@@ -554,15 +554,16 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 		if (error)
 			throw error
 		if (rows.length) {
+			console.log('LENGTH: ' + rows.length)
 			var str = rows.status + '|40:' + request.body.time
-			connection.query('UPDATE Tasks SET status=? WHERE taskID=?', [str, request.body.taskId], function(error, rows) {
+			connection.query('UPDATE Tasks SET status=? WHERE taskID=?', ['status', request.body.taskId], function(error, rows) {
 				if (error)
 					throw error
 				console.log('Successfully updated task: ' + request.body.taskId)
 			})
 		} else {
 			var str = '40:' + request.body.time
-			connection.query('UPDATE Tasks SET status=? WHERE taskID=?', [str, request.body.taskId], function(error, rows) {
+			connection.query('UPDATE Tasks SET status=? WHERE taskID=?', ['status', request.body.taskId], function(error, rows) {
 				if (error)
 					throw error
 				console.log('Successfully updated task: ' + request.body.taskId)
