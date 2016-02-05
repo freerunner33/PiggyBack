@@ -581,7 +581,7 @@ app.get('/Piggyback/webhook/taskCreated', function(request, response, next) {
 	console.log('PARAMS')
 	console.log(request.params)
 	console.log('\nREQUEST')
-	console.log(JSON.stringify(request))
+	console.log(request)
 	// response.send(request.originalUrl.split('=')[1])
 	return next()
 })
