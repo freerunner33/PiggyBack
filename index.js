@@ -562,7 +562,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 			})
 		} else {
 			var str = 'bob' // '40:' + request.body.time
-			var query = 'UPDATE Tasks SET status="bob" WHERE yelpId="123example456id"'
+			var query = 'UPDATE Tasks SET status="' + str + '" WHERE yelpId="123example456id"'
 			console.log(query)
 			connection.query(query, function(error, rows) {
 				if (error)
