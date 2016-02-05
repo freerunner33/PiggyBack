@@ -527,7 +527,8 @@ app.post('/Piggyback/signin', function(request, response) {
 	})
 })
 
-
+// getting noise from other sources???
+// just old tasks keep coming up...
 
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 	console.log('\nWEBHOOK: taskStarted\nID 0: Task started by worker.')
@@ -556,15 +557,6 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
 	console.log(JSON.stringify(request.body))
-
-	connection.query('UPDATE Tasks SET status=CONCAT(status, "ddd")', function(error, rows) {
-		if (error)
-			throw error
-		if (rows) {
-			console.log(rows)
-		}
-	})
-	connection.end()
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 	console.log('\nWEBHOOK: taskUpdated\nID 7: Task updated.')
@@ -585,23 +577,24 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 
 
 // Used to respond to webhook request
-// app.get('/Piggyback/webhook/taskUnassigned', function(request, response, next) {
-// 	response.send(request.originalUrl.split('=')[1])
-// 	return next()
-// })
+app.get('/Piggyback/webhook/taskCreated', function(request, response, next) {
+	console.log(request.body)
+	// response.send(request.originalUrl.split('=')[1])
+	return next()
+})
 
 // Used to send a webhook request
-// app.get('/Piggyback/sendwebhook', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		onfleet.createWebHook('http://107.170.198.205/Piggyback/webhook/taskUnassigned', 10).then(function(data) {
-// 			response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
-// 		}, function(error) {
-// 			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-// 		})
-// 	} else {
-// 		response.redirect('/Piggyback/signin')
-// 	}
-// })
+app.get('/Piggyback/sendwebhook', function(request, response) {
+	if (request.session.loggedin) {
+		onfleet.createWebHook('http://107.170.198.205/Piggyback/webhook/taskCreated', 10).then(function(data) {
+			response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
+		}, function(error) {
+			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+		})
+	} else {
+		response.redirect('/Piggyback/signin')
+	}
+})
 
 http.listen(8080, '127.0.0.1', function() {
 	// console.log('listening on port 8080')
