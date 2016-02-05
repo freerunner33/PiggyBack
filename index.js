@@ -413,21 +413,17 @@ app.post('/Piggyback/jobs', function(request, response) {
 })
 
 function checkWayPoint(wp, pickup) {
-	if (wp.address && wp.city && wp.state && wp.zip && wp.name && wp.phone && wp.location) {
-		if (pickup) {
-			if (wp.arrive_at) {
-				console.log('PICKUP')
+	if (wp.address && wp.city && wp.state && wp.zip && wp.name && wp.phone && wp.location)
+		if (pickup)
+			if (wp.arrive_at)
 				return true
-			} else {
+			else
 				return false
-			}
-		} else {
-			console.log('DROPOFF')
+		else
 			return true
-		}
-	} else {
+		
+	else
 		return false
-	}
 } 
 
 app.get('/Piggyback/signup', function(request, response) {
