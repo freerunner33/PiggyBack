@@ -78,10 +78,9 @@ app.get('/Piggyback/test', function(request, response) {
 })
 
 app.post('/Piggyback/twilio', function(request, response) {
-	console.log('BODY')
-	console.log(request.body)
-	console.log('\nREQUEST')
-	console.log(request)
+	console.log('NEW REPLY MESSAGE')
+	console.log('Message from: ' + request.body.From)
+	console.log('Message body: ' + request.body.Body)
 })
 
 
