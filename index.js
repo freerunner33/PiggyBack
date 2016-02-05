@@ -526,74 +526,73 @@ app.post('/Piggyback/signin', function(request, response) {
 		}
 	})
 })
-
-// getting noise from other sources???
-// just old tasks keep coming up...
+// http://baudehlo.com/2014/04/28/node-js-multiple-query-transactions/
+// multiple queries
 
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
-	console.log('\nWEBHOOK: taskStarted\nID 0: Task started by worker.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskStarted\nID 0: Task started by worker.')
+	// console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskEta', function(request, response) {
-	console.log('\nWEBHOOK: taskEta\nID 1: Worker ETA less than or equal to notification threshold.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskEta\nID 1: Worker ETA less than or equal to notification threshold.')
+	// console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskArrival', function(request, response) {
-	console.log('\nWEBHOOK: taskArrival\nID 2: Worker arriving, 150 meters away or closer.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskArrival\nID 2: Worker arriving, 150 meters away or closer.')
+	// console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
-	console.log('\nWEBHOOK: taskCompleted\nID 3: Task completed by worker.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskCompleted\nID 3: Task completed by worker.')
+	// console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskFailed', function(request, response) {
-	console.log('\nWEBHOOK: taskFailed\nID 4: Task failed.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskFailed\nID 4: Task failed.')
+	// console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
-	console.log('\nWEBHOOK: workerDuty\nID 5: Worker status changed.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: workerDuty\nID 5: Worker status changed.')
+	// console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
+	// console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
-	console.log('\nWEBHOOK: taskUpdated\nID 7: Task updated.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskUpdated\nID 7: Task updated.')
+	// console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	console.log('\nWEBHOOK: taskDeleted\nID 8: Task deleted.')
 	console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
-	console.log('\nWEBHOOK: taskAssigned\nID 9: Task assigned to worker.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskAssigned\nID 9: Task assigned to worker.')
+	// console.log(JSON.stringify(request.body))
 })
 app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
-	console.log('\nWEBHOOK: taskUnassigned\nID 10: Task unassigned from worker.')
-	console.log(JSON.stringify(request.body))
+	// console.log('\nWEBHOOK: taskUnassigned\nID 10: Task unassigned from worker.')
+	// console.log(JSON.stringify(request.body))
 })
 
 
 // Used to respond to webhook request
-app.get('/Piggyback/webhook/taskCreated', function(request, response, next) {
-	response.send(request.query.check)
-	return next()
-})
+// app.get('/Piggyback/webhook/taskCreated', function(request, response, next) {
+// 	response.send(request.query.check)
+// 	return next()
+// })
 
-// Used to send a webhook request
-app.get('/Piggyback/sendwebhook', function(request, response) {
-	if (request.session.loggedin) {
-		onfleet.createWebHook('http://107.170.198.205/Piggyback/webhook/taskCreated', 6).then(function(data) {
-			response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
-		}, function(error) {
-			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-		})
-	} else {
-		response.redirect('/Piggyback/signin')
-	}
-})
+// // Used to send a webhook request
+// app.get('/Piggyback/sendwebhook', function(request, response) {
+// 	if (request.session.loggedin) {
+// 		onfleet.createWebHook('http://107.170.198.205/Piggyback/webhook/taskCreated', 6).then(function(data) {
+// 			response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
+// 		}, function(error) {
+// 			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+// 		})
+// 	} else {
+// 		response.redirect('/Piggyback/signin')
+// 	}
+// })
 
 http.listen(8080, '127.0.0.1', function() {
 	// console.log('listening on port 8080')
