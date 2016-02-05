@@ -53,6 +53,13 @@ app.use(session({
 }))
 
 // TESTING
+app.get('/Piggyback/gettask', function(request, response) {
+	onfleet.getSingleTask('Pqok7RpSoEnRiV3uKX34JG1p').then(function(data) {
+		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
+	}, function(error) {
+		response.render('error', {pageTitle: 'Error', errors: [error]})
+	})
+})
 
 
 // ROUTING
