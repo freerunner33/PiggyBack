@@ -415,7 +415,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 function checkWayPoint(wp, pickup) {
 	if (wp)
 		if (pickup)
-			return true
+			if (wp.arrive_at)
+				return true
 		else
 			return true
 	else
