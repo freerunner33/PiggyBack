@@ -71,7 +71,6 @@ app.get('/Piggyback/test', function(request, response) {
 	        console.log('PHONE STUFF')
 	        console.log(responseData.from); // outputs "+14506667788"
 	        console.log(responseData.body); // outputs "word to your mother."
-
 	    }
 	});
 
