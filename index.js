@@ -558,7 +558,7 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	console.log('\nWEBHOOK: taskDeleted\nID 8: Task deleted.')
 	console.log(JSON.stringify(request.body))
 
-	connection.query('UPDATE Tasks SET status="status 5" WHERE taskId="?"', ['OlcPENWYW4CXAt9pDfuuS~eX'], function(error, rows) {
+	connection.query('DELETE FROM Tasks WHERE taskId="?"', ['OlcPENWYW4CXAt9pDfuuS~eX'], function(error, rows) {
 		if (error)
 			throw error
 		console.log(rows)
