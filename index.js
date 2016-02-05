@@ -550,7 +550,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	// console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
 	// console.log(JSON.stringify(request.body))
 	
-	connection.query('SELECT status FROM Tasks where taskId=? LOCK IN SHARE MODE', [request.body.taskId], function(error, rows) {
+	connection.query('SELECT status FROM Tasks FOR UPDATE', [request.body.taskId], function(error, rows) {
 		if (error)
 			throw error
 		if (rows.length) {
@@ -562,7 +562,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 			})
 		} else {
 			var str = 'something' // '40:' + request.body.time
-			var query = 'UPDATE Tasks SET status="' + str + '" WHERE yelpId="123example456id"'
+			var query = 'UPDATE Tasks SET status="status 1"'
 			console.log(query)
 			connection.query(query, function(error, rows) {
 				if (error)
