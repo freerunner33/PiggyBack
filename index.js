@@ -1,4 +1,3 @@
-// TWILIO 9709991252
 
 // SETUP
 
@@ -7,6 +6,7 @@ var onfleet = require('./onfleet.js')
 var tz = require('./timezone.js')
 var connection = require('./database.js')
 var signUpKey = require('./keys.js').signUpKey
+var client = require('twilio')('ACb881b9340ea17635979b58d81acb6cdb', '291061d8ef68757197f8308b3856aa9e')
 
 var user1 = require('./keys.js').user1
 var pass1 = require('./keys.js').pass1
@@ -54,12 +54,27 @@ app.use(session({
 }))
 
 // TESTING
-app.get('/Piggyback/gettask', function(request, response) {
-	onfleet.getSingleTask('Pqok7RpSoEnRiV3uKX34JG1p').then(function(data) {
-		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(data)]})
-	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: [error]})
-	})
+app.get('/Piggyback/test', function(request, response) {
+	client.sendMessage({
+	    to:'+19703084693',
+	    from: '+19709991252',
+	    body: 'Random text message from Twilio' // body of the SMS message
+
+	}, function(err, responseData) { //this function is executed when a response is received from Twilio
+		if (err) {
+			console.log('ERROR')
+			console.log(err)
+		} else {
+	        // "responseData" is a JavaScript object containing data received from Twilio.
+	        // A sample response from sending an SMS message is here (click "JSON" to see how the data appears in JavaScript):
+	        // http://www.twilio.com/docs/api/rest/sending-sms#example-1
+	        console.log('PHONE STUFF')
+	        console.log(responseData.from); // outputs "+14506667788"
+	        console.log(responseData.body); // outputs "word to your mother."
+
+	    }
+	});
+
 })
 
 
