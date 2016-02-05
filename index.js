@@ -553,24 +553,15 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	connection.query('SELECT status FROM Tasks FOR UPDATE', [request.body.taskId], function(error, rows) {
 		if (error)
 			throw error
-		if (rows.length) {
-			var str = rows[0].status + '|40:' + request.body.time
-			connection.query('UPDATE Tasks SET status="?" WHERE taskId="?"', ['status', request.body.taskId], function(error, rows) {
-				if (error)
-					throw error
-				console.log('1. Successfully updated task: ' + request.body.taskId)
-			})
-		} else {
-			var str = 'something' // '40:' + request.body.time
-			var query = 'UPDATE Tasks SET status="status 1"'
-			console.log(query)
-			connection.query(query, function(error, rows) {
-				if (error)
-					throw error
-				console.log('2. Successfully updated task: ' + request.body.taskId)
-				console.log(rows)
-			})
-		}
+		var str = 'something' // '40:' + request.body.time
+		var query = 'UPDATE Tasks SET status="status 1"'
+		console.log(query)
+		connection.query(query, function(error, rows) {
+			if (error)
+				throw error
+			console.log('2. Successfully updated task: ' + request.body.taskId)
+			console.log(rows)
+		})
 	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
