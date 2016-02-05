@@ -405,10 +405,11 @@ app.post('/Piggyback/jobs', function(request, response) {
 			response.write(JSON.stringify(error))
 			response.end()
 		})
+	} else {
+		response.writeHead(400, { 'Content-Type': 'application/json' })
+		response.write(JSON.stringify({error: 'Missing some variable'}))
+		response.end()
 	}
-	response.writeHead(400, { 'Content-Type': 'application/json' })
-	response.write(JSON.stringify({error: 'Missing some variable'}))
-	response.end()
 })
 
 function checkWayPoint(wp, pickup) {
