@@ -582,7 +582,7 @@ app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	console.log('\nWEBHOOK: taskDeleted\nID 8: Task deleted.')
 	console.log(JSON.stringify(request.body))
-	connection.query('UPDATE Tasks SET status = concat(ifnull(status,""), "a,b,c") where taskId="QWEGpvl1lG8ls3B5h*SDqnvc"', function(error, rows) {
+	connection.query('UPDATE Tasks SET status = concat(ifnull(status,""), "a,b,c") where taskId = ?', ['QWEGpvl1lG8ls3B5h*SDqnvc'], function(error, rows) {
 		if (error)
 			console.log('ERROR\n' + error)
 		else
