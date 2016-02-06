@@ -389,7 +389,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 											'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
 											null,												// completionTime
 											null,												// didSucceed
-											'40:' + taskA.timeCreated							//status
+											'40:' + taskB.timeCreated							//status
 										], 
 										function(error, rows)
 										{
@@ -582,6 +582,12 @@ app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	console.log('\nWEBHOOK: taskDeleted\nID 8: Task deleted.')
 	console.log(JSON.stringify(request.body))
+	connection.query('UPDATE Tasks SET status = concat(ifnull(status,""), "a", "b", "c")', function(error, rows) {
+		if (error)
+			console.log('ERROR\n' + error)
+		else
+			console.log('SUCCESS\n' + rows)
+	})
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	// console.log('\nWEBHOOK: taskAssigned\nID 9: Task assigned to worker.')
