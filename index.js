@@ -58,21 +58,15 @@ app.get('/Piggyback/test', function(request, response) {
 	client.sendMessage({
 	    to:'+19703084693',
 	    from: '+19709991252',
-	    body: 'Random text message from Twilio' // body of the SMS message
-
+	    body: 'Random text message from Twilio'
 	}, function(err, responseData) { //this function is executed when a response is received from Twilio
 		if (err) {
-			console.log('ERROR')
+			console.log('Twilio message error')
 			console.log(err)
 		} else {
-	        // "responseData" is a JavaScript object containing data received from Twilio.
-	        // A sample response from sending an SMS message is here (click "JSON" to see how the data appears in JavaScript):
-	        // http://www.twilio.com/docs/api/rest/sending-sms#example-1
-	        console.log('PHONE STUFF')
-	        console.log(responseData.from) // outputs "+14506667788"
-	        console.log(responseData.body) // outputs "word to your mother."
-
-	        response.render('error', {pageTitle: 'Success phone', errors: [JSON.stringify(responseData)]})
+	        // console.log(responseData.from) // from phone number
+	        // console.log(responseData.body) // text message
+	        response.redirect('/Piggyback')
 	    }
 	})
 })
@@ -356,7 +350,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 					j.dropoff_waypoint.special_instructions				// notes for task
 				).then(function(taskB) {
 					onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
-						connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+						connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 							[
 								taskA.shortId,													// shortId
 								taskA.id,														// taskId
@@ -370,7 +364,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 								worker.name,													// workerName
 								'' + taskA.destination.address.number + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + taskA.destination.address.postalCode,
 								null,															// completionTime
-								null															// didSucceed
+								null,															// didSucceed
+								'40:' + taskA.timeCreated										//status
 							], 
 							function(error, rows)
 							{
@@ -379,7 +374,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 								// need to assign this task to the worker
 								worker.tasks.push(taskB.id)
 								onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-									connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+									connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 										[
 											taskB.shortId,										// shortId
 											taskB.id,											// taskId
@@ -393,7 +388,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 											worker.name,										// workerName
 											'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
 											null,												// completionTime
-											null												// didSucceed
+											null,												// didSucceed
+											'40:' + taskA.timeCreated							//status
 										], 
 										function(error, rows)
 										{
