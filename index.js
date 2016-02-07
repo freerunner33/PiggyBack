@@ -576,6 +576,13 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	console.log('\nWEBHOOK: workerDuty\nID 5: Worker status changed.')
 	console.log(JSON.stringify(request.body))
 	console.log('Current time: ' + (new Date()).getTime())
+
+	connection.query('UPDATE Tasks SET status = concat("|42: ") WHERE taskId = ?', ['RXRgNr727r896L6MCIO*F81T'], function(error, rows) {
+		if (error)
+			console.log('ERROR W\n' + error)
+		else
+			console.log('SUCCESS W\n' + rows.length + '\n' + rows)
+	})
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
@@ -584,9 +591,9 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	
 	connection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', ['abc', request.taskId], function(error, rows) {
 		if (error)
-			console.log('ERROR\n' + error)
+			console.log('ERROR C\n' + error)
 		else
-			console.log('SUCCESS\n' + rows.length + '\n' + rows)
+			console.log('SUCCESS C\n' + rows.length + '\n' + rows)
 	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
@@ -599,11 +606,11 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	console.log(JSON.stringify(request.body))
 	console.log('Current time: ' + (new Date()).getTime())
 	
-	connection.query('UPDATE Tasks SET status = concat("|42: ") WHERE taskId = ?', [request.taskId], function(error, rows) {
+	connection.query('UPDATE Tasks SET status = concat("|42: ") WHERE taskId = ?', ['' + request.taskId], function(error, rows) {
 		if (error)
-			console.log('ERROR\n' + error)
+			console.log('ERROR D\n' + error)
 		else
-			console.log('SUCCESS\n' + rows.length + '\n' + rows)
+			console.log('SUCCESS D\n' + rows.length + '\n' + rows)
 	})
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
