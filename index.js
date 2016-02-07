@@ -548,80 +548,48 @@ app.post('/Piggyback/signin', function(request, response) {
 // multiple queries
 
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
-	console.log('\nWEBHOOK: taskStarted\nID 0: Task started by worker.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskEta', function(request, response) {
-	console.log('\nWEBHOOK: taskEta\nID 1: Worker ETA less than or equal to notification threshold.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskArrival', function(request, response) {
-	console.log('\nWEBHOOK: taskArrival\nID 2: Worker arriving, 150 meters away or closer.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
-	console.log('\nWEBHOOK: taskCompleted\nID 3: Task completed by worker.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskFailed', function(request, response) {
-	console.log('\nWEBHOOK: taskFailed\nID 4: Task failed.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
-	console.log('\nWEBHOOK: workerDuty\nID 5: Worker status changed.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
-
-	connection.query('UPDATE Tasks SET status = concat(status, "|42W: ") WHERE taskId = ?', ['RXRgNr727r896L6MCIO*F81T'], function(error, rows) {
-		if (error)
-			console.log('ERROR W\n' + error)
-		else
-			console.log('SUCCESS W\n' + rows.length + '\n' + rows)
-	})
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	console.log('\nWEBHOOK: taskCreated\nID 6: New task created.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
-	
-	connection.query('UPDATE Tasks SET status = concat(status, ?) WHERE taskId = ?', ['abc', request.taskId], function(error, rows) {
-		if (error)
-			console.log('ERROR C\n' + error)
-		else
-			console.log('SUCCESS C\n' + rows.length + '\n' + rows)
-	})
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
-	console.log('\nWEBHOOK: taskUpdated\nID 7: Task updated.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
-	console.log('\nWEBHOOK: taskDeleted\nID 8: Task deleted.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
-	
-	connection.query('UPDATE Tasks SET status = concat(status, "|42D: ") WHERE taskId = ?', ['' + request.taskId], function(error, rows) {
-		if (error)
-			console.log('ERROR D\n' + error)
-		else
-			console.log('SUCCESS D\n' + rows.length + '\n' + rows)
-	})
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
-	console.log('\nWEBHOOK: taskAssigned\nID 9: Task assigned to worker.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
+	res.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
-	console.log('\nWEBHOOK: taskUnassigned\nID 10: Task unassigned from worker.')
 	console.log(JSON.stringify(request.body))
-	console.log('Current time: ' + (new Date()).getTime())
+	res.sendStatus(200)
 })
 
 
