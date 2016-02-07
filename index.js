@@ -577,7 +577,7 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	console.log(JSON.stringify(request.body))
 	console.log('Current time: ' + (new Date()).getTime())
 
-	connection.query('UPDATE Tasks SET status = concat("|42: ") WHERE taskId = ?', ['RXRgNr727r896L6MCIO*F81T'], function(error, rows) {
+	connection.query('UPDATE Tasks SET status = concat(status, "|42W: ") WHERE taskId = ?', ['RXRgNr727r896L6MCIO*F81T'], function(error, rows) {
 		if (error)
 			console.log('ERROR W\n' + error)
 		else
@@ -589,7 +589,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	console.log(JSON.stringify(request.body))
 	console.log('Current time: ' + (new Date()).getTime())
 	
-	connection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', ['abc', request.taskId], function(error, rows) {
+	connection.query('UPDATE Tasks SET status = concat(status, ?) WHERE taskId = ?', ['abc', request.taskId], function(error, rows) {
 		if (error)
 			console.log('ERROR C\n' + error)
 		else
@@ -606,7 +606,7 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	console.log(JSON.stringify(request.body))
 	console.log('Current time: ' + (new Date()).getTime())
 	
-	connection.query('UPDATE Tasks SET status = concat("|42: ") WHERE taskId = ?', ['' + request.taskId], function(error, rows) {
+	connection.query('UPDATE Tasks SET status = concat(status, "|42D: ") WHERE taskId = ?', ['' + request.taskId], function(error, rows) {
 		if (error)
 			console.log('ERROR D\n' + error)
 		else
