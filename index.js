@@ -598,12 +598,13 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	console.log('\nWEBHOOK: taskDeleted\nID 8: Task deleted.')
 	console.log(JSON.stringify(request.body))
 	console.log('Current time: ' + (new Date()).getTime())
-	// connection.query('UPDATE Tasks SET status = concat(ifnull(status,""), "a,b,c") where taskId = ?', ['' + request.taskId], function(error, rows) {
-	// 	if (error)
-	// 		console.log('ERROR\n' + error)
-	// 	else
-	// 		console.log('SUCCESS\n' + rows)
-	// })
+	
+	connection.query('UPDATE Tasks SET status = concat("|42: ") WHERE taskId = ?', [request.taskId], function(error, rows) {
+		if (error)
+			console.log('ERROR\n' + error)
+		else
+			console.log('SUCCESS\n' + rows.length + '\n' + rows)
+	})
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	console.log('\nWEBHOOK: taskAssigned\nID 9: Task assigned to worker.')
