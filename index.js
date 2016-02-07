@@ -582,11 +582,11 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	console.log(JSON.stringify(request.body))
 	console.log('Current time: ' + (new Date()).getTime())
 	
-	connection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', ['abc', request.taskId], function(rows, error) {
+	connection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', ['abc', request.taskId], function(error, rows) {
 		if (error)
 			console.log('ERROR\n' + error)
 		else
-			console.log('SUCCESS\n' + rows)
+			console.log('SUCCESS\n' + rows.length + '\n' + rows)
 	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
