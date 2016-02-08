@@ -597,7 +597,7 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	client.sendMessage({
 	    to:'+19703084693',
 	    from: '+19709991252',
-	    body: 'Worker' + request.body.workerId + ' changed status to ' + request.body.status + '.'
+	    body: 'Worker ' + request.body.workerId + ' changed status to ' + request.body.status + '.'
 	}, function(err, responseData) { //this function is executed when a response is received from Twilio
 		if (err) {
 			console.log('Twilio message error')
