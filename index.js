@@ -53,6 +53,19 @@ app.use(session({
   saveUninitialized: false
 }))
 
+var eat24StatusCodes = {
+	s40: 'submitted',
+	s41: 'denied',
+	s42: 'done_cancelled',
+	s44: 'not_found',
+	s50: 'assigned',
+	s51: 'at_pickup',
+	s52: 'otw_active',
+	s53: 'at_dropoff',
+	s54: 'done_delivered',
+	s55: 'done_cannot_deliver'
+}
+
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
 	client.sendMessage({
@@ -162,6 +175,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 					if (rows.length) {
 						// get worker details
 						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+							var statusNum = 's' + 53
 							if (worker.location) {
 								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
 							} else {
@@ -173,19 +187,19 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 								{
 									job_id: task.shortId,
 									order_id: rows[0].yelpId,
-									status_code: 53,				// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
-									status: 'at_dropoff',			// AND THIS
+									status_code: statusNum,						// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
+									status: eat24StatusCodes.statusNum			// AND THIS
 									log: [
-										{
-											status_code: 51,
-											status: 'at_pickup',
-											timestamp: '2016-05-02T12:30:00-0800'		// NEED TO LOCALIZE
-										},
-										{
-											status_code: 53,
-											status: 'at_dropoff',
-											timestamp: '2016-05-02T12:45:00-0800'		// LOCALIZE
-										}
+										// {
+										// 	status_code: 51,
+										// 	status: 'at_pickup',
+										// 	timestamp: '2016-05-02T12:30:00-0800'		// NEED TO LOCALIZE
+										// },
+										// {
+										// 	status_code: 53,
+										// 	status: 'at_dropoff',
+										// 	timestamp: '2016-05-02T12:45:00-0800'		// LOCALIZE
+										// }
 									],
 									driver: {
 										name: worker.name,
@@ -594,20 +608,17 @@ app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
-	client.sendMessage({
-	    to:'+19703084693',
-	    from: '+19709991252',
-	    body: 'Worker ' + request.body.workerId + ' changed status to ' + request.body.status + '.'
-	}, function(err, responseData) { //this function is executed when a response is received from Twilio
-		if (err) {
-			console.log('Twilio message error')
-			console.log(err)
-		} else {
-	        // console.log(responseData.from) // from phone number
-	        // console.log(responseData.body) // text message
-	        console.log(JSON.stringify(request.body))
-			response.sendStatus(200)
-	    }
+	connection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', ["42", "X7CuZXaZ1BGAFeiboQtLE13J"], function(error, rows) {
+		if (error) {
+			console.log('ERROR')
+			console.log(error)
+		}
+		if (rows) {
+			console.log('ROWS')
+			console.log(rows)
+		}
+		// console.log(JSON.stringify(request.body))
+		response.sendStatus(200)
 	})
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
