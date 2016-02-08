@@ -549,47 +549,47 @@ app.post('/Piggyback/signin', function(request, response) {
 
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskEta', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskArrival', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 	console.log(JSON.stringify(request.body))
-	res.sendStatus(200)
+	response.sendStatus(200)
 })
 
 
