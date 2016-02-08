@@ -560,8 +560,22 @@ app.post('/Piggyback/webhook/taskArrival', function(request, response) {
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
-	console.log(JSON.stringify(request.body))
-	response.sendStatus(200)
+	client.sendMessage({
+	    to:'+19703084693',
+	    from: '+19709991252',
+	    body: 'Task was completed. Please respond with 1 to confirm, or 0 to indicate 
+	    	that the task was not completed'
+	}, function(err, responseData) { //this function is executed when a response is received from Twilio
+		if (err) {
+			console.log('Twilio message error')
+			console.log(err)
+		} else {
+	        // console.log(responseData.from) // from phone number
+	        // console.log(responseData.body) // text message
+	        console.log(JSON.stringify(request.body))
+			response.sendStatus(200)
+	    }
+	})
 })
 app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 	console.log(JSON.stringify(request.body))
