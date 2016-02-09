@@ -613,15 +613,16 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		connection.query('INSERT INTO JobLogs (shortId, statusCode, status, timestamp) VALUES (?,?,?,?)', [task.shortId,'54','done_delivered',(new Date()).toISOString()], function(error, rows){
-			if (error)
-				console.log('ERROR - query')
-			if (rows) {
-				console.log('SUCCESS - query')
-				console.log(rows)
-			}
-			response.sendStatus(200)
-		})
+		if (!task.pickupTask) {		// Must be dropoff task
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, status, timestamp) VALUES (?,?,?,?)', [task.shortId,'54','done_delivered',(new Date()).toISOString()], function(error, rows){
+				if (error)
+					console.log('ERROR - query')
+				if (rows) {
+					console.log('SUCCESS - query')
+				}
+				response.sendStatus(200)
+			})
+		}
 	}, function(error) {
 		console.log('TASK NOT FOUND')
 		response.sendStatus(200)
