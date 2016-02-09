@@ -621,9 +621,17 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	// 	console.log(JSON.stringify(request.body))
 	// 	response.sendStatus(200)
 	// })
-	console.log('NEW TASK CREATED')
-	console.log('Task ID: ' + request.body.taskId)
-	response.sendStatus(200)
+	connection.query('SELECT shortId, yelpId FROM Tasks WHERE taskId = ?', [request.body.taskId], function(error, rows) {
+		if (error)
+			console.log('ERROR - NEW TASK')
+		if (rows) {
+			console.log('SUCCESS - NEW TASK')
+			console.log(rows[0])
+			console.log(rows[0].shortId)
+			console.log(rows[0].yelpId)
+		}
+		response.sendStatus(200)
+	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 	console.log(JSON.stringify(request.body))
