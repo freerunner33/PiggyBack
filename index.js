@@ -608,18 +608,8 @@ app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
-	connection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', ["42", "X7CuZXaZ1BGAFeiboQtLE13J"], function(error, rows) {
-		if (error) {
-			console.log('ERROR')
-			console.log(error)
-		}
-		if (rows) {
-			console.log('ROWS')
-			console.log(rows)
-		}
-		// console.log(JSON.stringify(request.body))
-		response.sendStatus(200)
-	})
+	console.log(JSON.stringify(request.body))
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	conection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', [request.body.taskId, "yIbpWibZtJXyeHq2elpXynuv"], function(error, rows){
