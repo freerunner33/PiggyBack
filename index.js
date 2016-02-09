@@ -617,7 +617,7 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	})
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	conection.query('INSERT INTO JobLogs (shortId, yelpId, statusCode, status, timestamp) VALUES (?,?,?,?,?)', [request.body.taskId, 'yelpId', 'statusCode', 'status', 'timestamp'], function(error, rows){
+	connection.query('INSERT INTO JobLogs (shortId, yelpId, statusCode, status, timestamp) VALUES (?,?,?,?,?)', [request.body.taskId, 'yelpId', 'statusCode', 'status', 'timestamp'], function(error, rows){
 		if (error)
 			console.log('ERROR')
 		if (rows)
