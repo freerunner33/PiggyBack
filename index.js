@@ -612,14 +612,18 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	conection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', [request.body.taskId, "yIbpWibZtJXyeHq2elpXynuv"], function(error, rows){
-		if (error)
-			console.log('ERROR')
-		if (rows)
-			console.log(rows)
-		console.log(JSON.stringify(request.body))
-		response.sendStatus(200)
-	})
+
+	// conection.query('INSERT INTO JobLogs (shortId, yelpId, statusCode, status, timestamp) VALUES (?,?,?,?,?)', [], function(error, rows){
+	// 	if (error)
+	// 		console.log('ERROR')
+	// 	if (rows)
+	// 		console.log(rows)
+	// 	console.log(JSON.stringify(request.body))
+	// 	response.sendStatus(200)
+	// })
+	console.log('NEW TASK CREATED')
+	console.log('Task ID: ' request.body.taskId)
+	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 	console.log(JSON.stringify(request.body))
