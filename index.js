@@ -169,7 +169,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 			response.write(JSON.stringify({error: 'Incorrect path format'}))
 			response.end()
 		} else {
-			console.log('else')
+			console.log('else ' + path[3])
 			onfleet.getSingleTask(path[3]).then(function(task) {
 				console.log('got single task ' + task.shortId)
 				connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
