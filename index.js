@@ -619,7 +619,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 			console.log('SUCCESS')
 			console.log(rows)
 		}
-		response.sentStatus(200)
+		response.sendStatus(200)
 	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
