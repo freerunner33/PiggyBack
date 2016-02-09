@@ -161,6 +161,7 @@ app.get('/Piggyback', function(request, response) {
 
 // requesting information about
 app.get('/Piggyback/jobs/*', function(request, response) {
+	console.log('Got request')
 	// if (request.session.loggedin) {
 		var path = request.url.split('/')
 		if (path.length != 4) {
@@ -173,8 +174,10 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 					if (error)
 						throw error
 					if (rows && rows.length) {
+						console.log('Found task in Tasks')
 						// get worker details
 						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+							console.log('Got worker')
 							var statusNum = 's' + 53
 							if (worker.location) {
 								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
@@ -182,9 +185,11 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 								var loc = null
 							}
 							connection.query('SELECT statusCode, status, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows) {
+								console.log('Queried JobLogs')
 								if (error)
 									throw error
 								if (rows && rows.length) {
+									console.log('Have rows from JobLogs')
 									response.writeHead(200, {'Content-Type': 'application/json'})
 									var json = JSON.stringify(
 										{
