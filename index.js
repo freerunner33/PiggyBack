@@ -612,42 +612,14 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	// 1. set all col1 to value
-	// 2. set all col2 to value where 
-	// 3. set all col3 to taskId where
-	// 4. set all col4 to value where col3 = taskId
-	connection.query('UPDATE JobLogs SET shortId = ?', ['Test1'], function(error, rows){
+	connection.query('INSERT INTO JobLogs (shortId, yelpId, statusCode, status, timestamp) VALUES (?,?,?,?,?)', ['1','2','3','4',request.body.taskId], function(error, rows){
 		if (error)
-			console.log('ERROR 1')
+			console.log('ERROR')
 		if (rows) {
-			console.log('SUCCESS 1')
+			console.log('SUCCESS')
 			console.log(rows)
 		}
-		connection.query('UPDATE JobLogs SET yelpId = ? WHERE shortId = ?', ['Test2', 'Test1'], function(error, rows){
-			if (error)
-				console.log('ERROR 2')
-			if (rows) {
-				console.log('SUCCESS 2')
-				console.log(rows)
-			}
-			connection.query('UPDATE JobLogs SET statusCode = ? WHERE yelpId = ?', [request.body.taskId, 'Test2'], function(error, rows){
-				if (error)
-					console.log('ERROR 3')
-				if (rows) {
-					console.log('SUCCESS 3')
-					console.log(rows)
-				}
-				connection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', ['IT WORKED', request.body.taskId], function(error, rows){
-					if (error)
-						console.log('ERROR 4')
-					if (rows) {
-						console.log('SUCCESS 4')
-						console.log(rows)
-					}
-					response.sendStatus(200)
-				})
-			})
-		})
+		response.sentStatus(200)
 	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
