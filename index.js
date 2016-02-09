@@ -608,34 +608,21 @@ app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
-	console.log(JSON.stringify(request.body))
-	response.sendStatus(200)
+	conection.query('INSERT INTO JobLogs (shortId, yelpId, statusCode, status, timestamp) VALUES (?,?,?,?,?)', ['shortId', 'yelpId', 'statusCode', 'status', 'timestamp'], function(error, rows){
+		if (error)
+			console.log('ERROR')
+		if (rows)
+			console.log('SUCCESS ' + rows)
+		response.sendStatus(200)
+	})
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-
-	// conection.query('INSERT INTO JobLogs (shortId, yelpId, statusCode, status, timestamp) VALUES (?,?,?,?,?)', [], function(error, rows){
-	// 	if (error)
-	// 		console.log('ERROR')
-	// 	if (rows)
-	// 		console.log(rows)
-	// 	console.log(JSON.stringify(request.body))
-	// 	response.sendStatus(200)
-	// })
-	var query = 'SELECT shortId, yelpId FROM Tasks WHERE taskId = "' + request.body.taskId + '"'
-	connection.query(query, function(error, rows) { 
-		console.log('QUERY: ' + query)
-		console.log(JSON.stringify(rows))
-		if (error) {
-			console.log('ERROR - NEW TASK')
-			response.sendStatus(200)
-		}
-		if (rows && rows.length) {
-			console.log('SUCCESS - NEW TASK')
-			console.log(rows[0])
-			console.log(rows[0].shortId)
-			console.log(rows[0].yelpId)
-			response.sendStatus(200)
-		}
+	conection.query('INSERT INTO JobLogs (shortId, yelpId, statusCode, status, timestamp) VALUES (?,?,?,?,?)', [request.body.taskId, 'yelpId', 'statusCode', 'status', 'timestamp'], function(error, rows){
+		if (error)
+			console.log('ERROR')
+		if (rows)
+			console.log('SUCCESS ' + rows)
+		response.sendStatus(200)
 	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
