@@ -46,5 +46,5 @@ CREATE TABLE IF NOT EXISTS JobLogs (
 	yelpId VARCHAR(64) NOT NULL,
 	statusCode VARCHAR(64) NOT NULL,
 	status VARCHAR(64) NOT NULL,
-	timestamp VARCHAR(64)
+	timestamp VARCHAR(64) NOT NULL
 );
