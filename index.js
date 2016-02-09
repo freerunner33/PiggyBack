@@ -628,7 +628,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 			console.log('ERROR - NEW TASK')
 			response.sendStatus(200)
 		}
-		if (rows) {
+		if (rows && rows.length) {
 			console.log('SUCCESS - NEW TASK')
 			console.log(rows[0])
 			console.log(rows[0].shortId)
