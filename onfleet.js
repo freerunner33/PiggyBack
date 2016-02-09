@@ -190,6 +190,9 @@ function listTasks() {
 function getSingleTask(id) {
 	return request('tasks/' + id, 'GET')
 }
+function getSingleTaskByShortID(id) {
+	return request('tasks/shortId/' + id, 'GET')
+}
 function updateTask(id, data) {
 	return request('tasks/' + id, 'PUT', data)
 }
@@ -242,6 +245,7 @@ module.exports = {
 	createNewTask: createNewTask,
 	listTasks: listTasks,
 	getSingleTask: getSingleTask,
+	getSingleTaskByShortID: getSingleTaskByShortID,
 	updateTask: updateTask,
 	completeTask: completeTask,
 	deleteTask: deleteTask,
