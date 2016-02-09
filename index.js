@@ -624,12 +624,13 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	connection.query('SELECT shortId, yelpId FROM Tasks WHERE taskId = ?', [request.body.taskId], function(error, rows) {
 		if (error)
 			console.log('ERROR - NEW TASK')
-		if (rows) {
+		if (rows.length) {
 			console.log('SUCCESS - NEW TASK')
 			console.log(rows[0])
 			console.log(rows[0].shortId)
 			console.log(rows[0].yelpId)
 		}
+		console.log(rows)
 		response.sendStatus(200)
 	})
 })
