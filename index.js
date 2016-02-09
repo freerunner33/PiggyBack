@@ -613,7 +613,7 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		connection.query('INSERT INTO JobLogs (shortId, statusCode, status, timestamp) VALUES (?,?,?,?,?)', [task.shortId,'54','done_delivered',(new Date()).toISOString()], function(error, rows){
+		connection.query('INSERT INTO JobLogs (shortId, statusCode, status, timestamp) VALUES (?,?,?,?)', [task.shortId,'54','done_delivered',(new Date()).toISOString()], function(error, rows){
 			if (error)
 				console.log('ERROR - query')
 			if (rows) {
