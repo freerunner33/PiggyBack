@@ -637,7 +637,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 					console.log('SUCCESS 3')
 					console.log(rows)
 				}
-				connection.query('UPDATE JobLogs SET status = ? WHERE statusCode = ?', ['IT WORKED', request.body.taskId], function(error, rows){
+				connection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', ['IT WORKED', request.body.taskId], function(error, rows){
 					if (error)
 						console.log('ERROR 4')
 					if (rows) {
