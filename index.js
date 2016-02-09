@@ -161,7 +161,7 @@ app.get('/Piggyback', function(request, response) {
 
 // requesting information about
 app.get('/Piggyback/jobs/*', function(request, response) {
-	if (request.session.loggedin) {
+	// if (request.session.loggedin) {
 		var path = request.url.split('/')
 		if (path.length != 4) {
 			response.writeHead(400, {'Content-Type': 'application/json'})
@@ -237,9 +237,9 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 				response.end()
 			})
 		}
-	} else {
-		response.redirect('/Piggyback/signin')
-	}
+	// } else {
+	// 	response.redirect('/Piggyback/signin')
+	// }
 })
 
 // do delete instead when deployed
