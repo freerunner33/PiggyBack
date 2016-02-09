@@ -622,7 +622,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	// 	response.sendStatus(200)
 	// })
 	console.log('NEW TASK CREATED')
-	console.log('Task ID: ' request.body.taskId)
+	console.log('Task ID: ' + request.body.taskId)
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
