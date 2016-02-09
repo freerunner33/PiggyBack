@@ -621,8 +621,8 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	// 	console.log(JSON.stringify(request.body))
 	// 	response.sendStatus(200)
 	// })
-	connection.query('SELECT shortId, yelpId FROM Tasks WHERE taskId = \'?\'', [request.body.taskId], function(error, rows) {
-		console.log('SELECT shortId, yelpId FROM Tasks WHERE taskId = \'' + request.body.taskId + '\'')
+	connection.query('SELECT shortId, yelpId FROM Tasks WHERE taskId ="' + request.body.taskId + '"', [], function(error, rows) { 
+		console.log('SELECT shortId, yelpId FROM Tasks WHERE taskId = "' + request.body.taskId + '"')
 		console.log(rows)
 		if (error) {
 			console.log('ERROR - NEW TASK')
