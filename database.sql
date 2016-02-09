@@ -39,4 +39,12 @@ CREATE TABLE IF NOT EXISTS Tasks (
 	completionTime VARCHAR(64),
 	didSucceed VARCHAR(64),
 	status VARCHAR(1024)
-)
+);
+
+CREATE TABLE IF NOT EXISTS JobLogs (
+	shortId VARCHAR(64) PRIMARY KEY NOT NULL,
+	yelpId VARCHAR(64) NOT NULL,
+	statusCode VARCHAR(64) NOT NULL,
+	status VARCHAR(64) NOT NULL,
+	timestamp VARCHAR(64)
+);
