@@ -616,7 +616,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 		if (error)
 			console.log('ERROR')
 		if (rows)
-			console.log('SUCCESS')
+			console.log(rows)
 		console.log(JSON.stringify(request.body))
 		response.sendStatus(200)
 	})
