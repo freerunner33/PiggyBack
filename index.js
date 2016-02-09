@@ -622,8 +622,14 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	})
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	console.log(JSON.stringify(request.body))
-	response.sendStatus(200)
+	conection.query('UPDATE Tasks SET status = ? WHERE taskId = ?', [request.body.taskId, "yIbpWibZtJXyeHq2elpXynuv"], function(error, rows){
+		if (error)
+			console.log('ERROR')
+		if (rows)
+			console.log('SUCCESS')
+		console.log(JSON.stringify(request.body))
+		response.sendStatus(200)
+	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 	console.log(JSON.stringify(request.body))
