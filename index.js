@@ -236,7 +236,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 })
 
 function writeLog(arr, latitude, longitude) {
-	tz.getOffset(39.6034810, -119.6822510).then(function(offset) {
+	tz.getOffset(latitude, longitude).then(function(offset) {
 		for (i = 0; i < arr.length; i++) {
 			log = arr[i]
 			var status_code = log.status_code
@@ -316,6 +316,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		support_phone: b.support_phone, 
 		debug: b.debug
 	}
+	console.log(JSON.stringify(j))
 	/////////////////////////////////
 
 	if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
