@@ -235,30 +235,30 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 	// }
 })
 
-function writeLog(arr, latitude, longitude) {
-	tz.getOffset(39.6034810, -119.6822510).then(function(offset) {
-		for (i = 0; i < arr.length; i++) {
-			log = arr[i]
-			var status_code = log.status_code
-			var status = eat24StatusCodes[status_code]
-			var reason = eat24Reasons[status_code]
-			var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
-			time = time + offset.number
-			time = (new Date(time)).toISOString()
-			time = time.substring(0, time.length - 5) // 12:30:05.000Z
-			time = time + offset.string
-			newLog[i] = {
-				status_code: status_code,
-				status: status,
-				reason: reason,
-				timestamp: time
-			}
-		}
-		return(newlog)
-	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-	})
-}
+// function writeLog(arr, latitude, longitude) {
+// 	tz.getOffset(39.6034810, -119.6822510).then(function(offset) {
+// 		for (i = 0; i < arr.length; i++) {
+// 			log = arr[i]
+// 			var status_code = log.status_code
+// 			var status = eat24StatusCodes[status_code]
+// 			var reason = eat24Reasons[status_code]
+// 			var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
+// 			time = time + offset.number
+// 			time = (new Date(time)).toISOString()
+// 			time = time.substring(0, time.length - 5) // 12:30:05.000Z
+// 			time = time + offset.string
+// 			newLog[i] = {
+// 				status_code: status_code,
+// 				status: status,
+// 				reason: reason,
+// 				timestamp: time
+// 			}
+// 		}
+// 		return(newlog)
+// 	}, function(error) {
+// 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+// 	})
+// }
 
 // do delete instead when deployed
 app.post('/Piggyback/delete-task', function(request, response) {
