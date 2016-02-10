@@ -42,4 +42,23 @@ function getTimeZone(lat, lon) {
 	// latitude: '39.6034810', longitude: '-119.6822510'
 }
 
-module.exports = {getTimeZone: getTimeZone}
+function getOffsetString(lat, lon) {
+	return new Promise(function(resolve, reject) {
+		getTimeZone(lat, lon).then(function(timezone) {
+			var offset = timezone.rawOffset/36
+			if (offset > -1000 && offset < 1000)
+				if (offset < 0) 
+					offset = '-0' + ('' + offset).substring(1)
+				else
+					offset = '0' + offset
+			resolve(offset)
+		}, function(error) {
+			reject(error)
+		})
+	})
+}
+
+module.exports = {
+	getTimeZone: getTimeZone,
+	getOffsetString: getOffsetString
+}
