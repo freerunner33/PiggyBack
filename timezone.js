@@ -53,8 +53,8 @@ function getOffset(lat, lon) {
 					offsetStr = '0' + offsetStr
 			resolve(
 				{
-					number: offsetStr,
-					string: timezone.rawOffset
+					number: timezone.rawOffset,
+					string: offsetStr
 				}
 			)
 		}, function(error) {
