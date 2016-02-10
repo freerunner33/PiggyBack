@@ -42,16 +42,21 @@ function getTimeZone(lat, lon) {
 	// latitude: '39.6034810', longitude: '-119.6822510'
 }
 
-function getOffsetString(lat, lon) {
+function getOffset(lat, lon) {
 	return new Promise(function(resolve, reject) {
 		getTimeZone(lat, lon).then(function(timezone) {
-			var offset = timezone.rawOffset/36
-			if (offset > -1000 && offset < 1000)
-				if (offset < 0) 
-					offset = '-0' + ('' + offset).substring(1)
+			var offsetStr = timezone.rawOffset/36
+			if (offsetStr > -1000 && offsetStr < 1000)
+				if (offsetStr < 0) 
+					offsetStr = '-0' + ('' + offsetStr).substring(1)
 				else
-					offset = '0' + offset
-			resolve(offset)
+					offsetStr = '0' + offsetStr
+			resolve(
+				{
+					number: offsetStr
+					string: timezone.rawOffset
+				}
+			)
 		}, function(error) {
 			reject(error)
 		})
@@ -60,5 +65,5 @@ function getOffsetString(lat, lon) {
 
 module.exports = {
 	getTimeZone: getTimeZone,
-	getOffsetString: getOffsetString
+	getOffset: getOffset
 }
