@@ -191,7 +191,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 											job_id: task.shortId,
 											order_id: rows[0].yelpId,
 											status_code: statusNum,						// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
-											status: eat24StatusCodes.statusNum,			// AND THIS
+											status: eat24StatusCodes[statusNum],			// AND THIS
 											log: rows2,
 											driver: {
 												name: worker.name,
