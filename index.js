@@ -245,7 +245,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 })
 
 function writeLog(arr) {
-	for (int i = 0; i < arr.length; i++) {
+	for (i = 0; i < arr.length; i++) {
 		log = arr[i]
 		var status_code = log.status_code
 		var status = eat24StatusCodes[status_code]
