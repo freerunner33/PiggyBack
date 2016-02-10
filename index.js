@@ -196,7 +196,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 								if (error)
 									throw error
 								if (rows2 && rows2.length) {
-									var logFile = writeLog(rows2)
+									var logFile = writeLog(rows2, latitude, longitude)
 									response.writeHead(200, {'Content-Type': 'application/json'})
 									var json = JSON.stringify(
 										{
@@ -245,12 +245,14 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 })
 
 function writeLog(arr) {
+
 	for (i = 0; i < arr.length; i++) {
 		log = arr[i]
 		var status_code = log.status_code
 		var status = eat24StatusCodes[status_code]
 		var reason = eat24Reasons[status_code]
 		var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
+
 	}
 	return
 }
@@ -357,7 +359,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 		var timeB = timeA + (15 * 60 * 1000)
 		var timeC = timeA + (40 * 60 * 1000)
-		tz.getTimeZone().then(function(timezone) {
+		tz.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
 			timeA = timeA - (timezone.rawOffset * 1000)
 			timeB = timeB - (timezone.rawOffset * 1000)
 			timeC = timeC - (timezone.rawOffset * 1000)
