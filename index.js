@@ -175,7 +175,6 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 					if (rows && rows.length) {
 						// get worker details
 						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
-							var statusNum = 's' + 53
 							if (worker.location) {
 								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
 							} else {
@@ -191,7 +190,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 											job_id: task.shortId,
 											order_id: rows[0].yelpId,
 											status_code: rows2[rows2.length - 1].statusCode,							// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
-											status: eat24StatusCodes[statusNum],			// AND THIS
+											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],			// AND THIS
 											log: rows2,
 											driver: {
 												name: worker.name,
