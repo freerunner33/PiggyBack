@@ -80,19 +80,10 @@ var eat24Reasons = {
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	client.sendMessage({
-	    to:'+19703084693',
-	    from: '+19709991252',
-	    body: 'Random text message from Twilio'
-	}, function(err, responseData) { //this function is executed when a response is received from Twilio
-		if (err) {
-			console.log('Twilio message error')
-			console.log(err)
-		} else {
-	        // console.log(responseData.from) // from phone number
-	        // console.log(responseData.body) // text message
-	        response.redirect('/Piggyback')
-	    }
+	tz.getTimeZone(39.6034810, -119.6822510).then(function(timezone) {
+		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(timezone)]})
+	}, function(error) {
+		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 	})
 })
 
