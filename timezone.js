@@ -47,13 +47,13 @@ function getOffset(lat, lon) {
 		getTimeZone(lat, lon).then(function(timezone) {
 			var offsetStr = timezone.rawOffset/36
 			if (offsetStr > -1000 && offsetStr < 1000)
-				if (offsetStr < 0) 
+				if (offsetStr < 0)
 					offsetStr = '-0' + ('' + offsetStr).substring(1)
 				else
 					offsetStr = '0' + offsetStr
 			resolve(
 				{
-					number: offsetStr
+					number: offsetStr,
 					string: timezone.rawOffset
 				}
 			)
