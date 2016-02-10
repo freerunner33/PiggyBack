@@ -172,104 +172,104 @@ app.get('/Piggyback', function(request, response) {
 })
 
 // requesting information about
-// // app.get('/Piggyback/jobs/*', function(request, response) {
-// // 	// if (request.session.loggedin) {
-// // 		var path = request.url.split('/')
-// // 		if (path.length != 4) {
-// // 			response.writeHead(400, {'Content-Type': 'application/json'})
-// // 			response.write(JSON.stringify({error: 'Incorrect path format'}))
-// // 			response.end()
-// // 		} else {
-// // 			onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
-// // 				connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
-// // 					if (error)
-// // 						throw error
-// // 					if (rows && rows.length) {
-// // 						// get worker details
-// // 						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
-// // 							if (worker.location) {
-// // 								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
-// // 							} else {
-// // 								var loc = null
-// // 							}
-// // 							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
-// // 								if (error)
-// // 									throw error
-// // 								if (rows2 && rows2.length) {
-// // 									var logFile = writeLog(rows2)
-// // 									response.writeHead(200, {'Content-Type': 'application/json'})
-// // 									var json = JSON.stringify(
-// // 										{
-// // 											job_id: task.shortId,
-// // 											order_id: rows[0].yelpId,
-// // 											status_code: rows2[rows2.length - 1].statusCode,
-// // 											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
-// // 											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
-// // 											log: rows2,
-// // 											driver: {
-// // 												name: worker.name,
-// // 												location: loc,
-// // 												phone: worker.phone
-// // 											}
-// // 										}
-// // 									)
-// // 									console.log('SUCCESS')
-// // 									response.end(json)	
-// // 								} else {
-// // 									console.log('FAIL')
-// // 									response.writeHead(400, { 'Content-Type': 'application/json' })
-// // 									response.write(JSON.stringify({ error: 'Task not found in database'}))
-// // 									response.end()
-// // 								}
-// // 							})
-// // 						}, function(error) {
-// // 							response.writeHead(400, { 'Content-Type': 'application/json' })
-// // 							response.write(JSON.stringify(error))
-// // 							response.end()
-// // 						})
-// // 					} else {
-// // 						response.writeHead(400, { 'Content-Type': 'application/json' })
-// // 						response.write(JSON.stringify({ error: 'Task not found in database'}))
-// // 						response.end()
-// // 					}
-// // 				})
-// // 			}, function(error) {
-// // 				response.writeHead(400, { 'Content-Type': 'application/json' })
-// // 				response.write(JSON.stringify(error))
-// // 				response.end()
-// // 			})
-// // 		}
-// // 	// } else {
-// // 	// 	response.redirect('/Piggyback/signin')
-// // 	// }
-// // })
-
-// function writeLog(arr) {
-// 	for (int i = 0; i < arr.length; i++) {
-// 		log = arr[i]
-// 		var status_code = log.status_code
-// 		var status = eat24StatusCodes[status_code]
-// 		var reason = eat24Reasons[status_code]
-// 		var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
-// 	}
-// }
-
-// // do delete instead when deployed
-// app.post('/Piggyback/delete-task', function(request, response) {
-// 	if (request.session.loggedin) {
-// 		if (!request.body.id)
-// 			response.redirect('/Piggyback')
-// 		else {
-// 			onfleet.deleteTask(request.body.id).then(function() {
-// 				response.redirect('/Piggyback')
+// app.get('/Piggyback/jobs/*', function(request, response) {
+// 	// if (request.session.loggedin) {
+// 		var path = request.url.split('/')
+// 		if (path.length != 4) {
+// 			response.writeHead(400, {'Content-Type': 'application/json'})
+// 			response.write(JSON.stringify({error: 'Incorrect path format'}))
+// 			response.end()
+// 		} else {
+// 			onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
+// 				connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
+// 					if (error)
+// 						throw error
+// 					if (rows && rows.length) {
+// 						// get worker details
+// 						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+// 							if (worker.location) {
+// 								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
+// 							} else {
+// 								var loc = null
+// 							}
+// 							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
+// 								if (error)
+// 									throw error
+// 								if (rows2 && rows2.length) {
+// 									var logFile = writeLog(rows2)
+// 									response.writeHead(200, {'Content-Type': 'application/json'})
+// 									var json = JSON.stringify(
+// 										{
+// 											job_id: task.shortId,
+// 											order_id: rows[0].yelpId,
+// 											status_code: rows2[rows2.length - 1].statusCode,
+// 											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
+// 											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
+// 											log: rows2,
+// 											driver: {
+// 												name: worker.name,
+// 												location: loc,
+// 												phone: worker.phone
+// 											}
+// 										}
+// 									)
+// 									console.log('SUCCESS')
+// 									response.end(json)	
+// 								} else {
+// 									console.log('FAIL')
+// 									response.writeHead(400, { 'Content-Type': 'application/json' })
+// 									response.write(JSON.stringify({ error: 'Task not found in database'}))
+// 									response.end()
+// 								}
+// 							})
+// 						}, function(error) {
+// 							response.writeHead(400, { 'Content-Type': 'application/json' })
+// 							response.write(JSON.stringify(error))
+// 							response.end()
+// 						})
+// 					} else {
+// 						response.writeHead(400, { 'Content-Type': 'application/json' })
+// 						response.write(JSON.stringify({ error: 'Task not found in database'}))
+// 						response.end()
+// 					}
+// 				})
 // 			}, function(error) {
-// 				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+// 				response.writeHead(400, { 'Content-Type': 'application/json' })
+// 				response.write(JSON.stringify(error))
+// 				response.end()
 // 			})
 // 		}
-// 	} else {
-// 		response.redirect('/Piggyback/signin')
-// 	}
+// 	// } else {
+// 	// 	response.redirect('/Piggyback/signin')
+// 	// }
 // })
+
+function writeLog(arr) {
+	for (int i = 0; i < arr.length; i++) {
+		log = arr[i]
+		var status_code = log.status_code
+		var status = eat24StatusCodes[status_code]
+		var reason = eat24Reasons[status_code]
+		var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
+	}
+}
+
+// do delete instead when deployed
+app.post('/Piggyback/delete-task', function(request, response) {
+	if (request.session.loggedin) {
+		if (!request.body.id)
+			response.redirect('/Piggyback')
+		else {
+			onfleet.deleteTask(request.body.id).then(function() {
+				response.redirect('/Piggyback')
+			}, function(error) {
+				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+			})
+		}
+	} else {
+		response.redirect('/Piggyback/signin')
+	}
+})
 
 // app.post('/Piggyback/jobs', function(request, response) {
 // 	var b = request.body
@@ -477,80 +477,80 @@ app.get('/Piggyback', function(request, response) {
 // 	}
 // })
 
-// function checkWayPoint(wp, pickup) {
-// 	if (wp.address && wp.city && wp.state && wp.zip && wp.name && wp.phone && wp.location)
-// 		if (pickup)
-// 			if (wp.arrive_at)
-// 				return true
-// 			else
-// 				return false
-// 		else
-// 			return true
-// 	else
-// 		return false
-// } 
+function checkWayPoint(wp, pickup) {
+	if (wp.address && wp.city && wp.state && wp.zip && wp.name && wp.phone && wp.location)
+		if (pickup)
+			if (wp.arrive_at)
+				return true
+			else
+				return false
+		else
+			return true
+	else
+		return false
+} 
 
-// app.get('/Piggyback/signup', function(request, response) {
-// 	response.render('signup', {pageTitle: 'Sign up'})
-// })
+app.get('/Piggyback/signup', function(request, response) {
+	response.render('signup', {pageTitle: 'Sign up'})
+})
 
-// app.post('/Piggyback/signup', function(request, response) {
-// 	var username = request.body.username
-// 	var firstname = request.body.firstname
-// 	var lastname = request.body.lastname
-// 	var phone = request.body.phone
-// 	var password = request.body.password
-// 	var password2 = request.body.password2
-// 	var key = request.body.key
+app.post('/Piggyback/signup', function(request, response) {
+	var username = request.body.username
+	var firstname = request.body.firstname
+	var lastname = request.body.lastname
+	var phone = request.body.phone
+	var password = request.body.password
+	var password2 = request.body.password2
+	var key = request.body.key
 
-// 	if (key != signUpKey) {
-// 		response.render('signup', {pageTitle: 'Sign up', errors: ['Incorrect sign up key. Please contact Noah for a key to sign up'], username: username, firstname: firstname, lastname: lastname, phone: phone})
-// 		return
-// 	}
+	if (key != signUpKey) {
+		response.render('signup', {pageTitle: 'Sign up', errors: ['Incorrect sign up key. Please contact Noah for a key to sign up'], username: username, firstname: firstname, lastname: lastname, phone: phone})
+		return
+	}
 
-// 	if (!(username && firstname && lastname && phone && password && password2)) {
-// 		response.render('signup', {pageTitle: 'Sign up', errors: ['All fields must be completed'], username: username, firstname: firstname, lastname: lastname, phone: phone})
-// 		return
-// 	}
+	if (!(username && firstname && lastname && phone && password && password2)) {
+		response.render('signup', {pageTitle: 'Sign up', errors: ['All fields must be completed'], username: username, firstname: firstname, lastname: lastname, phone: phone})
+		return
+	}
 	
-// 	errors = []
+	errors = []
 	
-// 	if (!validator.isAlphanumeric(username))
-// 		errors.push('Username must contain only letters and numbers')
-// 	if (!validator.isAlpha(firstname))
-// 		errors.push('First Name must contain only letters')
-// 	if (!validator.isAlpha(lastname))
-// 		errors.push('Last Name must contain only letters')
-// 	if (!(phone.length == 12 && phone.charAt(3) == '-' && phone.charAt(7) == '-' && validator.isInt(phone.substring(0, 3) + phone.substring(4, 7) + phone.substring(8))))
-// 		errors.push('Phone Number must be of the form 123-456-7890')
-// 	if (password.length < 6)
-// 		errors.push('Password length must be at least 6')
-// 	if (!validator.isAscii(password))
-// 		errors.push('Password contains invalid characters')
-// 	if (password.localeCompare(password2) != 0)
-// 		errors.push('Passwords must match')
-// 	if (errors.length) {
-// 		response.render('signup', {pageTitle: 'Sign up', errors: errors, username: username, firstname: firstname, lastname: lastname, phone: phone})
-// 		return
-// 	}
+	if (!validator.isAlphanumeric(username))
+		errors.push('Username must contain only letters and numbers')
+	if (!validator.isAlpha(firstname))
+		errors.push('First Name must contain only letters')
+	if (!validator.isAlpha(lastname))
+		errors.push('Last Name must contain only letters')
+	if (!(phone.length == 12 && phone.charAt(3) == '-' && phone.charAt(7) == '-' && validator.isInt(phone.substring(0, 3) + phone.substring(4, 7) + phone.substring(8))))
+		errors.push('Phone Number must be of the form 123-456-7890')
+	if (password.length < 6)
+		errors.push('Password length must be at least 6')
+	if (!validator.isAscii(password))
+		errors.push('Password contains invalid characters')
+	if (password.localeCompare(password2) != 0)
+		errors.push('Passwords must match')
+	if (errors.length) {
+		response.render('signup', {pageTitle: 'Sign up', errors: errors, username: username, firstname: firstname, lastname: lastname, phone: phone})
+		return
+	}
 
-// 	connection.query('SELECT id FROM Users WHERE username=?', [username], function(error, rows) {
-// 		if (error) 
-// 			throw error
-// 		if (rows.length) {
-// 			response.render('signup', {pageTitle: 'Sign up', errors: ['Username already taken'], username: username, firstname: firstname, lastname: lastname, phone: phone})
-// 			return
-// 		}
-// 		connection.query('INSERT INTO Users (username, firstname, lastname, password, phone) VALUES (?,?,?,?,?)',
-// 			[username, firstname, lastname, password, phone], function(error, rows) 
-// 			{
-// 				if (error)
-// 					throw error
-// 				response.render('success', {pageTitle: 'Success', message: 'You have successfully signed up'})
-// 			}
-// 		)
-// 	})
-// })
+	connection.query('SELECT id FROM Users WHERE username=?', [username], function(error, rows) {
+		if (error) 
+			throw error
+		if (rows.length) {
+			response.render('signup', {pageTitle: 'Sign up', errors: ['Username already taken'], username: username, firstname: firstname, lastname: lastname, phone: phone})
+			return
+		}
+		connection.query('INSERT INTO Users (username, firstname, lastname, password, phone) VALUES (?,?,?,?,?)',
+			[username, firstname, lastname, password, phone], function(error, rows) 
+			{
+				if (error)
+					throw error
+				response.render('success', {pageTitle: 'Success', message: 'You have successfully signed up'})
+			}
+		)
+	})
+})
 
 // SIGNIN AND SIGNUP
 app.get('/Piggyback/signin', function(request, response) {
