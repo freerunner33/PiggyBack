@@ -678,7 +678,9 @@ app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	console.log(request.body)
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
+		console.log('Found task: ' + task.id)
 		if (!task.pickupTask) {		// Must be dropoff task
+			console.log('Task is a dropoff task!')
 			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'40',(new Date()).getTime], function(error, rows){
 				if (error)
 					console.log('ERROR - query')
