@@ -163,102 +163,102 @@ app.get('/Piggyback', function(request, response) {
 })
 
 // requesting information about
-app.get('/Piggyback/jobs/*', function(request, response) {
-	// if (request.session.loggedin) {
-		var path = request.url.split('/')
-		if (path.length != 4) {
-			response.writeHead(400, {'Content-Type': 'application/json'})
-			response.write(JSON.stringify({error: 'Incorrect path format'}))
-			response.end()
-		} else {
-			onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
-				connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
-					if (error)
-						throw error
-					if (rows && rows.length) {
-						// get worker details
-						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
-							if (worker.location) {
-								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
-							} else {
-								var loc = null
-							}
-							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
-								if (error)
-									throw error
-								if (rows2 && rows2.length) {
-									var logFile = writeLog(rows2, worker.location[1], worker.location[0])
-									response.writeHead(200, {'Content-Type': 'application/json'})
-									var json = JSON.stringify(
-										{
-											job_id: task.shortId,
-											order_id: rows[0].yelpId,
-											status_code: rows2[rows2.length - 1].statusCode,
-											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
-											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
-											log: rows2,
-											driver: {
-												name: worker.name,
-												location: loc,
-												phone: worker.phone
-											}
-										}
-									)
-									console.log('SUCCESS')
-									response.end(json)	
-								} else {
-									console.log('FAIL')
-									response.writeHead(400, { 'Content-Type': 'application/json' })
-									response.write(JSON.stringify({ error: 'Task not found in database'}))
-									response.end()
-								}
-							})
-						}, function(error) {
-							response.writeHead(400, { 'Content-Type': 'application/json' })
-							response.write(JSON.stringify(error))
-							response.end()
-						})
-					} else {
-						response.writeHead(400, { 'Content-Type': 'application/json' })
-						response.write(JSON.stringify({ error: 'Task not found in database'}))
-						response.end()
-					}
-				})
-			}, function(error) {
-				response.writeHead(400, { 'Content-Type': 'application/json' })
-				response.write(JSON.stringify(error))
-				response.end()
-			})
-		}
-	// } else {
-	// 	response.redirect('/Piggyback/signin')
-	// }
-})
-
-// function writeLog(arr, latitude, longitude) {
-// 	tz.getOffset(39.6034810, -119.6822510).then(function(offset) {
-// 		for (i = 0; i < arr.length; i++) {
-// 			log = arr[i]
-// 			var status_code = log.status_code
-// 			var status = eat24StatusCodes[status_code]
-// 			var reason = eat24Reasons[status_code]
-// 			var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
-// 			time = time + offset.number
-// 			time = (new Date(time)).toISOString()
-// 			time = time.substring(0, time.length - 5) // 12:30:05.000Z
-// 			time = time + offset.string
-// 			newLog[i] = {
-// 				status_code: status_code,
-// 				status: status,
-// 				reason: reason,
-// 				timestamp: time
-// 			}
+// app.get('/Piggyback/jobs/*', function(request, response) {
+// 	// if (request.session.loggedin) {
+// 		var path = request.url.split('/')
+// 		if (path.length != 4) {
+// 			response.writeHead(400, {'Content-Type': 'application/json'})
+// 			response.write(JSON.stringify({error: 'Incorrect path format'}))
+// 			response.end()
+// 		} else {
+// 			onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
+// 				connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
+// 					if (error)
+// 						throw error
+// 					if (rows && rows.length) {
+// 						// get worker details
+// 						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+// 							if (worker.location) {
+// 								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
+// 							} else {
+// 								var loc = null
+// 							}
+// 							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
+// 								if (error)
+// 									throw error
+// 								if (rows2 && rows2.length) {
+// 									var logFile = writeLog(rows2, worker.location[1], worker.location[0])
+// 									response.writeHead(200, {'Content-Type': 'application/json'})
+// 									var json = JSON.stringify(
+// 										{
+// 											job_id: task.shortId,
+// 											order_id: rows[0].yelpId,
+// 											status_code: rows2[rows2.length - 1].statusCode,
+// 											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
+// 											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
+// 											log: rows2,
+// 											driver: {
+// 												name: worker.name,
+// 												location: loc,
+// 												phone: worker.phone
+// 											}
+// 										}
+// 									)
+// 									console.log('SUCCESS')
+// 									response.end(json)	
+// 								} else {
+// 									console.log('FAIL')
+// 									response.writeHead(400, { 'Content-Type': 'application/json' })
+// 									response.write(JSON.stringify({ error: 'Task not found in database'}))
+// 									response.end()
+// 								}
+// 							})
+// 						}, function(error) {
+// 							response.writeHead(400, { 'Content-Type': 'application/json' })
+// 							response.write(JSON.stringify(error))
+// 							response.end()
+// 						})
+// 					} else {
+// 						response.writeHead(400, { 'Content-Type': 'application/json' })
+// 						response.write(JSON.stringify({ error: 'Task not found in database'}))
+// 						response.end()
+// 					}
+// 				})
+// 			}, function(error) {
+// 				response.writeHead(400, { 'Content-Type': 'application/json' })
+// 				response.write(JSON.stringify(error))
+// 				response.end()
+// 			})
 // 		}
-// 		return(newlog)
-// 	}, function(error) {
-// 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-// 	})
-// }
+// 	// } else {
+// 	// 	response.redirect('/Piggyback/signin')
+// 	// }
+// })
+
+function writeLog(arr, latitude, longitude) {
+	tz.getOffset(39.6034810, -119.6822510).then(function(offset) {
+		for (i = 0; i < arr.length; i++) {
+			log = arr[i]
+			var status_code = log.status_code
+			var status = eat24StatusCodes[status_code]
+			var reason = eat24Reasons[status_code]
+			var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
+			time = time + offset.number
+			time = (new Date(time)).toISOString()
+			time = time.substring(0, time.length - 5) // 12:30:05.000Z
+			time = time + offset.string
+			newLog[i] = {
+				status_code: status_code,
+				status: status,
+				reason: reason,
+				timestamp: time
+			}
+		}
+		return(newlog)
+	}, function(error) {
+		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+	})
+}
 
 // do delete instead when deployed
 app.post('/Piggyback/delete-task', function(request, response) {
