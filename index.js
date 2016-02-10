@@ -572,14 +572,13 @@ app.post('/Piggyback/signin', function(request, response) {
 })
 
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
-	console.log(request.body)
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		if (!task.pickupTask) {		// Must be dropoff task
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'51',(new Date()).getTime], function(error, rows){
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'51',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query')
+					console.log('ERROR - query\n' + error)
 				if (rows) {
-					console.log('SUCCESS - query')
+					// console.log('SUCCESS - query')
 				}
 				response.sendStatus(200)
 			})
@@ -589,14 +588,13 @@ app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 	})
 })
 app.post('/Piggyback/webhook/taskEta', function(request, response) {
-	console.log(request.body)
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		if (!task.pickupTask) {		// Must be dropoff task
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'52',(new Date()).getTime], function(error, rows){
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'52',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query')
+					console.log('ERROR - query\n' + error)
 				if (rows) {
-					console.log('SUCCESS - query')
+					// console.log('SUCCESS - query')
 				}
 				response.sendStatus(200)
 			})
@@ -606,14 +604,13 @@ app.post('/Piggyback/webhook/taskEta', function(request, response) {
 	})
 })
 app.post('/Piggyback/webhook/taskArrival', function(request, response) {
-	console.log(request.body)
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		if (!task.pickupTask) {		// Must be dropoff task
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'53',(new Date()).getTime], function(error, rows){
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'53',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query')
+					console.log('ERROR - query\n' + error)
 				if (rows) {
-					console.log('SUCCESS - query')
+					// console.log('SUCCESS - query')
 				}
 				response.sendStatus(200)
 			})
@@ -638,14 +635,13 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 	// 		response.sendStatus(200)
 	//     }
 	// })
-	console.log(request.body)
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		if (!task.pickupTask) {		// Must be dropoff task
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'54',(new Date()).getTime], function(error, rows){
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'54',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query')
+					console.log('ERROR - query\n' + error)
 				if (rows) {
-					console.log('SUCCESS - query')
+					// console.log('SUCCESS - query')
 				}
 				response.sendStatus(200)
 			})
@@ -655,14 +651,13 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 	})
 })
 app.post('/Piggyback/webhook/taskFailed', function(request, response) {
-	console.log(request.body)
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		if (!task.pickupTask) {		// Must be dropoff task
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'55',(new Date()).getTime], function(error, rows){
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'55',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query')
+					console.log('ERROR - query\n' + error)
 				if (rows) {
-					console.log('SUCCESS - query')
+					// console.log('SUCCESS - query')
 				}
 				response.sendStatus(200)
 			})
@@ -672,20 +667,16 @@ app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 	})
 })
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
-	console.log(request.body)
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
-	console.log(request.body)
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		console.log('Found task: ' + task.id)
 		if (!task.pickupTask) {		// Must be dropoff task
-			console.log('Task is a dropoff task!')
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', ['task.shortId','40','((new Date()).getTime)'], function(error, rows){
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'40',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query')
+					console.log('ERROR - query\n' + error)
 				if (rows) {
-					console.log('SUCCESS - query')
+					// console.log('SUCCESS - query')
 				}
 				response.sendStatus(200)
 			})
@@ -695,20 +686,16 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	})
 })
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
-	console.log(request.body)
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
-	console.log(request.body)
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		console.log('Got task: ' + task.id)
 		if (!task.pickupTask) {		// Must be dropoff task
-			console.log('Task is not a pickup task, it is a dropoff task!')
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'42',(new Date()).getTime], function(error, rows){
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'42',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query')
+					console.log('ERROR - query\n' + error)
 				if (rows) {
-					console.log('SUCCESS - query')
+					// console.log('SUCCESS - query')
 				}
 				response.sendStatus(200)
 			})
@@ -718,14 +705,13 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	})
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
-	console.log(request.body)
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		if (!task.pickupTask) {		// Must be dropoff task
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime], function(error, rows){
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query')
+					console.log('ERROR - query\n' + error)
 				if (rows) {
-					console.log('SUCCESS - query')
+					// console.log('SUCCESS - query')
 				}
 				response.sendStatus(200)
 			})
@@ -735,7 +721,6 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	})
 })
 app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
-	console.log(request.body)
 	response.sendStatus(200)
 })
 
