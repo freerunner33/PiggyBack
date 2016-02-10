@@ -188,6 +188,8 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 									response.writeHead(200, {'Content-Type': 'application/json'})
 									var json = JSON.stringify(
 										{
+											rowLength: rows.length,
+											rows: rows,
 											job_id: task.shortId,
 											order_id: rows[0].yelpId,
 											status_code: statusNum,						// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
