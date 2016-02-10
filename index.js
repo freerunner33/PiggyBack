@@ -185,12 +185,13 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 									throw error
 								if (rows2 && rows2.length) {
 									response.writeHead(200, {'Content-Type': 'application/json'})
+									var statusNum = rows2[rows2.length - 1].statusCode
 									var json = JSON.stringify(
 										{
 											job_id: task.shortId,
 											order_id: rows[0].yelpId,
-											status_code: rows2[rows2.length - 1].statusCode,							// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
-											status: eat24StatusCodes['' + (rows2[rows2.length - 1].statusCode)],			// AND THIS
+											status_code: statusNum,							// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
+											status: eat24StatusCodes[statusNum],			// AND THIS
 											log: rows2,
 											driver: {
 												name: worker.name,
