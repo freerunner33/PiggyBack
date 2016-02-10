@@ -84,7 +84,7 @@ app.get('/Piggyback/test', function(request, response) {
 		var offset = timezone.rawOffset/36
 		if (offset > -1000 && offset < 1000) {
 			if (offset < 0) 
-				offset = '-0' + ('' + offset).substring(1)
+				offset = '-0' + (offset).substring(1)
 			else
 				offset = '0' + offset
 		}
