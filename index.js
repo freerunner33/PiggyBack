@@ -65,6 +65,18 @@ var eat24StatusCodes = {
 	54: 'done_delivered',
 	55: 'done_cannot_deliver'
 }
+var eat24Reasons = {
+	40: 'Job has been accepted and successfully created. You will now have access to the job_id.',
+	41: 'Job has been rejected by the driver company.',
+	42: 'Job has been cancelled.',
+	44: 'Job not found.',
+	50: 'Job has been assigned to driver.',
+	51: 'Driver at the restaurant.',
+	52: 'Driver is on the way to the drop off.',
+	53: 'Driver at the at the drop off.',
+	54: 'Job has been delivered by driver.',
+	55: 'Job delivery was unsuccessfully attempted by driver. Additional information will be logged.'
+}
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
@@ -189,8 +201,9 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 										{
 											job_id: task.shortId,
 											order_id: rows[0].yelpId,
-											status_code: rows2[rows2.length - 1].statusCode,							// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
-											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],			// AND THIS
+											status_code: rows2[rows2.length - 1].statusCode,
+											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
+											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
 											log: rows2,
 											driver: {
 												name: worker.name,
