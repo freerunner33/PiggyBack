@@ -689,8 +689,11 @@ app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 	response.sendStatus(200)
 })
 app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
+	console.log('Webhook called!')
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
+		console.log('Got task: ' + task.id)
 		if (!task.pickupTask) {		// Must be dropoff task
+			console.log('Task is not a pickup task, it is a dropoff task!')
 			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'42',(new Date()).getTime], function(error, rows){
 				if (error)
 					console.log('ERROR - query')
