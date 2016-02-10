@@ -78,64 +78,64 @@ var eat24Reasons = {
 	55: 'Job delivery was unsuccessfully attempted by driver. Additional information will be logged.'
 }
 
-// TESTING
-app.get('/Piggyback/test', function(request, response) {
-	tz.getOffset(39.6034810, -119.6822510).then(function(offset) {
-		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(offset)]})
-	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-	})
-})
+// // TESTING
+// app.get('/Piggyback/test', function(request, response) {
+// 	tz.getOffset(39.6034810, -119.6822510).then(function(offset) {
+// 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(offset)]})
+// 	}, function(error) {
+// 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+// 	})
+// })
 
-app.post('/Piggyback/twilio', function(request, response) {
-	console.log('NEW REPLY MESSAGE')
-	console.log('Message from: ' + request.body.From)
-	console.log('Message body: ' + request.body.Body)
-})
+// app.post('/Piggyback/twilio', function(request, response) {
+// 	console.log('NEW REPLY MESSAGE')
+// 	console.log('Message from: ' + request.body.From)
+// 	console.log('Message body: ' + request.body.Body)
+// })
 
 
-// ROUTING
-app.get('/', function(request, response) {
-	if (request.session.views)
-		request.session.views++
-	else
-		request.session.views = 1
-	response.render('index', {pageTitle: 'Home', views: request.session.views})
-})
+// // ROUTING
+// app.get('/', function(request, response) {
+// 	if (request.session.views)
+// 		request.session.views++
+// 	else
+// 		request.session.views = 1
+// 	response.render('index', {pageTitle: 'Home', views: request.session.views})
+// })
 
-app.post('/Piggyback', function(request, response) {
-	// Parsing basic authorization sent in post request
-	var header=request.headers['authorization']||''
-	var token=header.split(/\s+/).pop()||''
-	var auth=new Buffer(token, 'base64').toString()
-	var parts=auth.split(/:/)
-	var username=parts[0]
-	var password=parts[1]
+// app.post('/Piggyback', function(request, response) {
+// 	// Parsing basic authorization sent in post request
+// 	var header=request.headers['authorization']||''
+// 	var token=header.split(/\s+/).pop()||''
+// 	var auth=new Buffer(token, 'base64').toString()
+// 	var parts=auth.split(/:/)
+// 	var username=parts[0]
+// 	var password=parts[1]
 
-	if (username == user1 && password == pass1 && request.body.destinationA && request.body.destinationB && request.body.driverTip) {
-		response.writeHead(200, { 'Content-Type': 'text/plain' })
-		response.write('\nSuccess!\nExample return object\n')
-		response.write('{\n\ttaskId: abc123def456ghi789\n')
-		response.write('\tDestination A: ' + request.body.destinationA + '\n')
-		response.write('\tDestination B: ' + request.body.destinationB + '\n')
-		response.write('\tDriver Tip: $' + request.body.driverTip + '\n}\n\n')
-		response.end()
-	} else {
-		response.writeHead(401, { 'Content-Type': 'text/plain' })
-		response.write('Incorrect credentials\n' + username + ':' + user1 + '\n' + password + ':' + pass1 + '\n')
-		response.end()
-	}
-})
+// 	if (username == user1 && password == pass1 && request.body.destinationA && request.body.destinationB && request.body.driverTip) {
+// 		response.writeHead(200, { 'Content-Type': 'text/plain' })
+// 		response.write('\nSuccess!\nExample return object\n')
+// 		response.write('{\n\ttaskId: abc123def456ghi789\n')
+// 		response.write('\tDestination A: ' + request.body.destinationA + '\n')
+// 		response.write('\tDestination B: ' + request.body.destinationB + '\n')
+// 		response.write('\tDriver Tip: $' + request.body.driverTip + '\n}\n\n')
+// 		response.end()
+// 	} else {
+// 		response.writeHead(401, { 'Content-Type': 'text/plain' })
+// 		response.write('Incorrect credentials\n' + username + ':' + user1 + '\n' + password + ':' + pass1 + '\n')
+// 		response.end()
+// 	}
+// })
 
-app.get('/destroy', function(request, response) {
-	request.session.destroy(function(error) {
-		if (error) {
-			throw error
-		} else {
-			response.redirect('/')
-		}
-	})
-})
+// app.get('/destroy', function(request, response) {
+// 	request.session.destroy(function(error) {
+// 		if (error) {
+// 			throw error
+// 		} else {
+// 			response.redirect('/')
+// 		}
+// 	})
+// })
 
 app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
