@@ -181,10 +181,10 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 							} else {
 								var loc = null
 							}
-							connection.query('SELECT statusCode, status, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows) {
+							connection.query('SELECT statusCode, status, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 								if (error)
 									throw error
-								if (rows && rows.length) {
+								if (rows2 && rows2.length) {
 									response.writeHead(200, {'Content-Type': 'application/json'})
 									var json = JSON.stringify(
 										{
@@ -192,7 +192,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 											order_id: rows[0].yelpId,
 											status_code: statusNum,						// NEED TO FIGURE OUT THESE NUMBERS- last log is this num
 											status: eat24StatusCodes.statusNum,			// AND THIS
-											log: rows,
+											log: rows2,
 											driver: {
 												name: worker.name,
 												location: loc,
