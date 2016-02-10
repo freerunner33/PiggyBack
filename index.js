@@ -81,7 +81,10 @@ var eat24Reasons = {
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
 	tz.getTimeZone(39.6034810, -119.6822510).then(function(timezone) {
-		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(timezone), timezone.rawOffset/36]})
+		var offset = timezone.rawOffset/36
+		if (offset >= 1000 || <= -1000)
+			offset = '0' + offset
+		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(timezone), offset]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 	})
