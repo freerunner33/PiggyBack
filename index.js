@@ -799,34 +799,56 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 
 function getJobData(id) {
 	return new Promise(function(resolve, reject) {
-		var request = httpClient.request({
-			hostname: 'http://noahthomas.us',
-			path: '/Piggyback/jobs/675e8eed',
-			method: 'GET'
-		}, function(response) {
-			var str = ''
-			response.on('data', function(chunk) {
-				str += chunk
-			})
-			response.on('end', function() {
-				var result
-				if (str.length)
-					result = JSON.parse(str)
-				if (response.statusCode != 200) {
-					reject(result)
+		onfleet.getSingleTaskByShortID(id).then(function(task) {
+			connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
+				if (error)
+					throw error
+				if (rows && rows.length) {
+					// get worker details
+					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+						if (worker.location) {
+							var loc = {latitude: worker.location[1], longitude: worker.location[0]}
+						} else {
+							var loc = null
+						}
+						connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
+							if (error)
+								throw error
+							if (rows2 && rows2.length) {
+								writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
+									var json = JSON.stringify(
+										{
+											job_id: task.shortId,
+											order_id: rows[0].yelpId,
+											status_code: rows2[rows2.length - 1].statusCode,
+											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
+											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
+											log: log,
+											driver: {
+												name: worker.name,
+												location: loc,
+												phone: worker.phone
+											}
+										}
+									)
+									resolve(json)
+								}, function() {
+									reject('Problem with log file')
+								})
+							} else {
+								reject('Task not found in database')
+							}
+						})
+					}, function(error) {
+						reject(error)
+					})
+				} else {
+					reject('Task not found in database')
 				}
-				else {
-					resolve(result)
-				}
 			})
-		})
-		resolve(result)
-		request.on('error', function(error) {
+		}, function(error) {
 			reject(error)
 		})
-		if (data)
-			request.write(JSON.stringify(data))
-		request.end()
 	})
 }
 
