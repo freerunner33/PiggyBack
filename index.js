@@ -106,7 +106,7 @@ app.post('/Piggyback/test', function(request, response) {
 	console.log('QUERY')
 	console.log(request.query)
 	console.log('URL')
-	console.log(request.originalURL)
+	console.log(request.originalUrl)
 	response.sendStatus(200)
 })
 
