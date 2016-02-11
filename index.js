@@ -673,7 +673,7 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 					// console.log('SUCCESS - query')
 				}
 			})
-			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\' WHERE shortId=?', [task.shortId], function(error, rows) {
+			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [task.shortId, (new Date()).getTime()], function(error, rows) {
 				if (error) {
 					console.log('ERROR UPDATING')
 					console.log(error)
@@ -683,7 +683,7 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 				}
 			})
 		} else {
-			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\' WHERE shortId=?', [task.shortId], function(error, rows) {
+			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [task.shortId, (new Date()).getTime()], function(error, rows) {
 				if (error) {
 					console.log('ERROR UPDATING')
 					console.log(error)
@@ -709,7 +709,7 @@ app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 					// console.log('SUCCESS - query')
 				}
 			})
-			connection.query('UPDATE Tasks SET didSucceed=\'FALSE\' WHERE shortId=?', [task.shortId], function(error, rows) {
+			connection.query('UPDATE Tasks SET didSucceed=\'FALSE\', completionTime=? WHERE shortId=?', [task.shortId, (new Date()).getTime()], function(error, rows) {
 				if (error) {
 					console.log('ERROR UPDATING')
 					console.log(error)
@@ -719,7 +719,7 @@ app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 				}
 			})
 		} else {
-			connection.query('UPDATE Tasks SET didSucceed=\'FALSE\' WHERE shortId=?', [task.shortId], function(error, rows) {
+			connection.query('UPDATE Tasks SET didSucceed=\'FALSE\', completionTime=? WHERE shortId=?', [task.shortId, (new Date()).getTime()], function(error, rows) {
 				if (error) {
 					console.log('ERROR UPDATING')
 					console.log(error)
