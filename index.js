@@ -247,7 +247,6 @@ function writeLog(arr, latitude, longitude) {
 		var newArr = []
 		tz.getOffset(latitude, longitude).then(function(offset) {
 			for (i = 0; i < arr.length; i++) {
-				resolve(arr.length)
 				log = arr[i]
 				var status_code = log.status_code
 				var status = eat24StatusCodes[status_code]
@@ -257,6 +256,7 @@ function writeLog(arr, latitude, longitude) {
 				time = (new Date(time)).toISOString()
 				time = time.substring(0, time.length - 5) // 12:30:05.000Z
 				time = time + offset.string
+				resolve(arr.length)
 				newArr.push({
 					status_code: status_code,
 					status: status,
