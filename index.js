@@ -673,7 +673,7 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 					// console.log('SUCCESS - query')
 				}
 			})
-			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [task.shortId, (new Date()).getTime()], function(error, rows) {
+			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [(new Date()).toISOString(), task.shortId], function(error, rows) {
 				if (error) {
 					console.log('ERROR UPDATING')
 					console.log(error)
@@ -683,7 +683,7 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 				}
 			})
 		} else {
-			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [task.shortId, (new Date()).getTime()], function(error, rows) {
+			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [(new Date()).toISOString(), task.shortId], function(error, rows) {
 				if (error) {
 					console.log('ERROR UPDATING')
 					console.log(error)
@@ -702,14 +702,14 @@ app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		console.log('taskFailed :' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		if (!task.pickupTask) {		// Must be dropoff task
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'55',(new Date()).getTime()], function(error, rows){
+			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [(new Date()).toISOString(), task.shortId,'55'], function(error, rows){
 				if (error)
 					console.log('ERROR - query\n' + error)
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
 			})
-			connection.query('UPDATE Tasks SET didSucceed=\'FALSE\', completionTime=? WHERE shortId=?', [task.shortId, (new Date()).getTime()], function(error, rows) {
+			connection.query('UPDATE Tasks SET didSucceed=\'FALSE\', completionTime=? WHERE shortId=?', [(new Date()).toISOString(), task.shortId], function(error, rows) {
 				if (error) {
 					console.log('ERROR UPDATING')
 					console.log(error)
