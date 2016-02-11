@@ -258,9 +258,9 @@ function writeLog(arr, latitude, longitude) {
 				timestamp: time
 			}
 		}
-		return arr
+		return 'Success'
 	}, function(error) {
-		return []
+		return 'Failure'
 	})
 }
 
