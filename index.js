@@ -87,7 +87,7 @@ var eat24Reasons = {
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	yelp.postUpdate2({message: 'hi'}).then(function(result) {
+	yelp.postUpdate({message: 'hi'}).then(function(result) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error)]})
@@ -118,13 +118,13 @@ app.post('/Piggyback/twilio', function(request, response) {
 
 
 // ROUTING
-app.get('/', function(request, response) {
-	if (request.session.views)
-		request.session.views++
-	else
-		request.session.views = 1
-	response.render('index', {pageTitle: 'Home', views: request.session.views})
-})
+// app.get('/', function(request, response) {
+// 	if (request.session.views)
+// 		request.session.views++
+// 	else
+// 		request.session.views = 1
+// 	response.render('index', {pageTitle: 'Home', views: request.session.views})
+// })
 
 app.post('/Piggyback', function(request, response) {
 	// Parsing basic authorization sent in post request
@@ -150,15 +150,15 @@ app.post('/Piggyback', function(request, response) {
 	}
 })
 
-app.get('/destroy', function(request, response) {
-	request.session.destroy(function(error) {
-		if (error) {
-			throw error
-		} else {
-			response.redirect('/')
-		}
-	})
-})
+// app.get('/destroy', function(request, response) {
+// 	request.session.destroy(function(error) {
+// 		if (error) {
+// 			throw error
+// 		} else {
+// 			response.redirect('/')
+// 		}
+// 	})
+// })
 
 app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
@@ -196,8 +196,11 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 		} else {
 			onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
 				connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
-					if (error)
-						throw error
+					if (error) {
+						response.writeHead(400, {'Content-Type': 'application/json'})
+						response.write(JSON.stringify(error))
+						response.end()
+					}
 					if (rows && rows.length) {
 						// get worker details
 						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
@@ -207,8 +210,11 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 								var loc = null
 							}
 							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
-								if (error)
-									throw error
+								if (error) {
+									response.writeHead(400, {'Content-Type': 'application/json'})
+									response.write(JSON.stringify(error))
+									response.end()
+								}
 								if (rows2 && rows2.length) {
 									writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
 										response.writeHead(200, {'Content-Type': 'application/json'})
