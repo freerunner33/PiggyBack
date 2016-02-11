@@ -39,19 +39,23 @@ app.use(express.static('assets'));
 // Body Parser used for the response.query
 var bodyParser = require('body-parser')
 app.use( bodyParser.json() );
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.use(bodyParser.urlencoded(
+	{
+		extended: false
+	}
+))
 
 // More session configuration
-app.use(session({
-  genid: function(request) {
-    return  uuid.v4()// use UUIDs for session IDs 
-  },
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false
-}))
+app.use(session(
+	{
+		genid: function(request) {
+			return  uuid.v4()// use UUIDs for session IDs 
+		},
+		secret: 'keyboard cat',
+		resave: false,
+		saveUninitialized: false
+	}
+))
 
 var eat24StatusCodes = {
 	40: 'submitted',
@@ -599,9 +603,9 @@ app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
-				response.sendStatus(200)
 			})
 		}
+		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
@@ -616,9 +620,9 @@ app.post('/Piggyback/webhook/taskEta', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
-				response.sendStatus(200)
 			})
 		}
+		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
@@ -633,9 +637,9 @@ app.post('/Piggyback/webhook/taskArrival', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
-				response.sendStatus(200)
 			})
 		}
+		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
@@ -665,9 +669,9 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
-				response.sendStatus(200)
 			})
 		}
+		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
@@ -682,9 +686,9 @@ app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
-				response.sendStatus(200)
 			})
 		}
+		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
@@ -702,9 +706,9 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
-				response.sendStatus(200)
 			})
 		}
+		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
@@ -722,9 +726,9 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
-				response.sendStatus(200)
 			})
 		}
+		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
@@ -739,9 +743,9 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
-				response.sendStatus(200)
 			})
 		}
+		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
