@@ -191,27 +191,30 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 								if (error)
 									throw error
 								if (rows2 && rows2.length) {
-									var logFile = writeLog(rows2, worker.location[1], worker.location[0])
-									response.writeHead(200, {'Content-Type': 'application/json'})
-									var json = JSON.stringify(
-										{
-											job_id: task.shortId,
-											order_id: rows[0].yelpId,
-											status_code: rows2[rows2.length - 1].statusCode,
-											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
-											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
-											log: logFile,
-											driver: {
-												name: worker.name,
-												location: loc,
-												phone: worker.phone
+									writeLog(rows2, worker.location[1], worker.location[0]).then(function(log) {
+										response.writeHead(200, {'Content-Type': 'application/json'})
+										var json = JSON.stringify(
+											{
+												job_id: task.shortId,
+												order_id: rows[0].yelpId,
+												status_code: rows2[rows2.length - 1].statusCode,
+												status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
+												reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
+												log: logFile,
+												driver: {
+													name: worker.name,
+													location: loc,
+													phone: worker.phone
+												}
 											}
-										}
-									)
-									console.log('SUCCESS')
-									response.end(json)	
+										)
+										response.end(json)	
+									}, function() {
+										response.writeHead(400, { 'Content-Type': 'application/json' })
+										response.write(JSON.stringify({ error: 'Problem with log file'}))
+										response.end()
+									})
 								} else {
-									console.log('FAIL')
 									response.writeHead(400, { 'Content-Type': 'application/json' })
 									response.write(JSON.stringify({ error: 'Task not found in database'}))
 									response.end()
@@ -240,28 +243,29 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 })
 
 function writeLog(arr, latitude, longitude) {
-	tz.getOffset(latitude, longitude).then(function(offset) {
-		return 'Success'
-		for (i = 0; i < arr.length; i++) {
-			log = arr[i]
-			var status_code = log.status_code
-			var status = eat24StatusCodes[status_code]
-			var reason = eat24Reasons[status_code]
-			var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
-			time = time + offset.number
-			time = (new Date(time)).toISOString()
-			time = time.substring(0, time.length - 5) // 12:30:05.000Z
-			time = time + offset.string
-			arr[i] = {
-				status_code: status_code,
-				status: status,
-				reason: reason,
-				timestamp: time
+	return new Promise(function(resolve, reject) {
+		tz.getOffset(latitude, longitude).then(function(offset) {
+			for (i = 0; i < arr.length; i++) {
+				log = arr[i]
+				var status_code = log.status_code
+				var status = eat24StatusCodes[status_code]
+				var reason = eat24Reasons[status_code]
+				var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
+				time = time + offset.number
+				time = (new Date(time)).toISOString()
+				time = time.substring(0, time.length - 5) // 12:30:05.000Z
+				time = time + offset.string
+				arr[i] = {
+					status_code: status_code,
+					status: status,
+					reason: reason,
+					timestamp: time
+				}
 			}
-		}
-		return 'Success'
-	}, function(error) {
-		return 'Failure'
+			resolve('Success')
+		}, function(error) {
+			reject('Failure')
+		})
 	})
 }
 
