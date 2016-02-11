@@ -631,17 +631,8 @@ app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 				if (error)
 					console.log('ERROR - query\n' + error)
 				if (rows) {
-					// console.log('SUCCESS - query')
+					updateYelp(task.shortId, request, response)
 				}
-				getJobData(task.shortId).then(function(job) {
-					yelp.postUpdate(job).then(function(result) {
-						response.sendStatus(200)
-					}, function(error1) {
-						response.sendStatus(404)
-					})
-				}, function(error2) {
-					response.sendStatus(404)
-				})
 			})
 		}
 		response.sendStatus(200)
@@ -785,6 +776,9 @@ app.post('/Piggyback/webhook/taskFailed', function(request, response) {
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	response.sendStatus(200)
 })
+
+
+
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		console.log('taskCreated :' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
@@ -793,7 +787,7 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 				if (error)
 					console.log('ERROR - query\n' + error)
 				if (rows) {
-					updateYelp(task.shortId, request, response)
+					// NEED THIS TO BE DIFFERENT
 				}
 			})
 		} else {
@@ -803,6 +797,9 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
 })
+
+
+
 app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 	response.sendStatus(200)
 })
@@ -885,7 +882,6 @@ function getJobData(id) {
 							}
 						})
 					}, function(error) {
-						console.log('error getting worker')
 						reject(error)
 					})
 				} else {
@@ -893,7 +889,6 @@ function getJobData(id) {
 				}
 			})
 		}, function(error) {
-			console.log('error with getSingleTaskByShortID')
 			reject(error)
 		})
 	})
