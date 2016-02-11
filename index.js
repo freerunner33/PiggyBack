@@ -800,13 +800,13 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 function getJobData(id) {
 	return new Promise(function(resolve, reject) {
 		var request = httpClient.request({
-			hostname: 'noahthomas.us',
-			path: '/Piggyback' + '/jobs/' + id,
+			hostname: 'http://noahthomas.us',
+			path: '/Piggyback/jobs/675e8eed',
 			method: 'GET'
 		}, function(response) {
-			resolve('made it here')
 			var str = ''
 			response.on('data', function(chunk) {
+				resolve(chunk)
 				str += chunk
 			})
 			response.on('end', function() {
