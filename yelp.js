@@ -13,6 +13,7 @@ var path = '/1bluatq1'
 
 function request(endpoint, method, data) {
 	return new Promise(function(resolve, reject) {
+		resolve('hi')
 		var request = http.request({
 			host: 'requestb.in',
 			port: '80',
