@@ -859,6 +859,8 @@ function getJobData(id) {
 
 function updateYelp(id, request, response) {
 	getJobData(id).then(function(job) {
+		console.log('Updated Yelp')
+		console.log(job)
 		yelp.postUpdate(job).then(function(result) {
 			response.sendStatus(200)
 		}, function(error1) {
