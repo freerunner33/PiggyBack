@@ -802,8 +802,7 @@ function getJobData(id) {
 		var request = httpClient.request({
 			hostname: 'noahthomas.us',
 			path: '/Piggyback' + '/jobs/' + id,
-			method: 'GET',
-			auth: user1 + ':' + pass1
+			method: 'GET'
 		}, function(response) {
 			var str = ''
 			response.on('data', function(chunk) {
@@ -813,7 +812,6 @@ function getJobData(id) {
 				var result
 				if (str.length)
 					result = JSON.parse(str)
-				
 				if (response.statusCode != 200) {
 					reject(result)
 				}
