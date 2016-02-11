@@ -87,11 +87,16 @@ var eat24Reasons = {
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	getJobData('675e8eed').then(function(result) {
+	yelp.postUpdate({message: 'hi'}).then(function(result) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error)]})
 	})
+	// getJobData('675e8eed').then(function(result) {
+	// 	response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
+	// }, function(error) {
+	// 	response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error)]})
+	// })
 })
 
 app.post('/Piggyback/twilio', function(request, response) {
