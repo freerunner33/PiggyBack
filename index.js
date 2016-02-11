@@ -630,15 +630,15 @@ app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
-			})
-			getJobData(task.shortId).then(function(job) {
-				yelp.postUpdate(job).then(function(result) {
-					response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
-				}, function(error1) {
-					response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error1)]})
+				getJobData(task.shortId).then(function(job) {
+					yelp.postUpdate(job).then(function(result) {
+						response.sendStatus(200)
+					}, function(error1) {
+						response.sendStatus(404)
+					})
+				}, function(error2) {
+					response.sendStatus(404)
 				})
-			}, function(error2) {
-				response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error2)]})
 			})
 		}
 		response.sendStatus(200)
@@ -656,6 +656,15 @@ app.post('/Piggyback/webhook/taskEta', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
+				getJobData(task.shortId).then(function(job) {
+					yelp.postUpdate(job).then(function(result) {
+						response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
+					}, function(error1) {
+						response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error1)]})
+					})
+				}, function(error2) {
+					response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error2)]})
+				})
 			})
 		}
 		response.sendStatus(200)
