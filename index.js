@@ -244,6 +244,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 
 function writeLog(arr, latitude, longitude) {
 	return new Promise(function(resolve, reject) {
+		resolve('HIIII')
 		tz.getOffset(latitude, longitude).then(function(offset) {
 			for (i = 0; i < arr.length; i++) {
 				log = arr[i]
