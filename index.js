@@ -398,7 +398,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 					j.dropoff_waypoint.special_instructions				// notes for task
 				).then(function(taskB) {
 					onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
-						connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+						connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 							[
 								taskA.shortId,													// shortId
 								taskA.id,														// taskId
@@ -412,8 +412,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 								worker.name,													// workerName
 								'' + taskA.destination.address.number + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + taskA.destination.address.postalCode,
 								null,															// completionTime
-								null,															// didSucceed
-								'40:' + taskA.timeCreated										//status
+								null															// didSucceed
 							], 
 							function(error, rows)
 							{
@@ -422,7 +421,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 								// need to assign this task to the worker
 								worker.tasks.push(taskB.id)
 								onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-									connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+									connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 										[
 											taskB.shortId,										// shortId
 											taskB.id,											// taskId
@@ -436,8 +435,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 											worker.name,										// workerName
 											'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
 											null,												// completionTime
-											null,												// didSucceed
-											'40:' + taskB.timeCreated							//status
+											null												// didSucceed
 										], 
 										function(error, rows)
 										{
