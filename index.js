@@ -200,7 +200,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 												status_code: rows2[rows2.length - 1].statusCode,
 												status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
 												reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
-												log: logFile,
+												log: log,
 												driver: {
 													name: worker.name,
 													location: loc,
