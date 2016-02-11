@@ -1,5 +1,5 @@
 
-var apiKey = require('./keys.js').apiKey
+var apiKey = require('./keys.js').OnfleetAPIKey
 
 var Promise = require('promise')
 var https = require('https')
