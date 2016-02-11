@@ -240,8 +240,8 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 })
 
 function writeLog(arr, latitude, longitude) {
-	return 'hi'
 	tz.getOffset(latitude, longitude).then(function(offset) {
+		return 'Success'
 		for (i = 0; i < arr.length; i++) {
 			log = arr[i]
 			var status_code = log.status_code
