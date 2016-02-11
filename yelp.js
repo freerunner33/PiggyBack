@@ -13,8 +13,7 @@ var path = '/1bluatq1'
 
 var request = require('request');
 
-
-function request(endpoint, method, data) {
+function fun(endpoint, method, data) {
 	return new Promise(function(resolve, reject) {
 		request.post(
 		    'http://requestb.in/1bluatq1',
@@ -32,7 +31,7 @@ function request(endpoint, method, data) {
 }
 
 function postUpdate(data) { // data will be json object
-	return request('', 'POST', data)
+	return fun('', 'POST', data)
 }
 
 module.exports = {postUpdate: postUpdate}
