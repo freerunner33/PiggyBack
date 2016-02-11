@@ -11,29 +11,23 @@ var http = require('http')
 var host = 'requestb.in'
 var path = '/1bluatq1'
 
+var request = require('request');
+
+
 function request(endpoint, method, data) {
 	return new Promise(function(resolve, reject) {
-		resolve('hi')
-		var request = http.request({
-			host: 'requestb.in',
-			port: '80',
-			path: '/1bluatq1',
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-		        'Content-Length': Buffer.byteLength(data)
+		request.post(
+		    'http://requestb.in/1bluatq1',
+		    { form: { key: 'value' } },
+		    function (error, response, body) {
+		    	if (error) {
+		    		reject(error)
+		    	}
+		        if (!error && response.statusCode == 200) {
+		            resolve(body)
+		        }
 		    }
-		}, function(response) {
-			response.setEncodings('utf8')
-			response.on('data', function(chunk) {
-				console.log('Response: ' + chunk)
-			})
-			response.on('end', function() {
-				resolve('Finished')
-			})
-		})
-		request.write(data)
-		request.end()
+		);
 	})
 }
 
