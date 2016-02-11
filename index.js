@@ -885,6 +885,7 @@ function getJobData(id) {
 							}
 						})
 					}, function(error) {
+						console.log('error getting worker')
 						reject(error)
 					})
 				} else {
@@ -892,6 +893,7 @@ function getJobData(id) {
 				}
 			})
 		}, function(error) {
+			console.log('error with getSingleTaskByShortID')
 			reject(error)
 		})
 	})
