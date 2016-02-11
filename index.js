@@ -806,7 +806,6 @@ function getJobData(id) {
 		}, function(response) {
 			var str = ''
 			response.on('data', function(chunk) {
-				resolve(chunk)
 				str += chunk
 			})
 			response.on('end', function() {
@@ -821,6 +820,7 @@ function getJobData(id) {
 				}
 			})
 		})
+		resolve('something?')
 		request.on('error', function(error) {
 			reject(error)
 		})
