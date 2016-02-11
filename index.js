@@ -253,8 +253,8 @@ function writeLog(arr, latitude, longitude) {
 				var reason = eat24Reasons[status_code]
 				var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
 				time = time + offset.number
+				resolve(new Date(time))
 				time = (new Date(time)).toISOString()
-				resolve(arr.length)
 				time = time.substring(0, time.length - 5) // 12:30:05.000Z
 				time = time + offset.string
 				newArr.push({
