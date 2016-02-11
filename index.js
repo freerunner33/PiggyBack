@@ -793,23 +793,12 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 				if (error)
 					console.log('ERROR - query\n' + error)
 				if (rows) {
-					// console.log('SUCCESS - query')
+					updateYelp(task.shortId, request, response)
 				}
-				getJobData(task.shortId).then(function(job) {
-					yelp.postUpdate(job).then(function(result) {
-						console.log('Successfully posted')
-						response.sendStatus(200)
-					}, function(error1) {
-						console.log('Unsuccessfully posted')
-						response.sendStatus(404)
-					})
-				}, function(error2) {
-					console.log('getJobData did not work')
-					response.sendStatus(404)
-				})
 			})
+		} else {
+			response.sendStatus(200)
 		}
-		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404) // task not found, try again in 30 minutes
 	})
@@ -905,6 +894,21 @@ function getJobData(id) {
 		}, function(error) {
 			reject(error)
 		})
+	})
+}
+
+function updateYelp(id, request, response) {
+	getJobData(id).then(function(job) {
+		yelp.postUpdate(job).then(function(result) {
+			console.log('Successfully posted')
+			response.sendStatus(200)
+		}, function(error1) {
+			console.log('Unsuccessfully posted')
+			response.sendStatus(404)
+		})
+	}, function(error2) {
+		console.log('getJobData did not work')
+		response.sendStatus(404)
 	})
 }
 
