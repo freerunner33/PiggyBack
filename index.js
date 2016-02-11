@@ -255,7 +255,7 @@ function writeLog(arr, latitude, longitude) {
 				time = (new Date(time)).toISOString()
 				time = time.substring(0, time.length - 5) // 12:30:05.000Z
 				time = time + offset.string
-				arr[i] = {
+				newArr[i] = {
 					status_code: status_code,
 					status: status,
 					reason: reason,
