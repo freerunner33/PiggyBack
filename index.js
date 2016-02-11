@@ -246,8 +246,8 @@ function writeLog(arr, latitude, longitude) {
 	return new Promise(function(resolve, reject) {
 		var newArr = []
 		tz.getOffset(latitude, longitude).then(function(offset) {
-			resolve(arr.length)
 			for (i = 0; i < arr.length; i++) {
+				resolve(arr.length)
 				log = arr[i]
 				var status_code = log.status_code
 				var status = eat24StatusCodes[status_code]
