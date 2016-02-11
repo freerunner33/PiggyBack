@@ -46,15 +46,13 @@ function postUpdate2(data) {
 		request.post(
 		    'http://noahthomas.us/Piggyback/test',
 		    {
-		    	body: {
+		    	form: {
+		    		key: 'value',
 		    		data: {
 			    		"job_id":"675e8eed","order_id":"123example456id",
 			    		"status_code":"54","status":"done_delivered",
 			    		"reason":"Job has been delivered by driver."
 			    	}
-		    	},
-		    	form: {
-		    		key: 'value'
 		    	} 
 		    },
 		    function (error, response, body) {
