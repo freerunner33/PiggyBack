@@ -898,6 +898,7 @@ function getJobData(id) {
 }
 
 function updateYelp(id, request, response) {
+	console.log('Looking for task: ' + id)
 	getJobData(id).then(function(job) {
 		yelp.postUpdate(job).then(function(result) {
 			console.log('Successfully posted')
