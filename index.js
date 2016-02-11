@@ -3,6 +3,7 @@
 
 // Require the onfleet api, and the database js file
 var onfleet = require('./onfleet.js')
+var yelp = require('./yelp.js')
 var tz = require('./timezone.js')
 var connection = require('./database.js')
 var signUpKey = require('./keys.js').signUpKey
