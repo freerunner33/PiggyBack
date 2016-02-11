@@ -86,28 +86,28 @@ var eat24Reasons = {
 }
 
 // TESTING
-app.get('/Piggyback/test', function(request, response) {
-	getJobData('675e8eed').then(function(job) {
-		yelp.postUpdate(job).then(function(result) {
-			response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
-		}, function(error1) {
-			response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error1)]})
-		})
-	}, function(error2) {
-		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error2)]})
-	})
-})
+// app.get('/Piggyback/test', function(request, response) {
+// 	getJobData('675e8eed').then(function(job) {
+// 		yelp.postUpdate(job).then(function(result) {
+// 			response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
+// 		}, function(error1) {
+// 			response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error1)]})
+// 		})
+// 	}, function(error2) {
+// 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error2)]})
+// 	})
+// })
 
-app.post('/Piggyback/test', function(request, response) {
-	console.log('Got new request')
-	console.log('BODY')
-	console.log(request.body)
-	console.log('QUERY')
-	console.log(request.query)
-	console.log('URL')
-	console.log(request.originalUrl)
-	response.sendStatus(200)
-})
+// app.post('/Piggyback/test', function(request, response) {
+// 	console.log('Got new request')
+// 	console.log('BODY')
+// 	console.log(request.body)
+// 	console.log('QUERY')
+// 	console.log(request.query)
+// 	console.log('URL')
+// 	console.log(request.originalUrl)
+// 	response.sendStatus(200)
+// })
 
 app.post('/Piggyback/twilio', function(request, response) {
 	console.log('NEW REPLY MESSAGE')
@@ -620,9 +620,6 @@ app.post('/Piggyback/signin', function(request, response) {
 	})
 })
 
-
-
-
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		console.log('taskStarted :' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
@@ -861,18 +858,13 @@ function getJobData(id) {
 }
 
 function updateYelp(id, request, response) {
-	console.log('Looking for task: ' + id)
 	getJobData(id).then(function(job) {
 		yelp.postUpdate(job).then(function(result) {
-			console.log('Successfully posted')
 			response.sendStatus(200)
 		}, function(error1) {
-			console.log('Unsuccessfully posted')
 			response.sendStatus(404)
 		})
 	}, function(error2) {
-		console.log('getJobData did not work')
-		console.log(error2)
 		response.sendStatus(404)
 	})
 }
