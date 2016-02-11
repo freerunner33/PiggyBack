@@ -22,6 +22,8 @@ var uuid = require('node-uuid')
 var authorization = require('auth-header')
 var dateFormat = require('dateformat')
 
+var httpClient = require('http')
+
 // Used for session variables
 var session = require('express-session')
 
@@ -797,7 +799,7 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 
 function getJobData(id) {
 	return new Promise(function(resolve, reject) {
-		var request = https.request({
+		var request = httpClient.request({
 			hostname: 'http://noahthomas.us',
 			path: '/Piggyback' + '/jobs/' + id,
 			method: 'GET',
