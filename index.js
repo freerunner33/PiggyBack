@@ -87,7 +87,7 @@ var eat24Reasons = {
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
 	getJobData('675e8eed').then(function(result) {
-		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
+		response.render('error', {pageTitle: 'Success', errors: [result]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error)]})
 	})
