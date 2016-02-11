@@ -87,7 +87,7 @@ var eat24Reasons = {
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
 	getJobData('675e8eed').then(function(result) {
-		response.render('error', {pageTitle: 'Success', errors: [result]})
+		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error)]})
 	})
@@ -816,22 +816,20 @@ function getJobData(id) {
 								throw error
 							if (rows2 && rows2.length) {
 								writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
-									var json = JSON.stringify(
-										{
-											job_id: task.shortId,
-											order_id: rows[0].yelpId,
-											status_code: rows2[rows2.length - 1].statusCode,
-											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
-											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
-											log: log,
-											driver: {
-												name: worker.name,
-												location: loc,
-												phone: worker.phone
-											}
+									var result = {
+										job_id: task.shortId,
+										order_id: rows[0].yelpId,
+										status_code: rows2[rows2.length - 1].statusCode,
+										status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
+										reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
+										log: log,
+										driver: {
+											name: worker.name,
+											location: loc,
+											phone: worker.phone
 										}
-									)
-									resolve(json)
+									}
+									resolve(result)
 								}, function() {
 									reject('Problem with log file')
 								})
