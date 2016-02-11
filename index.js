@@ -84,10 +84,10 @@ var eat24Reasons = {
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	tz.getOffset(39.6034810, -119.6822510).then(function(offset) {
-		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(offset)]})
+	getJobData('675e8eed').then(function(result) {
+		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
 	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error)]})
 	})
 })
 
