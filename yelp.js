@@ -8,39 +8,27 @@ var http = require('http')
 // var path = '/dprovider/'
 
 // curl -X POST -d "fizz=buzz" http://requestb.in/1bluatq1
-var hostname = 'requestb.in'
+var host = 'requestb.in'
 var path = '/1bluatq1'
 
 function request(endpoint, method, data) {
 	return new Promise(function(resolve, reject) {
 		var request = http.request({
-			hostname: hostname,
-			path: path + endpoint,
-			method: method,
-			auth: apiKey
+			host: 'requestb.in',
+			port: '80',
+			path: '/1bluatq1',
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+		        'Content-Length': Buffer.byteLength(data)
+		    }
 		}, function(response) {
-			var str = ''
+			response.setEncodings('utf8')
 			response.on('data', function(chunk) {
-				str += chunk
-			})
-			response.on('end', function() {
-				var result
-				if (str.length)
-					result = JSON.parse(str)
-				
-				if (response.statusCode != 200) {
-					reject(result)
-				}
-				else {
-					resolve(result)
-				}
+				console.log('Response: ' + chunk)
 			})
 		})
-		request.on('error', function(error) {
-			reject(error)
-		})
-		if (data)
-			request.write(JSON.stringify(data))
+		request.write(data)
 		request.end()
 	})
 }
