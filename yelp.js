@@ -47,13 +47,17 @@ function postUpdate2(data) {
 		    'http://noahthomas.us/Piggyback/test',
 		    {
 		    	form: {
-		    		key: 'value',
 		    		data:{
-			    		"job_id":"675e8eed","order_id":"123example456id",
-			    		"status_code":"54","status":"done_delivered",
+			    		"job_id":"675e8eed",
+			    		"order_id":"123example456id",
+			    		"status_code":"54",
+			    		"status":"done_delivered",
 			    		"reason":"Job has been delivered by driver."
 			    	}
-		    	} 
+		    	},
+		    	qs: {
+		    		key: 'value'
+		    	}
 		    },
 		    function (error, response, body) {
 		    	if (error) {

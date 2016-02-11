@@ -101,9 +101,10 @@ app.get('/Piggyback/test', function(request, response) {
 
 app.post('/Piggyback/test', function(request, response) {
 	console.log('Got new request')
+	console.log('BODY')
 	console.log(request.body)
-	console.log('\nREQUEST')
-	console.log(request)
+	console.log('QUERY')
+	console.log(request.query)
 	response.sendStatus(200)
 })
 
