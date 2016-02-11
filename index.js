@@ -615,7 +615,7 @@ app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 				}
 				if (rows) {
 					console.log('ROWS')
-					consoel.log(rows)
+					console.log(rows)
 					if (rows.length) {
 						console.log('ROWS LENGTH')
 						console.log(rows.length)
@@ -704,7 +704,7 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 				}
 			})
 		} else {
-			connection.query('UPDATE Tasks SET driverTip=\'2.00\' WHERE shortId=?', [task.shortId], function(error, rows) {
+			connection.query('UPDATE Tasks SET driverTip=\'4.00\' WHERE shortId=?', [task.shortId], function(error, rows) {
 				if (error) {
 					console.log('ERROR UPDATING')
 					console.log(error)
