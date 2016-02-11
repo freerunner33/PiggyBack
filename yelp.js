@@ -44,7 +44,7 @@ function postUpdate(data) {
 function postUpdate2(data) {
 	return new Promise(function(resolve, reject) {
 		request.post(
-		    'http://noahthomas.us/test',
+		    'http://noahthomas.us/Piggyback/test',
 		    {
 		    	body: {
 		    		data: {
