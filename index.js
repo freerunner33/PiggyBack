@@ -810,6 +810,7 @@ function getJobData(id) {
 			})
 			response.on('end', function() {
 				var result
+				resolve('made it here')
 				if (str.length)
 					result = JSON.parse(str)
 				if (response.statusCode != 200) {
