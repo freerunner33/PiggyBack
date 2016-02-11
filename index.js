@@ -820,7 +820,7 @@ function getJobData(id) {
 				}
 			})
 		})
-		resolve('something?')
+		resolve(result)
 		request.on('error', function(error) {
 			reject(error)
 		})
