@@ -191,7 +191,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 								if (error)
 									throw error
 								if (rows2 && rows2.length) {
-									writeLog(rows2, worker.location[1], worker.location[0]).then(function(log) {
+									writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
 										response.writeHead(200, {'Content-Type': 'application/json'})
 										var json = JSON.stringify(
 											{
