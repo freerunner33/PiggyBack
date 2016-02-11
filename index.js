@@ -263,7 +263,7 @@ function writeLog(arr, latitude, longitude) {
 					timestamp: time
 				})
 			}
-			resolve('Success')
+			resolve(newArr)
 		}, function(error) {
 			reject('Failure')
 		})
