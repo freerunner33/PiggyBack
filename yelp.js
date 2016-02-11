@@ -17,13 +17,17 @@ function fun(endpoint, method, data) {
 	return new Promise(function(resolve, reject) {
 		request.post(
 		    'http://requestb.in/1bluatq1',
-		    { 
-		    	data: {
-		    		"job_id":"675e8eed","order_id":"123example456id",
-		    		"status_code":"54","status":"done_delivered",
-		    		"reason":"Job has been delivered by driver."
-		    	}, 
-		    	form: { key: 'value' } 
+		    {
+		    	body: {
+		    		data: {
+			    		"job_id":"675e8eed","order_id":"123example456id",
+			    		"status_code":"54","status":"done_delivered",
+			    		"reason":"Job has been delivered by driver."
+			    	}
+		    	},
+		    	form: {
+		    		key: 'value'
+		    	} 
 		    },
 		    function (error, response, body) {
 		    	if (error) {
