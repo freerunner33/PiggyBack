@@ -246,6 +246,7 @@ function writeLog(arr, latitude, longitude) {
 	return new Promise(function(resolve, reject) {
 		var newArr = []
 		tz.getOffset(latitude, longitude).then(function(offset) {
+			resolve(arr.length)
 			for (i = 0; i < arr.length; i++) {
 				log = arr[i]
 				var status_code = log.status_code
