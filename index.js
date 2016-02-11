@@ -631,8 +631,9 @@ app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 				if (error)
 					console.log('ERROR - query\n' + error)
 				if (rows) {
-					updateYelp(task.shortId, request, response)
+					// console.log('SUCCESS - query')
 				}
+				updateYelp(task.shortId, request, response)
 			})
 		}
 		response.sendStatus(200)
@@ -711,6 +712,7 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 				if (rows) {
 					// console.log('SUCCESS - query')
 				}
+				updateYelp(task.shortId, request, response)
 			})
 			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [(new Date()).toISOString(), task.shortId], function(error, rows) {
 				if (error) {
