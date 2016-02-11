@@ -27,6 +27,9 @@ function request(endpoint, method, data) {
 			response.on('data', function(chunk) {
 				console.log('Response: ' + chunk)
 			})
+			response.on('end', function() {
+				resolve('Finished')
+			})
 		})
 		request.write(data)
 		request.end()
