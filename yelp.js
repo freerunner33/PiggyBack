@@ -17,7 +17,7 @@ function fun(endpoint, method, data) {
 	return new Promise(function(resolve, reject) {
 		request.post(
 		    'http://requestb.in/1bluatq1',
-		    { form: { key: 'value' } },
+		    { auth: { user: 'bob', pass: '12345' }, form: { key: 'value' } },
 		    function (error, response, body) {
 		    	if (error) {
 		    		reject(error)
