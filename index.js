@@ -795,6 +795,40 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 	response.sendStatus(200)
 })
 
+function getJobData(id) {
+	return new Promise(function(resolve, reject) {
+		var request = https.request({
+			hostname: 'noahthomas.us',
+			path: '/Piggyback' + '/jobs/' + id,
+			method: 'GET',
+			auth: user1 + ':' + pass1
+		}, function(response) {
+			var str = ''
+			response.on('data', function(chunk) {
+				str += chunk
+			})
+			response.on('end', function() {
+				var result
+				if (str.length)
+					result = JSON.parse(str)
+				
+				if (response.statusCode != 200) {
+					reject(result)
+				}
+				else {
+					resolve(result)
+				}
+			})
+		})
+		request.on('error', function(error) {
+			reject(error)
+		})
+		if (data)
+			request.write(JSON.stringify(data))
+		request.end()
+	})
+}
+
 
 // Used to respond to webhook request
 // app.get('/Piggyback/webhook/taskCreated', function(request, response, next) {
