@@ -48,7 +48,7 @@ function postUpdate2(data) {
 		    {
 		    	form: {
 		    		key: 'value',
-		    		data: {
+		    		data:{
 			    		"job_id":"675e8eed","order_id":"123example456id",
 			    		"status_code":"54","status":"done_delivered",
 			    		"reason":"Job has been delivered by driver."
