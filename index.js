@@ -631,6 +631,15 @@ app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 					// console.log('SUCCESS - query')
 				}
 			})
+			getJobData(task.shortId).then(function(job) {
+				yelp.postUpdate(job).then(function(result) {
+					response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
+				}, function(error1) {
+					response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error1)]})
+				})
+			}, function(error2) {
+				response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error2)]})
+			})
 		}
 		response.sendStatus(200)
 	}, function(error) {
