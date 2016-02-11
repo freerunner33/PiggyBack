@@ -798,7 +798,7 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 function getJobData(id) {
 	return new Promise(function(resolve, reject) {
 		var request = https.request({
-			hostname: 'noahthomas.us',
+			hostname: 'http://noahthomas.us',
 			path: '/Piggyback' + '/jobs/' + id,
 			method: 'GET',
 			auth: user1 + ':' + pass1
