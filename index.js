@@ -87,7 +87,7 @@ var eat24Reasons = {
 
 // TESTING
 app.get('/Piggyback/test', function(request, response) {
-	yelp.postUpdate({message: 'hi'}).then(function(result) {
+	yelp.postUpdate2({message: 'hi'}).then(function(result) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(result)]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error)]})
@@ -97,6 +97,13 @@ app.get('/Piggyback/test', function(request, response) {
 	// }, function(error) {
 	// 	response.render('error', {pageTitle: 'Success', errors: [JSON.stringify(error)]})
 	// })
+})
+
+app.post('/Piggyback/test', function(request, response) {
+	console.log('Got new request')
+	console.log(request.body)
+	console.log('\nREQUEST')
+	console.log(request)
 })
 
 app.post('/Piggyback/twilio', function(request, response) {
