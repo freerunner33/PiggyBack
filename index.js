@@ -245,6 +245,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 function writeLog(arr, latitude, longitude) {
 	return new Promise(function(resolve, reject) {
 		tz.getOffset(latitude, longitude).then(function(offset) {
+			resolve('HIIII')
 			for (i = 0; i < arr.length; i++) {
 				log = arr[i]
 				var status_code = log.status_code
