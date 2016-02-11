@@ -911,6 +911,7 @@ function updateYelp(id, request, response) {
 		})
 	}, function(error2) {
 		console.log('getJobData did not work')
+		console.log(error2)
 		response.sendStatus(404)
 	})
 }
