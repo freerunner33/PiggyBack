@@ -797,14 +797,14 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 				}
 				getJobData(task.shortId).then(function(job) {
 					yelp.postUpdate(job).then(function(result) {
-						console.log('Successfully posted')
+						// console.log('Successfully posted')
 						response.sendStatus(200)
 					}, function(error1) {
-						console.log('Unsuccessfully posted')
+						// console.log('Unsuccessfully posted')
 						response.sendStatus(404)
 					})
 				}, function(error2) {
-					console.log('getJobData did not work')
+					// console.log('getJobData did not work')
 					response.sendStatus(404)
 				})
 			})
