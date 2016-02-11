@@ -248,8 +248,7 @@ function writeLog(arr, latitude, longitude) {
 		tz.getOffset(latitude, longitude).then(function(offset) {
 			for (i = 0; i < arr.length; i++) {
 				log = arr[i]
-				var status_code = log.status_code
-				resolve(arr[i])
+				var status_code = log.statusCode
 				var status = eat24StatusCodes[status_code]
 				var reason = eat24Reasons[status_code]
 				var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
