@@ -251,16 +251,16 @@ function writeLog(arr, latitude, longitude) {
 			time = (new Date(time)).toISOString()
 			time = time.substring(0, time.length - 5) // 12:30:05.000Z
 			time = time + offset.string
-			newLog[i] = {
+			arr[i] = {
 				status_code: status_code,
 				status: status,
 				reason: reason,
 				timestamp: time
 			}
 		}
-		return(newlog)
+		return arr
 	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+		return []
 	})
 }
 

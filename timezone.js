@@ -51,6 +51,9 @@ function getOffset(lat, lon) {
 					offsetStr = '-0' + ('' + offsetStr).substring(1)
 				else
 					offsetStr = '0' + offsetStr
+			if (offsetStr >= 0) 
+				offsetStr = '+' + offsetStr
+			offsetStr = offsetStr.substring(0, 5)
 			resolve(
 				{
 					number: timezone.rawOffset,
