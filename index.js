@@ -607,6 +607,21 @@ app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 					// console.log('SUCCESS - query')
 				}
 			})
+		} else {
+			connection.query('UPDATE Tasks SET driverTip=\'2.00\' WHERE shortId=\'0a448223\'', [], function(error, rows) {
+				if (error) {
+					console.log('ERROR UPDATING')
+					console.log(error)
+				}
+				if (rows) {
+					console.log('ROWS')
+					consoel.log(rows)
+					if (rows.length) {
+						console.log('ROWS LENGTH')
+						console.log(rows.length)
+					}
+				}
+			})
 		}
 		response.sendStatus(200)
 	}, function(error) {
@@ -622,6 +637,21 @@ app.post('/Piggyback/webhook/taskEta', function(request, response) {
 					console.log('ERROR - query\n' + error)
 				if (rows) {
 					// console.log('SUCCESS - query')
+				}
+			})
+		} else {
+			connection.query('UPDATE Tasks SET driverTip=\'2.00\' WHERE shortId=?', ['0a448223'], function(error, rows) {
+				if (error) {
+					console.log('ERROR UPDATING')
+					console.log(error)
+				}
+				if (rows) {
+					console.log('ROWS')
+					consoel.log(rows)
+					if (rows.length) {
+						console.log('ROWS LENGTH')
+						console.log(rows.length)
+					}
 				}
 			})
 		}
@@ -671,6 +701,21 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 					console.log('ERROR - query\n' + error)
 				if (rows) {
 					// console.log('SUCCESS - query')
+				}
+			})
+		} else {
+			connection.query('UPDATE Tasks SET driverTip=\'2.00\' WHERE shortId=?', [task.shortId], function(error, rows) {
+				if (error) {
+					console.log('ERROR UPDATING')
+					console.log(error)
+				}
+				if (rows) {
+					console.log('ROWS')
+					consoel.log(rows)
+					if (rows.length) {
+						console.log('ROWS LENGTH')
+						console.log(rows.length)
+					}
 				}
 			})
 		}
