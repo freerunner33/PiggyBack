@@ -200,7 +200,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 											status_code: rows2[rows2.length - 1].statusCode,
 											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
 											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
-											log: rows2,
+											log: logFile,
 											driver: {
 												name: worker.name,
 												location: loc,
@@ -320,7 +320,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 		support_phone: b.support_phone, 
 		debug: b.debug
 	}
-	console.log(JSON.stringify(j))
 	/////////////////////////////////
 
 	if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
