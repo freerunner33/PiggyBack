@@ -6,8 +6,29 @@ block stylesheets
 
 block content
 	section
-		a(href='/Piggyback/sendwebhook') Send Webhook
-		a(href='/Piggyback/test') Test
+		h2 Current Tasks:
+		ul
+			if tasks.length
+				each task in tasks
+					if task.state < 3
+						li Task ID: #{task.id}
+						li Task State: #{task.state}
+						li Destination:
+						ul
+							li #{task.destination.address.number} #{task.destination.address.street}
+							li #{task.destination.address.city}, #{task.destination.address.state} #{task.destination.address.postalCode}
+						li Dependencies: #{task.dependencies}
+						li Complete after: #{new Date(task.completeAfter).toISOString()}
+						li Complete before: #{new Date(task.completeBefore).toISOString()}
+						li
+							form(method='POST', action='/Piggyback/delete-task')
+								input(type='hidden', name='id', value=task.id)
+								button(type='submit') Delete Task
+						br
+			else
+				li No tasks at the moment
+	
+	section
 		form#new(method='POST', action='/Piggyback/jobs') 
 			h1 Create Job
 			div#main
@@ -75,28 +96,6 @@ block content
 				p Debug
 				input(type='number', name='debug')
 				button(type='submit') Submit
-
-	h2 Current Tasks:
-	ul
-		if tasks.length
-			each task in tasks
-				if task.state < 3
-					li Task ID: #{task.id}
-					li Task State: #{task.state}
-					li Destination:
-					ul
-						li #{task.destination.address.number} #{task.destination.address.street}
-						li #{task.destination.address.city}, #{task.destination.address.state} #{task.destination.address.postalCode}
-					li Dependencies: #{task.dependencies}
-					li Complete after: #{new Date(task.completeAfter).toISOString()}
-					li Complete before: #{new Date(task.completeBefore).toISOString()}
-					li
-						form(method='POST', action='/Piggyback/delete-task')
-							input(type='hidden', name='id', value=task.id)
-							button(type='submit') Delete Task
-					br
-		else
-			li No tasks at the moment
 
 	h2 Destinations:
 	ul
