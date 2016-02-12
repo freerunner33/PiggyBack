@@ -8,9 +8,7 @@ block content
 	section
 		h2 Current Tasks:
 		ul
-			if (tasks.length == 0)
-				li No tasks at the moment
-			else
+			if (tasks.length = 0)
 				each task in tasks
 					if task.state < 3
 						li Task ID: #{task.id}
@@ -27,7 +25,8 @@ block content
 								input(type='hidden', name='id', value=task.id)
 								button(type='submit') Delete Task
 						br
-			
+			else
+				li No tasks at the moment
 	
 	section
 		form#new(method='POST', action='/Piggyback/jobs') 
