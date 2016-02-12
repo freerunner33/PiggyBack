@@ -60,6 +60,7 @@ app.use(session(
 	}
 ))
 
+// VARIABLES
 var eat24StatusCodes = {
 	40: 'submitted',
 	41: 'denied',
@@ -109,11 +110,12 @@ var eat24Reasons = {
 // 	response.sendStatus(200)
 // })
 
-app.post('/Piggyback/twilio', function(request, response) {
-	console.log('NEW REPLY MESSAGE')
-	console.log('Message from: ' + request.body.From)
-	console.log('Message body: ' + request.body.Body)
-})
+// TWILIO
+// app.post('/Piggyback/twilio', function(request, response) {
+// 	console.log('NEW REPLY MESSAGE')
+// 	console.log('Message from: ' + request.body.From)
+// 	console.log('Message body: ' + request.body.Body)
+// })
 
 
 // ROUTING
@@ -528,6 +530,7 @@ function checkWayPoint(wp, pickup) {
 		return false
 } 
 
+// SIGNUP
 app.get('/Piggyback/signup', function(request, response) {
 	response.render('signup', {pageTitle: 'Sign up'})
 })
@@ -590,7 +593,7 @@ app.post('/Piggyback/signup', function(request, response) {
 	})
 })
 
-// SIGNIN AND SIGNUP
+// SIGNIN
 app.get('/Piggyback/signin', function(request, response) {
 	if (request.session.loggedin)
 		response.render('signin', {pageTitle: 'Sign in', errors: ['Already signed in']})
@@ -620,6 +623,7 @@ app.post('/Piggyback/signin', function(request, response) {
 	})
 })
 
+// WEBHOOKS
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		console.log('taskStarted :' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
@@ -753,8 +757,9 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'40',(new Date()).getTime()], function(error, rows){
 				if (error)
 					console.log('ERROR - query\n' + error)
-				updateYelp(task.shortId, request, response)
+				// updateYelp(task.shortId, request, response)
 				// SHOULD BE DIFFERENT
+				response.sendStatus(200)
 			})
 		} else {
 			response.sendStatus(200)
@@ -804,6 +809,7 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 	response.sendStatus(200)
 })
 
+// HELPER FUNCTIONS
 function getJobData(id) {
 	return new Promise(function(resolve, reject) {
 		onfleet.getSingleTaskByShortID(id).then(function(task) {
@@ -871,7 +877,7 @@ function updateYelp(id, request, response) {
 	})
 }
 
-
+// WEBHOOK SETUP
 // Used to respond to webhook request
 // app.get('/Piggyback/webhook/taskCreated', function(request, response, next) {
 // 	response.send(request.query.check)
