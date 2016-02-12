@@ -9,9 +9,7 @@ body {
 }
 
 header {
-	color: rgb(237, 45, 135);
 	padding: 0.5em;
-	text-align: left;
 }
 a#img {
 	padding: 0;
@@ -23,15 +21,13 @@ img {
 nav {
 	display: inline-block;
 	text-align: right;
-	vertical-align: middle;
 	width: calc(100% - 212px);
 }
-a {
+nav a {
 	color: rgb(237, 45, 135);
 	display: inline-block;
 	padding: 0.25em 1em;
 	text-decoration: none;
-	vertical-align: middle;
 }
 
 section {
