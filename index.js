@@ -352,6 +352,11 @@ app.post('/Piggyback/jobs', function(request, response) {
 		support_phone: b.support_phone, 
 		debug: b.debug
 	}
+	response.render('error', {pageTitle: Job success, errors: [JSON.stringify(j)]})
+	return
+
+	// Yelp Eat24 will send j in request.body
+	// var j = request.body
 	/////////////////////////////////
 
 	if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
@@ -786,7 +791,7 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 		}
 		response.sendStatus(200)
 	}, function(error) {
-		response.sendStatus(404) // task not found, try again in 30 minutes
+		response.sendStatus(200) // task not found, try again in 30 minutes
 	})
 })
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
