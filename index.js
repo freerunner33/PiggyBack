@@ -353,7 +353,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		debug: b.debug
 	}
 	var job = {"pickup_waypoint":{"address":"3650 Rosecrans St","address2":"","city":"San Diego","state":"CA","zip":"92110","name":"Noah","phone":"9703084693","location":{"latitude":"32.750925","longitude":"-117.205624"},"arrive_at":"2016-05-05T12:30","special_instructions":"Noodles & Company order for Noah"},"dropoff_waypoint":{"address":"5998 Alcala Park","address2":"","city":"San Diego","state":"CA","zip":"92110","name":"Noah","phone":"9703084693","location":{"latitude":"32.771970","longitude":"-117.186308"},"special_instructions":"Please dropoff in front of the University Center"},"order_id":"123example456id","order_items":"[Buttered Noodles, Pesto Cavatappi]","order_total":"12.53","tip":"2.00","support_phone":"9703084693","debug":""}
-	response.render('error', {pageTitle: 'Job success', errors: [JSON.stringify(job), JSON.stringify(pickup_waypoint)]})
+	response.render('error', {pageTitle: 'Job success', errors: [JSON.stringify(job), JSON.stringify(job.pickup_waypoint)]})
 	return
 
 	// Yelp Eat24 will send j in request.body
