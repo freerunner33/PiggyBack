@@ -46,10 +46,10 @@ div {
 	box-shadow: 0 0 10px rgba(237, 45, 135, 0.5);
 }
 div#form {
-	width: calc(33.33% - 2em);
+	width: calc(33.33% - 3em);
 	min-width: 15em;
+	margin: 0.5em;
 }
-
 div#smalldiv {
 	margin: 0.5em 0em;
 	width: calc(100% - 2em);
@@ -58,7 +58,6 @@ div#smalldiv {
 p {
 	margin: 0.25em;
 }
-
 input {
 	width: calc(100% - 2em);
 	margin: 0.25em;
