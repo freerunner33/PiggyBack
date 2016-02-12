@@ -31,11 +31,11 @@ nav a {
 }
 
 section {
-	width: calc(100% - 2em);
+	width: calc(100% - 3em);
 	padding: 1em;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(237, 45, 135, 0.5);
-	margin: 0.25em;
+	margin: 0.5em;
 }
 
 div {
