@@ -352,6 +352,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 		support_phone: b.support_phone, 
 		debug: b.debug
 	}
+	response.render('error', {pageTitle: 'Job success', errors: [JSON.stringify(j)]})
+	return
 
 	// Yelp Eat24 will send j in request.body
 	// var j = request.body
