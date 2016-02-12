@@ -28,8 +28,8 @@ block content
 	section
 		form#new(method='POST', action='/Piggyback/jobs') 
 			h1 Create New Task
-			div#main
-				p Pickup waypoint:
+			div#form
+				h4 Pickup waypoint:
 				div#smalldiv
 					p *Address (line 1):
 					input(type='text', name='pickup_address', required, autocomplete='off', value='3650 Rosecrans St')
@@ -55,8 +55,8 @@ block content
 					input(type='datetime-local', name='pickup_arrive_at', required, autocomplete='off', value='2016-05-05T12:30')
 					p Special Instructions:
 					input(type='text', name='pickup_special_instructions', autocomplete='off', value='Noodles & Company order for Noah')
-			div#main
-				p Dropoff waypoint:
+			div#form
+				h4 Dropoff waypoint:
 				div#smalldiv
 					p *Address (line 1):
 					input(type='text', name='dropoff_address', required, autocomplete='off', value='5998 Alcala Park')
@@ -79,7 +79,7 @@ block content
 						input(type='number', name='dropoff_longitude', required, autocomplete='off', value='-117.186308')
 					p Special Instructions:
 					input(type='text', name='dropoff_special_instructions', autocomplete='off', value='Please dropoff in front of the University Center')
-			div#main
+			div#form
 				p *Order ID:
 				input(type='text', name='order_id', required, value='123example456id')
 				p Order Items:
