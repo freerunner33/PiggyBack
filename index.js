@@ -217,7 +217,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 									response.end()
 								}
 								if (rows2 && rows2.length) {
-									writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
+									writeLog(rows2, task.destination.location[1], task.destination.location[0], task.timeCreated).then(function(log) {
 										response.writeHead(200, {'Content-Type': 'application/json'})
 										var json = JSON.stringify(
 											{
@@ -268,10 +268,10 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 	// }
 })
 
-function writeLog(arr, latitude, longitude) {
+function writeLog(arr, latitude, longitude, time) {
 	return new Promise(function(resolve, reject) {
 		var newArr = []
-		tz.getOffset(latitude, longitude).then(function(offset) {
+		tz.getOffset(latitude, longitude, time).then(function(offset) {
 			for (i = 0; i < arr.length; i++) {
 				log = arr[i]
 				var status_code = log.statusCode
@@ -404,7 +404,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 		var timeB = timeA + (15 * 60 * 1000)
 		var timeC = timeA + (40 * 60 * 1000)
-		tz.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
+		tz.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude, timeA).then(function(timezone) {
 			timeA = timeA - (timezone.rawOffset * 1000)
 			timeB = timeB - (timezone.rawOffset * 1000)
 			timeC = timeC - (timezone.rawOffset * 1000)
