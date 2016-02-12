@@ -13,9 +13,11 @@ header {
 	padding: 0.5em;
 	text-align: left;
 }
+
 a#img {
 	padding: 0;
 }
+
 img {
 	height: 45px; 
 	vertical-align: middle;
