@@ -399,9 +399,9 @@ app.post('/Piggyback/jobs', function(request, response) {
 		var timeB = timeA + (15 * 60 * 1000)
 		var timeC = timeA + (40 * 60 * 1000)
 		tz.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
-			timeA = timeA - (timezone.rawOffset * 1000)
-			timeB = timeB - (timezone.rawOffset * 1000)
-			timeC = timeC - (timezone.rawOffset * 1000)
+			timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
+			timeB = timeB - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
+			timeC = timeC - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 			var dateA = new Date(timeA)
 			var dateB = new Date(timeB)
 			var dateC = new Date(timeC)
