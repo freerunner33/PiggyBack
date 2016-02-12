@@ -39,7 +39,7 @@ function request(method, data) {
 
 function getTimeZone(lat, lon) {
 	console.log('Time stamp: ' + Date.now())
-	return request('GET', {latitude: lat, longitude: lon, timestamp: '1455294037', key: apiKey})
+	return request('GET', {latitude: lat, longitude: lon, timestamp: Date.now(), key: apiKey})
 	// latitude: '39.6034810', longitude: '-119.6822510'
 }
 
