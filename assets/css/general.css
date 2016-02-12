@@ -13,11 +13,9 @@ header {
 	padding: 0.5em;
 	text-align: left;
 }
-
 a#img {
 	padding: 0;
 }
-
 img {
 	height: 45px; 
 	vertical-align: middle;
@@ -28,7 +26,6 @@ nav {
 	vertical-align: middle;
 	width: calc(100% - 212px);
 }
-
 a {
 	color: rgb(237, 45, 135);
 	display: inline-block;
@@ -36,6 +33,40 @@ a {
 	text-decoration: none;
 	vertical-align: middle;
 }
+
+section {
+	width: calc(100% - 2em);
+	padding: 1em;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(237, 45, 135, 0.5);
+	margin: 0.25em;
+}
+
+div {
+	vertical-align: top;
+	display: inline-block;
+	padding: 1em;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(237, 45, 135, 0.5);
+}
+div#main {
+	width: calc(33.33% - 2em);
+	min-width: 15em;
+}
+div#smalldiv {
+	margin: 0.5em 0em;
+	width: calc(100% - 2em);
+}
+
+p {
+	margin: 0.25em;
+}
+
+input {
+	width: calc(100% - 2em);
+	margin: 0.25em;
+}
+
 
 h1 {
 	color:#ddd;
