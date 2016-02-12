@@ -37,14 +37,14 @@ function request(method, data) {
 	})
 }
 
-function getTimeZone(lat, lon, time) {
+function getTimeZone(lat, lon) {
 	return request('GET', {latitude: lat, longitude: lon, timestamp: '1455293498450', key: apiKey})
 	// latitude: '39.6034810', longitude: '-119.6822510'
 }
 
-function getOffset(lat, lon, time) {
+function getOffset(lat, lon) {
 	return new Promise(function(resolve, reject) {
-		getTimeZone(lat, lon, time).then(function(timezone) {
+		getTimeZone(lat, lon).then(function(timezone) {
 			var offsetStr = timezone.rawOffset/36
 			if (offsetStr > -1000 && offsetStr < 1000)
 				if (offsetStr < 0)
