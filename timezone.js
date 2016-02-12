@@ -38,9 +38,12 @@ function request(method, data) {
 }
 
 function getTimeZone(lat, lon) {
-	var time = ((new Date()).getTime())
-	return request('GET', {latitude: lat, longitude: lon, timestamp: time, key: apiKey})
+	return request('GET', {latitude: lat, longitude: lon, timestamp: getTime(), key: apiKey})
 	// latitude: '39.6034810', longitude: '-119.6822510'
+}
+
+function getTime() {
+	return (new Date()).getTime()
 }
 
 function getOffset(lat, lon) {
