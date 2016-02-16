@@ -690,13 +690,9 @@ app.post('/Piggyback', function(request, response) {
 	var password=parts[1]
 
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
-		response.writeHead(200, { 'Content-Type': 'text/plain' })
-		response.write('\nSuccess!\n')
-		response.end()
+		response.sendStatus(200)
 	} else {
-		response.writeHead(401, { 'Content-Type': 'text/plain' })
-		response.write('Incorrect credentials\n' + username + ':' + yelpUser + '\n' + password + ':' + yelpPass + '\n')
-		response.end()
+		response.sendStatus(401)
 	}
 })
 
