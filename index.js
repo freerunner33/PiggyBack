@@ -691,7 +691,7 @@ app.post('/Piggyback', function(request, response) {
 
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		response.writeHead(200, { 'Content-Type': 'application/json' })
-		response.write(request.body.name)
+		response.write(request.body.name + '\n')
 		response.end()
 	} else {
 		response.sendStatus(401)
