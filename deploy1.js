@@ -681,6 +681,7 @@ app.get('/Piggyback', function(request, response) {
 })
 
 app.post('/Piggyback', function(request, response) {
+	// Parsing basic authorization sent in post request
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
@@ -693,7 +694,9 @@ app.post('/Piggyback', function(request, response) {
 		response.write('\nSuccess!\n')
 		response.end()
 	} else {
-		response.sendStatus(401)
+		response.writeHead(401, { 'Content-Type': 'text/plain' })
+		response.write('Incorrect credentials\n' + username + ':' + yelpUser + '\n' + password + ':' + yelpPass + '\n')
+		response.end()
 	}
 })
 
