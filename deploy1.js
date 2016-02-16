@@ -689,7 +689,7 @@ app.post('/Piggyback', function(request, response) {
 	var username=parts[0]
 	var password=parts[1]
 
-	if (username == yelpUser && password == yelpPass && request.body.destinationA && request.body.destinationB && request.body.driverTip) {
+	if (username == yelpUser && password == yelpPass) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' })
 		response.write('\nSuccess!\n')
 		response.end()
