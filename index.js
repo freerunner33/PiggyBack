@@ -122,13 +122,14 @@ var eat24Reasons = {
 
 
 // HOME PAGE
-// app.get('/', function(request, response) {
-// 	if (request.session.views)
-// 		request.session.views++
-// 	else
-// 		request.session.views = 1
-// 	response.render('index', {pageTitle: 'Home', views: request.session.views})
-// })
+app.get('/', function(request, response) {
+	// if (request.session.views)
+	// 	request.session.views++
+	// else
+	// 	request.session.views = 1
+	// response.render('index', {pageTitle: 'Home', views: request.session.views})
+	response.sendStatus(200)
+})
 
 // EXAMPLE VERIFICATION
 app.post('/Piggyback', function(request, response) {
