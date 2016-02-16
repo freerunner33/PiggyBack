@@ -4,13 +4,16 @@
 // Require the onfleet api, and the database js file
 var onfleet = require('./onfleet.js')
 var yelp = require('./yelp.js')
-var tz = require('./timezone.js')
+var timezone = require('./timezone.js')
 var connection = require('./database.js')
-var signUpKey = require('./keys.js').signUpKey
-var client = require('twilio')('ACb881b9340ea17635979b58d81acb6cdb', '291061d8ef68757197f8308b3856aa9e')
 
-var user1 = require('./keys.js').user1
-var pass1 = require('./keys.js').pass1
+var keys = require('./keys.js')
+
+var signUpKey = keys.signUpKey
+var twilioclient = require('twilio')(keys.twilio1, keys.twilio2)
+
+var yelpuser = keys.yelpuser
+var yelppass = keys.yelppass
 
 // npm modules that are required in
 var path = require('path')
@@ -137,7 +140,7 @@ app.post('/Piggyback', function(request, response) {
 	var username=parts[0]
 	var password=parts[1]
 
-	if (username == user1 && password == pass1 && request.body.destinationA && request.body.destinationB && request.body.driverTip) {
+	if (username == yelpuser && password == yelppass && request.body.destinationA && request.body.destinationB && request.body.driverTip) {
 		response.writeHead(200, { 'Content-Type': 'text/plain' })
 		response.write('\nSuccess!\nExample return object\n')
 		response.write('{\n\ttaskId: abc123def456ghi789\n')
@@ -147,7 +150,7 @@ app.post('/Piggyback', function(request, response) {
 		response.end()
 	} else {
 		response.writeHead(401, { 'Content-Type': 'text/plain' })
-		response.write('Incorrect credentials\n' + username + ':' + user1 + '\n' + password + ':' + pass1 + '\n')
+		response.write('Incorrect credentials\n' + username + ':' + yelpuser + '\n' + password + ':' + yelppass + '\n')
 		response.end()
 	}
 })
@@ -370,7 +373,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 		var timeB = timeA + (15 * 60 * 1000)
 		var timeC = timeA + (40 * 60 * 1000)
-		tz.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
+		timezone.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
 			timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 			timeB = timeB - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 			timeC = timeC - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
@@ -632,7 +635,7 @@ app.post('/Piggyback/webhook/taskArrival', function(request, response) {
 })
 
 app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
-	// client.sendMessage({
+	// twilioclient.sendMessage({
 	//     to:'+19703084693',
 	//     from: '+19709991252',
 	//     body: 'Task was completed. Please respond with 1 to confirm, or 0 to indicate that the task was not completed.'
@@ -764,13 +767,13 @@ app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
 function writeLog(arr, latitude, longitude) {
 	return new Promise(function(resolve, reject) {
 		var newArr = []
-		tz.getOffset(latitude, longitude).then(function(offset) {
+		timezone.getOffset(latitude, longitude).then(function(offset) {
 			for (i = 0; i < arr.length; i++) {
 				log = arr[i]
 				var status_code = log.statusCode
 				var status = eat24StatusCodes[status_code]
 				var reason = eat24Reasons[status_code]
-				var time = log.timestamp // this is a number - convert to local with tz, then format with tz addition -0800
+				var time = log.timestamp // this is a number - convert to local with timezone, then format with timezone addition -0800
 				time = Number(time) + Number(offset.number * 1000)
 				time = (new Date(time)).toISOString()
 				time = time.substring(0, time.length - 5) // 12:30:05.000Z
