@@ -14,7 +14,7 @@ function postUpdate(data) {
 		    {
 		    	form: data,
 		    	qs: {
-		    		key: 'Yelp API Key'
+		    		key: apiKey
 		    	}
 		    },
 		    function (error, response, body) {
