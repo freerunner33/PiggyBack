@@ -72,282 +72,315 @@ app.get('/', function(request, response) {
 
 // 1. Creating a new job
 app.post('/Piggyback/jobs', function(request, response) {
-	var j = request.body
-	
-	if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
-		var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
-		var destA = {
-			address: {
-				number: j.pickup_waypoint.address.substr(0, pickupSplit),
-				street: j.pickup_waypoint.address.substr(pickupSplit),
-				city: j.pickup_waypoint.city,
-				state: j.pickup_waypoint.state,
-				postalCode: j.pickup_waypoint.zip,
-				country: 'USA'
-			}, 
-			location: [j.pickup_waypoint.location.longitude, j.pickup_waypoint.location.latitude]
-		}
-		var dropoffSplit = j.dropoff_waypoint.address.indexOf(' ')
-		var destB = {
-			address: {
-				number: j.dropoff_waypoint.address.substr(0, dropoffSplit),
-				street: j.dropoff_waypoint.address.substr(dropoffSplit),
-				city: j.dropoff_waypoint.city,
-				state: j.dropoff_waypoint.state,
-				postalCode: j.dropoff_waypoint.zip,
-				country: 'USA'
-			}, 
-			location: [j.dropoff_waypoint.location.longitude, j.dropoff_waypoint.location.latitude]
-		}
+	var header=request.headers['authorization']||''
+	var token=header.split(/\s+/).pop()||''
+	var auth=new Buffer(token, 'base64').toString()
+	var parts=auth.split(/:/)
+	var username=parts[0]
+	var password=parts[1]
 
-		var recipientA = {
-			name: j.pickup_waypoint.name,
-			phone: j.pickup_waypoint.phone,
-			notes: null,
-			skipSMSNotifications: 'false',
-			skipPhoneNumberValidation: 'false'
-		}
-		var recipientB = {
-			name: j.dropoff_waypoint.name,
-			phone: j.dropoff_waypoint.phone,
-			notes: null,
-			skipSMSNotifications: 'false',
-			skipPhoneNumberValidation: 'false'
-		}
+	if (username == yelpUser && password == yelpPass) {
+		var j = request.body
+		
+		if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
+			var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
+			var destA = {
+				address: {
+					number: j.pickup_waypoint.address.substr(0, pickupSplit),
+					street: j.pickup_waypoint.address.substr(pickupSplit),
+					city: j.pickup_waypoint.city,
+					state: j.pickup_waypoint.state,
+					postalCode: j.pickup_waypoint.zip,
+					country: 'USA'
+				}, 
+				location: [j.pickup_waypoint.location.longitude, j.pickup_waypoint.location.latitude]
+			}
+			var dropoffSplit = j.dropoff_waypoint.address.indexOf(' ')
+			var destB = {
+				address: {
+					number: j.dropoff_waypoint.address.substr(0, dropoffSplit),
+					street: j.dropoff_waypoint.address.substr(dropoffSplit),
+					city: j.dropoff_waypoint.city,
+					state: j.dropoff_waypoint.state,
+					postalCode: j.dropoff_waypoint.zip,
+					country: 'USA'
+				}, 
+				location: [j.dropoff_waypoint.location.longitude, j.dropoff_waypoint.location.latitude]
+			}
 
-		var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
-		var timeB = timeA + (15 * 60 * 1000)
-		var timeC = timeA + (40 * 60 * 1000)
-		timezone.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
-			timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
-			timeB = timeB - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
-			timeC = timeC - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
-			var dateA = new Date(timeA)
-			var dateB = new Date(timeB)
-			var dateC = new Date(timeC)
-			onfleet.createNewTask(
-				'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
-				'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
-				destA,													// destination
-				[recipientA],											// recipients - array
-				timeA,													// complete after - number
-				timeB,													// complete before - number
-				true,													// pickup task?
-				[],														// dependencies - array
-				j.pickup_waypoint.special_instructions,					// notes for task
-				{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id: TEST
-			).then(function(taskA) {
+			var recipientA = {
+				name: j.pickup_waypoint.name,
+				phone: j.pickup_waypoint.phone,
+				notes: null,
+				skipSMSNotifications: 'false',
+				skipPhoneNumberValidation: 'false'
+			}
+			var recipientB = {
+				name: j.dropoff_waypoint.name,
+				phone: j.dropoff_waypoint.phone,
+				notes: null,
+				skipSMSNotifications: 'false',
+				skipPhoneNumberValidation: 'false'
+			}
+
+			var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
+			var timeB = timeA + (15 * 60 * 1000)
+			var timeC = timeA + (40 * 60 * 1000)
+			timezone.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
+				timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
+				timeB = timeB - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
+				timeC = timeC - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
+				var dateA = new Date(timeA)
+				var dateB = new Date(timeB)
+				var dateC = new Date(timeC)
 				onfleet.createNewTask(
-					'~2FSQGbR0qSXi1v9kSQxtW4v',							// merchant
-					'~2FSQGbR0qSXi1v9kSQxtW4v',							// executor
-					destB,												// destination
-					[recipientB],										// recipients - array
-					timeA,												// complete after - number
-					timeC,												// complete before - number
-					false,												// pickup task?
-					[taskA.id],											// dependencies - array
-					j.dropoff_waypoint.special_instructions				// notes for task
-				).then(function(taskB) {
-					onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
-						connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-							[
-								taskA.shortId,													// shortId
-								taskA.id,														// taskId
-								j.order_id,														// yelpId
-								'Yelp',															// company
-								null,															// driverTip
-								'pickup',														// taskType
-								(dateA).toISOString(),											// completeAfter	- in UTC
-								(dateB).toISOString(),											// completeBefore	- in UTC
-								worker.id,														// workerId
-								worker.name,													// workerName
-								'' + taskA.destination.address.number + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + taskA.destination.address.postalCode,
-								null,															// completionTime
-								null															// didSucceed
-							], 
-							function(error, rows)
-							{
-								if (error) {
-									console.log('TaskA: ' + taskA.id + ' was not added to database')
-									throw error
-								}
-								// need to assign this task to the worker
-								worker.tasks.push(taskB.id)
-								onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-									connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-										[
-											taskB.shortId,										// shortId
-											taskB.id,											// taskId
-											j.order_id,											// yelpId
-											'Yelp',												// company
-											j.tip,												// driverTip
-											'dropoff',											// taskType
-											(dateA).toISOString(),								// completeAfter	- in UTC
-											(dateC).toISOString(),								// completeBefore	- in UTC
-											worker.id,											// workerId
-											worker.name,										// workerName
-											'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
-											null,												// completionTime
-											null												// didSucceed
-										], 
-										function(error, rows)
-										{
-											if (error) {
-												console.log('TaskB ' + taskB.id + ' was not added to database')
-												throw error
+					'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
+					'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
+					destA,													// destination
+					[recipientA],											// recipients - array
+					timeA,													// complete after - number
+					timeB,													// complete before - number
+					true,													// pickup task?
+					[],														// dependencies - array
+					j.pickup_waypoint.special_instructions,					// notes for task
+					{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id: TEST
+				).then(function(taskA) {
+					onfleet.createNewTask(
+						'~2FSQGbR0qSXi1v9kSQxtW4v',							// merchant
+						'~2FSQGbR0qSXi1v9kSQxtW4v',							// executor
+						destB,												// destination
+						[recipientB],										// recipients - array
+						timeA,												// complete after - number
+						timeC,												// complete before - number
+						false,												// pickup task?
+						[taskA.id],											// dependencies - array
+						j.dropoff_waypoint.special_instructions				// notes for task
+					).then(function(taskB) {
+						onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
+							connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+								[
+									taskA.shortId,													// shortId
+									taskA.id,														// taskId
+									j.order_id,														// yelpId
+									'Yelp',															// company
+									null,															// driverTip
+									'pickup',														// taskType
+									(dateA).toISOString(),											// completeAfter	- in UTC
+									(dateB).toISOString(),											// completeBefore	- in UTC
+									worker.id,														// workerId
+									worker.name,													// workerName
+									'' + taskA.destination.address.number + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + taskA.destination.address.postalCode,
+									null,															// completionTime
+									null															// didSucceed
+								], 
+								function(error, rows)
+								{
+									if (error) {
+										console.log('TaskA: ' + taskA.id + ' was not added to database')
+										throw error
+									}
+									// need to assign this task to the worker
+									worker.tasks.push(taskB.id)
+									onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
+										connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+											[
+												taskB.shortId,										// shortId
+												taskB.id,											// taskId
+												j.order_id,											// yelpId
+												'Yelp',												// company
+												j.tip,												// driverTip
+												'dropoff',											// taskType
+												(dateA).toISOString(),								// completeAfter	- in UTC
+												(dateC).toISOString(),								// completeBefore	- in UTC
+												worker.id,											// workerId
+												worker.name,										// workerName
+												'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
+												null,												// completionTime
+												null												// didSucceed
+											], 
+											function(error, rows)
+											{
+												if (error) {
+													console.log('TaskB ' + taskB.id + ' was not added to database')
+													throw error
+												}
+												response.writeHead(200, { 'Content-Type': 'application/json' })
+												response.write(JSON.stringify({job_id: taskB.shortId}))
+												response.end()
 											}
-											response.writeHead(200, { 'Content-Type': 'application/json' })
-											response.write(JSON.stringify({job_id: taskB.shortId}))
-											response.end()
-										}
-									)
-								}, function(error) {
-									// DROPOFF TASK NOT ADDED TO WORKER
-									response.writeHead(400, { 'Content-Type': 'application/json' })
-									response.write(JSON.stringify(error))
-									response.end()
-								})
-							}
-						)
+										)
+									}, function(error) {
+										// DROPOFF TASK NOT ADDED TO WORKER
+										response.writeHead(400, { 'Content-Type': 'application/json' })
+										response.write(JSON.stringify(error))
+										response.end()
+									})
+								}
+							)
+						}, function(error) {
+							// NOT AUTO ASSIGNED TO A WORKER
+							response.writeHead(400, { 'Content-Type': 'application/json' })
+							response.write(JSON.stringify(error))
+							response.end()
+						})
 					}, function(error) {
-						// NOT AUTO ASSIGNED TO A WORKER
+						// ERROR CREATING DROPOFF TASK
 						response.writeHead(400, { 'Content-Type': 'application/json' })
 						response.write(JSON.stringify(error))
 						response.end()
 					})
 				}, function(error) {
-					// ERROR CREATING DROPOFF TASK
+					// ERROR CREATING PICKUP TASK
 					response.writeHead(400, { 'Content-Type': 'application/json' })
 					response.write(JSON.stringify(error))
 					response.end()
 				})
 			}, function(error) {
-				// ERROR CREATING PICKUP TASK
+				// ERROR GETTING TIMEZONE
 				response.writeHead(400, { 'Content-Type': 'application/json' })
 				response.write(JSON.stringify(error))
 				response.end()
 			})
-		}, function(error) {
-			// ERROR GETTING TIMEZONE
+		} else {
+			// ERROR MISSING SOME VARIABLE
 			response.writeHead(400, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify(error))
+			response.write(JSON.stringify({error: 'Missing some variable.'}))
 			response.end()
-		})
+		}
 	} else {
-		// ERROR MISSING SOME VARIABLE
-		response.writeHead(400, { 'Content-Type': 'application/json' })
-		response.write(JSON.stringify({error: 'Missing some variable.'}))
-		response.end()
+		response.sendStatus(401)
 	}
 })
 
 // 2. Deleting a job
 app.delete('/Piggyback/jobs/*', function(request, response) {
-	var path = request.url.split('/')
-	if (path.length != 4) {
-		response.writeHead(405, {'Content-Type': 'application/json'})
-		response.write(JSON.stringify({error: 'Incorrect path format'}))
-		response.end()
-	} else {
-		// first delete the pickup, then dropoff
-		onfleet.getSingleTask(path[3]).then(function(taskB) {
-			onfleet.deleteTask(taskB.dependencies[0]).then(function() {
-				onfleet.deleteTask(taskB.id).then(function() {
-					response.writeHead(200, { 'Content-Type': 'application/json' })
-					response.write(JSON.stringify({job_id: path[3]}))
-					response.end()
+	var header=request.headers['authorization']||''
+	var token=header.split(/\s+/).pop()||''
+	var auth=new Buffer(token, 'base64').toString()
+	var parts=auth.split(/:/)
+	var username=parts[0]
+	var password=parts[1]
+
+	if (username == yelpUser && password == yelpPass) {
+		var path = request.url.split('/')
+		if (path.length != 4) {
+			response.writeHead(405, {'Content-Type': 'application/json'})
+			response.write(JSON.stringify({error: 'Incorrect path format'}))
+			response.end()
+		} else {
+			// first delete the pickup, then dropoff
+			onfleet.getSingleTask(path[3]).then(function(taskB) {
+				onfleet.deleteTask(taskB.dependencies[0]).then(function() {
+					onfleet.deleteTask(taskB.id).then(function() {
+						response.writeHead(200, { 'Content-Type': 'application/json' })
+						response.write(JSON.stringify({job_id: path[3]}))
+						response.end()
+					}, function(error) {
+						response.writeHead(405, { 'Content-Type': 'application/json' })
+						response.write(JSON.stringify({error: 'Task could not be deleted. - delete1'}))
+						response.end()
+					})
 				}, function(error) {
 					response.writeHead(405, { 'Content-Type': 'application/json' })
-					response.write(JSON.stringify({error: 'Task could not be deleted. - delete1'}))
+					response.write(JSON.stringify({error: 'Task could not be deleted. - delete2'}))
 					response.end()
 				})
 			}, function(error) {
-				response.writeHead(405, { 'Content-Type': 'application/json' })
-				response.write(JSON.stringify({error: 'Task could not be deleted. - delete2'}))
+				response.writeHead(404, { 'Content-Type': 'application/json' })
+				response.write(JSON.stringify({error: 'Job id not found. - delete3'}))
 				response.end()
 			})
-		}, function(error) {
-			response.writeHead(404, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify({error: 'Job id not found. - delete3'}))
-			response.end()
-		})
+		}
+	} else {
+		response.sendStatus(401)
 	}
 })
 
 // Querying the status of a job
 app.get('/Piggyback/jobs/*', function(request, response) {
-	var path = request.url.split('/')
-	if (path.length != 4) {
-		response.writeHead(400, {'Content-Type': 'application/json'})
-		response.write(JSON.stringify({error: 'Incorrect path format'}))
-		response.end()
-	} else {
-		onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
-			connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
-				if (error) {
-					response.writeHead(400, {'Content-Type': 'application/json'})
-					response.write(JSON.stringify(error))
-					response.end()
-				}
-				if (rows && rows.length) {
-					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
-						if (worker.location) {
-							var loc = {latitude: worker.location[1], longitude: worker.location[0]}
-						} else {
-							var loc = null
-						}
-						connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
-							if (error) {
-								response.writeHead(400, {'Content-Type': 'application/json'})
-								response.write(JSON.stringify(error))
-								response.end()
-							}
-							if (rows2 && rows2.length) {
-								writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
-									response.writeHead(200, {'Content-Type': 'application/json'})
-									var json = JSON.stringify(
-										{
-											job_id: task.shortId,
-											order_id: rows[0].yelpId,
-											status_code: rows2[rows2.length - 1].statusCode,
-											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
-											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
-											log: log,
-											driver: {
-												name: worker.name,
-												location: loc,
-												phone: worker.phone
-											}
-										}
-									)
-									response.end(json)	
-								}, function() {
-									response.writeHead(400, { 'Content-Type': 'application/json' })
-									response.write(JSON.stringify({ error: 'Problem with log file'}))
-									response.end()
-								})
-							} else {
-								response.writeHead(400, { 'Content-Type': 'application/json' })
-								response.write(JSON.stringify({ error: 'Task not found in database - query1'}))
-								response.end()
-							}
-						})
-					}, function(error) {
-						response.writeHead(400, { 'Content-Type': 'application/json' })
+	var header=request.headers['authorization']||''
+	var token=header.split(/\s+/).pop()||''
+	var auth=new Buffer(token, 'base64').toString()
+	var parts=auth.split(/:/)
+	var username=parts[0]
+	var password=parts[1]
+
+	if (username == yelpUser && password == yelpPass) {
+		var path = request.url.split('/')
+		if (path.length != 4) {
+			response.writeHead(400, {'Content-Type': 'application/json'})
+			response.write(JSON.stringify({error: 'Incorrect path format'}))
+			response.end()
+		} else {
+			onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
+				connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
+					if (error) {
+						response.writeHead(400, {'Content-Type': 'application/json'})
 						response.write(JSON.stringify(error))
 						response.end()
-					})
-				} else {
-					response.writeHead(400, { 'Content-Type': 'application/json' })
-					response.write(JSON.stringify({ error: 'Task not found in database - query2'}))
-					response.end()
-				}
+					}
+					if (rows && rows.length) {
+						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+							if (worker.location) {
+								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
+							} else {
+								var loc = null
+							}
+							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
+								if (error) {
+									response.writeHead(400, {'Content-Type': 'application/json'})
+									response.write(JSON.stringify(error))
+									response.end()
+								}
+								if (rows2 && rows2.length) {
+									writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
+										response.writeHead(200, {'Content-Type': 'application/json'})
+										var json = JSON.stringify(
+											{
+												job_id: task.shortId,
+												order_id: rows[0].yelpId,
+												status_code: rows2[rows2.length - 1].statusCode,
+												status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
+												reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
+												log: log,
+												driver: {
+													name: worker.name,
+													location: loc,
+													phone: worker.phone
+												}
+											}
+										)
+										response.end(json)	
+									}, function() {
+										response.writeHead(400, { 'Content-Type': 'application/json' })
+										response.write(JSON.stringify({ error: 'Problem with log file'}))
+										response.end()
+									})
+								} else {
+									response.writeHead(400, { 'Content-Type': 'application/json' })
+									response.write(JSON.stringify({ error: 'Task not found in database - query1'}))
+									response.end()
+								}
+							})
+						}, function(error) {
+							response.writeHead(400, { 'Content-Type': 'application/json' })
+							response.write(JSON.stringify(error))
+							response.end()
+						})
+					} else {
+						response.writeHead(400, { 'Content-Type': 'application/json' })
+						response.write(JSON.stringify({ error: 'Task not found in database - query2'}))
+						response.end()
+					}
+				})
+			}, function(error) {
+				response.writeHead(400, { 'Content-Type': 'application/json' })
+				response.write(JSON.stringify(error))
+				response.end()
 			})
-		}, function(error) {
-			response.writeHead(400, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify(error))
-			response.end()
-		})
+		}
+	} else {
+		response.sendStatus(401)
 	}
 })
 
