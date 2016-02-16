@@ -79,7 +79,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 	var username=parts[0]
 	var password=parts[1]
 
-	if (username == yelpUser && password == yelpPass) {
+	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var j = request.body
 		
 		if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
@@ -261,7 +261,7 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 	var username=parts[0]
 	var password=parts[1]
 
-	if (username == yelpUser && password == yelpPass) {
+	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var path = request.url.split('/')
 		if (path.length != 4) {
 			response.writeHead(405, {'Content-Type': 'application/json'})
@@ -305,7 +305,7 @@ app.get('/Piggyback/jobs/*', function(request, response) {
 	var username=parts[0]
 	var password=parts[1]
 
-	if (username == yelpUser && password == yelpPass) {
+	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var path = request.url.split('/')
 		if (path.length != 4) {
 			response.writeHead(400, {'Content-Type': 'application/json'})
