@@ -680,6 +680,23 @@ app.get('/Piggyback', function(request, response) {
 	})
 })
 
+app.post('/Piggyback', function(request, response) {
+	var header=request.headers['authorization']||''
+	var token=header.split(/\s+/).pop()||''
+	var auth=new Buffer(token, 'base64').toString()
+	var parts=auth.split(/:/)
+	var username=parts[0]
+	var password=parts[1]
+
+	if (username == yelpUser && password == yelpPass && request.body.destinationA && request.body.destinationB && request.body.driverTip) {
+		response.writeHead(200, { 'Content-Type': 'text/plain' })
+		response.write('\nSuccess!\n')
+		response.end()
+	} else {
+		response.sendStatus(401)
+	}
+})
+
 
 
 http.listen(8080, '127.0.0.1', function() {
