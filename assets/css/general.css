@@ -63,6 +63,10 @@ input {
 	margin: 0.25em;
 }
 
+table {
+	border-color: white;
+}
+
 
 h1 {
 	color:#ddd;
