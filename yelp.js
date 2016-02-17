@@ -7,7 +7,6 @@ var https = require('https')
 
 var request = require('request');
 
-
 function postUpdate(data) {
 	return new Promise(function(resolve, reject) {
 		request.post(
