@@ -657,6 +657,7 @@ function updateYelp(id, request, response) {
 		console.log(job)
 		yelp.postUpdate(job).then(function(result) {
 			console.log('successfully posted to Yelp ' + id)
+			console.log(result)
 			response.sendStatus(200)
 		}, function(error1) {
 			console.log('unsuccessfully posted to Yelp ' + id)
