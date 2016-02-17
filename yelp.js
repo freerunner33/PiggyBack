@@ -10,7 +10,7 @@ var request = require('request');
 function postUpdate(data) {
 	return new Promise(function(resolve, reject) {
 		request.post(
-		    'http://noahthomas.us/Piggyback/test',
+		    'https://e24beta.com/dprovider/status',
 		    {
 		    	form: data,
 		    	qs: {
