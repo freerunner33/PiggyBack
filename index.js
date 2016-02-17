@@ -705,7 +705,7 @@ app.get('/Piggyback', function(request, response) {
 				}
 			})
 		}, function(error) {
-			response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
+			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 		})
 	} else {
 		response.render('signin', {pageTitle: 'Sign in'})
@@ -717,7 +717,11 @@ app.get('/Piggyback/export', function(request, response) {
 })
 
 app.post('/Piggyback/export', function(request, response) {
-	response.render('error', {pageTitle: 'Export', errors: [JSON.stringify(request.body)]})
+	timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
+		response.render('error', {pageTitle: 'Export', errors: [JSON.stringify(request.body), timezone.rawOffset * 1000, timezone.dstOffset * 1000]})
+	}, function(error) {
+		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+	})
 })
 
 // SIGNUP
