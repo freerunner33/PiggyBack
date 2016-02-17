@@ -22,7 +22,7 @@ function postUpdate(data) {
 		    		reject(error)
 		    	}
 		        if (!error && response.statusCode == 200) {
-		            resolve(body)
+		            resolve(JSON.stringify(response))
 		        }
 		    }
 		);
