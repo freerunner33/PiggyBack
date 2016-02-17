@@ -722,7 +722,7 @@ app.post('/Piggyback/export', function(request, response) {
 		var timeA = new Date(request.body.start_time).getTime()
 		timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 		var date = new Date(timeA)
-		var query = 'shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
+		var query = 'shortId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
 		connection.query('SELECT ' + query + ' FROM Tasks', [], function(error, rows) {
 			if (error)
 				throw error
