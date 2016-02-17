@@ -722,11 +722,13 @@ app.post('/Piggyback/export', function(request, response) {
 		var timeA = new Date(request.body.start_time).getTime()
 		timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 		var date = new Date(timeA)
-		connection.query('SELECT shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed FROM Tasks', [], function(error, rows) {
+		var query = 'shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
+		connection.query('SELECT ' + query + ' FROM Tasks', [], function(error, rows) {
 			if (error)
 				throw error
 			if (rows && rows.length) {
 				var arr = []
+				arr.push(query)
 				for (i = 0; i < rows.length; i++) {
 					arr.push('' + rows[i].taskId)
 				}
