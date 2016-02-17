@@ -692,8 +692,7 @@ app.post('/Piggyback', function(request, response) {
 app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
 		onfleet.listTasks().then(function(tasks) {
-			var html = []
-			response.render('tasks', {pageTitle: 'Piggyback Technologies', tasks: tasks}
+			response.render('tasks', {pageTitle: 'Piggyback Technologies', tasks: tasks})
 		}, function(error) {
 			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 		})
