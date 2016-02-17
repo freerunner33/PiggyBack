@@ -65,6 +65,7 @@ input {
 
 table {
 	color: blue;
+	border: 2px solid red;
 	border-collapse: collapse;
 	border-width: 2px;
 	border-color: white;
