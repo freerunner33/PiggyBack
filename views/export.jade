@@ -9,9 +9,26 @@ block content
 			p End time
 			input(type='datetime-local', name='end_time')
 			button(type='submit') Submit
+	section
 		table
-			each h in arr[0].split(',')
+			each h in headers.split(',')
 				th= h
+			each d in arr
+				td #{d.shortId}
+				td #{d.taskId}
+				td #{d.yelpId}
+				td #{d.company}
+				td #{d.driverTip}
+				td #{d.taskType}
+				td #{d.completeAfter}
+				td #{d.completeBefore}
+				td #{d.workerId}
+				td #{d.workerName}
+				td #{d.destination}
+				td #{d.completionTime}
+				td #{d.didSucceed}
+				
+				
 	//- 	h2 Current Tasks:
 	//- 	ul
 	//- 		if (tasks.length = 0)

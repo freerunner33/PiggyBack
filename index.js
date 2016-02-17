@@ -728,11 +728,10 @@ app.post('/Piggyback/export', function(request, response) {
 				throw error
 			if (rows && rows.length) {
 				var arr = []
-				arr.push(query)
 				for (i = 0; i < rows.length; i++) {
-					arr.push('' + rows[i].taskId)
+					arr.push(rows[i])
 				}
-				response.render('export', {pageTitle: 'Export', arr: arr})
+				response.render('export', {pageTitle: 'Export', headers: query, arr: arr})
 			}
 		})
 	}, function(error) {
