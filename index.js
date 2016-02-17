@@ -732,7 +732,7 @@ app.post('/Piggyback/export', function(request, response) {
 				for (i = 0; i < rows.length; i++) {
 					arr.push('' + rows[i].taskId)
 				}
-				response.render('error', {pageTitle: 'Export', errors: arr})
+				response.render('export', {pageTitle: 'Export', arr: arr})
 			}
 		})
 	}, function(error) {

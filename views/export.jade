@@ -9,7 +9,9 @@ block content
 			p End time
 			input(type='datetime-local', name='end_time')
 			button(type='submit') Submit
-
+		table
+			each h in arr[0].split(',')
+				th h
 	//- 	h2 Current Tasks:
 	//- 	ul
 	//- 		if (tasks.length = 0)
