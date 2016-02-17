@@ -755,7 +755,7 @@ app.post('/Piggyback/signup', function(request, response) {
 	var password2 = request.body.password2
 	var key = request.body.key
 
-	if (key != signupKey) {
+	if (key.localeCompare(signupKey) == 0) {
 		response.render('signup', {pageTitle: 'Sign up', errors: ['Incorrect sign up key. Please contact Noah for a key to sign up'], username: username, firstname: firstname, lastname: lastname, phone: phone})
 		return
 	}
