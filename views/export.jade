@@ -12,23 +12,25 @@ block content
 	section
 		table
 			tr
-				each h in headers.split(',')
-					th= h
-			each d in arr
-				tr
-					td #{d.shortId}
-					td #{d.taskId}
-					td #{d.yelpId}
-					td #{d.company}
-					td #{d.driverTip}
-					td #{d.taskType}
-					td #{d.completeAfter}
-					td #{d.completeBefore}
-					td #{d.workerId}
-					td #{d.workerName}
-					td #{d.destination}
-					td #{d.completionTime}
-					td #{d.didSucceed}
+				if headers
+					each h in headers.split(',')
+						th= h
+			if arr
+				each d in arr
+					tr
+						td #{d.shortId}
+						td #{d.taskId}
+						td #{d.yelpId}
+						td #{d.company}
+						td #{d.driverTip}
+						td #{d.taskType}
+						td #{d.completeAfter}
+						td #{d.completeBefore}
+						td #{d.workerId}
+						td #{d.workerName}
+						td #{d.destination}
+						td #{d.completionTime}
+						td #{d.didSucceed}
 
 	script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
 	script(type='text/javascript')
