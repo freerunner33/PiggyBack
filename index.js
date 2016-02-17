@@ -726,7 +726,7 @@ app.post('/Piggyback/export', function(request, response) {
 			if (error)
 				throw error
 			if (rows && rows.length) {
-				response.render('error', {pageTitle: 'Export', errors: [date.toISOString(), timezone.rawOffset * 1000, timezone.dstOffset * 1000]})
+				response.render('error', {pageTitle: 'Export', errors: rows})
 			}
 		})
 	}, function(error) {
