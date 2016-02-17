@@ -67,12 +67,9 @@ table {
 	color: blue;
 	border: 2px solid red;
 	border-collapse: collapse;
-	border-width: 2px;
-	border-color: white;
 }
 th {
-	border-color: white;
-	border-width: 2px;
+	border: 2px solid blue;
 }
 
 
