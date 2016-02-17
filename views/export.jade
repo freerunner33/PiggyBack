@@ -33,9 +33,9 @@ block content
 						td #{d.didSucceed}
 
 	script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
-	script(type='text/javascript')
+	script(type='text/javascript').
 		google.charts.load('current', {'packages':['table']})
-		//- google.charts.setOnLoadCallback(drawTable)
+		google.charts.setOnLoadCallback(drawTable)
 		
 		function drawTable() {
 		//- 	var data = new google.visualization.DataTable()
