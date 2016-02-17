@@ -2,7 +2,7 @@
 var apiKey = require('./keys.js').yelpAPIKey
 
 var Promise = require('promise')
-var http = require('http')
+var https = require('https')
 // https://eat24hours.com/dprovider/status?key= {key}
 
 var request = require('request');
