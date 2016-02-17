@@ -5,7 +5,7 @@ block content
 	section
 		h2 Current Tasks:
 		ul
-			if (tasks.length = 0)
+			if (tasks.length > 0)
 				each task in tasks
 					if task.state < 3
 						li Task ID: #{task.id}
