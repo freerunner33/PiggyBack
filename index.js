@@ -726,7 +726,7 @@ app.post('/Piggyback/export', function(request, response) {
 			if (error)
 				throw error
 			if (rows && rows.length) {
-				var arr
+				var arr = []
 				for (i = 0; i < rows.length; i++) {
 					arr.push('' + rows[i])
 				}
