@@ -72,6 +72,7 @@ app.get('/', function(request, response) {
 
 // 1. Creating a new job
 app.post('/Piggyback/jobs', function(request, response) {
+	console.log('Got new job request')
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
@@ -127,6 +128,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 			var timeB = timeA + (15 * 60 * 1000)
 			var timeC = timeA + (40 * 60 * 1000)
 			timezone.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
+					console.log('getTimeZone worked')
 				timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 				timeB = timeB - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 				timeC = timeC - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
@@ -145,6 +147,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 					j.pickup_waypoint.special_instructions,					// notes for task
 					{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id: TEST
 				).then(function(taskA) {
+					console.log('Created taskA')
 					onfleet.createNewTask(
 						'~2FSQGbR0qSXi1v9kSQxtW4v',							// merchant
 						'~2FSQGbR0qSXi1v9kSQxtW4v',							// executor
@@ -156,7 +159,9 @@ app.post('/Piggyback/jobs', function(request, response) {
 						[taskA.id],											// dependencies - array
 						j.dropoff_waypoint.special_instructions				// notes for task
 					).then(function(taskB) {
+						console.log('Created taskB')
 						onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
+							console.log('Found worker by ID')
 							connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 								[
 									taskA.shortId,													// shortId
@@ -179,9 +184,11 @@ app.post('/Piggyback/jobs', function(request, response) {
 										console.log('TaskA: ' + taskA.id + ' was not added to database')
 										throw error
 									}
+									console.log('Successfully inserted taskA into database')
 									// need to assign this task to the worker
 									worker.tasks.push(taskB.id)
 									onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
+										console.log('Updated worker to have taskB')
 										connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 											[
 												taskB.shortId,										// shortId
@@ -204,6 +211,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 													console.log('TaskB ' + taskB.id + ' was not added to database')
 													throw error
 												}
+												console.log('Added taskB to database')
 												response.writeHead(200, { 'Content-Type': 'application/json' })
 												response.write(JSON.stringify({job_id: taskB.shortId}))
 												response.end()
