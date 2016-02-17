@@ -82,8 +82,6 @@ app.post('/Piggyback/jobs', function(request, response) {
 
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var j = request.body
-		console.log('BODY')
-		console.log(j)
 		
 		if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
 			var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
