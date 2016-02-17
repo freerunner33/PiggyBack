@@ -123,7 +123,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 				skipSMSNotifications: 'false',
 				skipPhoneNumberValidation: 'false'
 			}
-
+			j.pickup_waypoint.arrive_at.replace(/\u2010/, '-');
 			var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 			console.log('TimeA: ' + j.pickup_waypoint.arrive_at)
 			var timeB = timeA + (15 * 60 * 1000)
