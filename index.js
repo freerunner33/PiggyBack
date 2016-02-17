@@ -702,30 +702,38 @@ app.get('/Piggyback', function(request, response) {
 })
 
 app.get('/Piggyback/export', function(request, response) {
-	response.render('export', {pageTitle: 'Export'})
+	if (request.session.loggedin) {
+		response.render('export', {pageTitle: 'Export'})
+	} else {
+		response.render('signin', {pageTitle: 'Sign in'})
+	}
 })
 
 app.post('/Piggyback/export', function(request, response) {
-	timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
-		// request.body.start_time.replace(/\u2010/g, '-');
-		var timeA = new Date(request.body.start_time).getTime()
-		timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
-		var date = new Date(timeA)
-		var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
-		connection.query('SELECT ' + query + ' FROM Tasks', [], function(error, rows) {
-			if (error)
-				throw error
-			if (rows && rows.length) {
-				var arr = []
-				for (i = 0; i < rows.length; i++) {
-					arr.push(rows[i])
+	if (request.session.loggedin) {
+		timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
+			// request.body.start_time.replace(/\u2010/g, '-');
+			var timeA = new Date(request.body.start_time).getTime()
+			timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
+			var date = new Date(timeA)
+			var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
+			connection.query('SELECT ' + query + ' FROM Tasks', [], function(error, rows) {
+				if (error)
+					throw error
+				if (rows && rows.length) {
+					var arr = []
+					for (i = 0; i < rows.length; i++) {
+						arr.push(rows[i])
+					}
+					response.render('export', {pageTitle: 'Export', headers: query, arr: arr})
 				}
-				response.render('export', {pageTitle: 'Export', headers: query, arr: arr})
-			}
+			})
+		}, function(error) {
+			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 		})
-	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-	})
+	} else {
+		response.render('signin', {pageTitle: 'Sign in'})
+	}
 })
 
 // SIGNUP
