@@ -668,27 +668,6 @@ function updateYelp(id, request, response) {
 
 // OTHER
 
-app.get('/Piggyback', function(request, response) {
-	onfleet.listTasks().then(function(tasks) {
-		var html = []
-		connection.query('SELECT id,name,number,street,apartment,city,state,postalCode,country FROM Destinations', function(error, rows) {
-			if (error)
-				throw error
-			if (rows.length) {
-				response.render(
-					'tasks', {
-						pageTitle: 'Piggyback Technologies',
-						tasks: tasks,
-						dest: rows
-					}
-				)
-			}
-		})
-	}, function(error) {
-		response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
-	})
-})
-
 app.post('/Piggyback', function(request, response) {
 	// Parsing basic authorization sent in post request
 	var header=request.headers['authorization']||''
@@ -707,7 +686,124 @@ app.post('/Piggyback', function(request, response) {
 	}
 })
 
+// SITE
+app.get('/Piggyback', function(request, response) {
+	if (request.session.loggedin) {
+		onfleet.listTasks().then(function(tasks) {
+			var html = []
+			connection.query('SELECT id,name,number,street,apartment,city,state,postalCode,country FROM Destinations', function(error, rows) {
+				if (error)
+					throw error
+				if (rows.length) {
+					response.render(
+						'tasks', {
+							pageTitle: 'Piggyback Technologies',
+							tasks: tasks,
+							dest: rows
+						}
+					)
+				}
+			})
+		}, function(error) {
+			response.render('error', {pageTitle: 'Error', errors: JSON.stringify(error)})
+		})
+	} else {
+		response.render('signin', {pageTitle: 'Sign in'})
+	}
+})
 
+// SIGNUP
+app.get('/Piggyback/signup', function(request, response) {
+	response.render('signup', {pageTitle: 'Sign up'})
+})
+
+app.post('/Piggyback/signup', function(request, response) {
+	var username = request.body.username
+	var firstname = request.body.firstname
+	var lastname = request.body.lastname
+	var phone = request.body.phone
+	var password = request.body.password
+	var password2 = request.body.password2
+	var key = request.body.key
+
+	if (key != signUpKey) {
+		response.render('signup', {pageTitle: 'Sign up', errors: ['Incorrect sign up key. Please contact Noah for a key to sign up'], username: username, firstname: firstname, lastname: lastname, phone: phone})
+		return
+	}
+
+	if (!(username && firstname && lastname && phone && password && password2)) {
+		response.render('signup', {pageTitle: 'Sign up', errors: ['All fields must be completed'], username: username, firstname: firstname, lastname: lastname, phone: phone})
+		return
+	}
+	
+	errors = []
+	
+	if (!validator.isAlphanumeric(username))
+		errors.push('Username must contain only letters and numbers')
+	if (!validator.isAlpha(firstname))
+		errors.push('First Name must contain only letters')
+	if (!validator.isAlpha(lastname))
+		errors.push('Last Name must contain only letters')
+	if (!(phone.length == 12 && phone.charAt(3) == '-' && phone.charAt(7) == '-' && validator.isInt(phone.substring(0, 3) + phone.substring(4, 7) + phone.substring(8))))
+		errors.push('Phone Number must be of the form 123-456-7890')
+	if (password.length < 6)
+		errors.push('Password length must be at least 6')
+	if (!validator.isAscii(password))
+		errors.push('Password contains invalid characters')
+	if (password.localeCompare(password2) != 0)
+		errors.push('Passwords must match')
+	if (errors.length) {
+		response.render('signup', {pageTitle: 'Sign up', errors: errors, username: username, firstname: firstname, lastname: lastname, phone: phone})
+		return
+	}
+
+	connection.query('SELECT id FROM Users WHERE username=?', [username], function(error, rows) {
+		if (error) 
+			throw error
+		if (rows.length) {
+			response.render('signup', {pageTitle: 'Sign up', errors: ['Username already taken'], username: username, firstname: firstname, lastname: lastname, phone: phone})
+			return
+		}
+		connection.query('INSERT INTO Users (username, firstname, lastname, password, phone) VALUES (?,?,?,?,?)',
+			[username, firstname, lastname, password, phone], function(error, rows) 
+			{
+				if (error)
+					throw error
+				response.render('success', {pageTitle: 'Success', message: 'You have successfully signed up'})
+			}
+		)
+	})
+})
+
+// SIGNIN
+app.get('/Piggyback/signin', function(request, response) {
+	if (request.session.loggedin)
+		response.render('signin', {pageTitle: 'Sign in', errors: ['Already signed in']})
+	else
+		response.render('signin', {pageTitle: 'Sign in'})
+})
+
+app.post('/Piggyback/signin', function(request, response) {
+	var username = request.body.username
+	var password = request.body.password
+
+	if (!(username && password)) {
+		response.render('signin', {pageTitle: 'Sign in', errors: ['All fields must be completed'], username: username})
+		return
+	}
+
+ 	connection.query('SELECT id FROM Users WHERE username=? && password=?', [username, password], function(error, rows) {
+		if (error)
+			throw error
+		if (rows && rows.length) {
+			request.session.loggedin = true
+			response.redirect('/Piggyback')
+			return
+		} else {
+			response.render('signin', {pageTitle: 'Sign in', errors: ['Incorrect username or password'], username: username})
+		}
+	})
+})
 
 http.listen(8080, '127.0.0.1', function() {
 	// console.log('listening on port 8080')
