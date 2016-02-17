@@ -822,7 +822,7 @@ app.post('/Piggyback/signin', function(request, response) {
 	})
 })
 
-app.get('/Piggyback/signout', function(request, response) {
+app.get('/Piggyback/logout', function(request, response) {
 	request.session.destroy(function(error) {
 		if (error) {
 			throw error
