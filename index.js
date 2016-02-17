@@ -718,7 +718,9 @@ app.get('/Piggyback/export', function(request, response) {
 
 app.post('/Piggyback/export', function(request, response) {
 	timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
-		response.render('error', {pageTitle: 'Export', errors: [JSON.stringify(request.body), timezone.rawOffset * 1000, timezone.dstOffset * 1000]})
+		// request.body.start_time.replace(/\u2010/g, '-');
+		var timeA = new Date(request.body.start_time)
+		response.render('error', {pageTitle: 'Export', errors: [timeA, timezone.rawOffset * 1000, timezone.dstOffset * 1000]})
 	}, function(error) {
 		response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 	})
