@@ -65,8 +65,12 @@ input {
 
 table {
 	border-collapse: collapse;
-	border-width: 1px;
+	border-width: 2px;
 	border-color: white;
+}
+th {
+	border-color: white;
+	border-width: 2px;
 }
 
 
