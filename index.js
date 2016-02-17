@@ -82,7 +82,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var j = request.body
-		
+
 		if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
 			var pickupSplit = j.pickup_waypoint.address.indexOf(' ')
 			var destA = {
@@ -656,8 +656,10 @@ function updateYelp(id, request, response) {
 		console.log('Updated Yelp')
 		console.log(job)
 		yelp.postUpdate(job).then(function(result) {
+			console.log('successfully posted to Yelp ' + id)
 			response.sendStatus(200)
 		}, function(error1) {
+			console.log('unsuccessfully posted to Yelp ' + id)
 			response.sendStatus(404)
 		})
 	}, function(error2) {
