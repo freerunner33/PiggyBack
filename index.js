@@ -693,19 +693,7 @@ app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
 		onfleet.listTasks().then(function(tasks) {
 			var html = []
-			connection.query('SELECT id,name,number,street,apartment,city,state,postalCode,country FROM Destinations', function(error, rows) {
-				if (error)
-					throw error
-				if (rows.length) {
-					response.render(
-						'tasks', {
-							pageTitle: 'Piggyback Technologies',
-							tasks: tasks,
-							dest: rows
-						}
-					)
-				}
-			})
+			response.render('tasks', {pageTitle: 'Piggyback Technologies', tasks: tasks}
 		}, function(error) {
 			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 		})
