@@ -798,6 +798,7 @@ app.post('/Piggyback/signup', function(request, response) {
 			{
 				if (error)
 					throw error
+				request.session.loggedin = true
 				response.render('success', {pageTitle: 'Success', message: 'You have successfully signed up'})
 			}
 		)
