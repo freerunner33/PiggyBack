@@ -277,7 +277,7 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 			response.end()
 		} else {
 			// first delete the pickup, then dropoff
-			onfleet.getSingleTask(path[3]).then(function(taskB) {
+			onfleet.getSingleTaskByShortID(path[3]).then(function(taskB) {
 				onfleet.deleteTask(taskB.dependencies[0]).then(function() {
 					onfleet.deleteTask(taskB.id).then(function() {
 						response.writeHead(200, { 'Content-Type': 'application/json' })
