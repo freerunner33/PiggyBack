@@ -712,6 +712,14 @@ app.get('/Piggyback', function(request, response) {
 	}
 })
 
+app.get('/Piggyback/export', function(request, response) {
+	response.render('export', {pageTitle: 'Export'})
+})
+
+app.post('/Piggyback/export', function(request, response) {
+	response.render('error', {pageTitle: 'Export', errors: [JSON.stringify(request.body)]})
+})
+
 // SIGNUP
 app.get('/Piggyback/signup', function(request, response) {
 	response.render('signup', {pageTitle: 'Sign up'})
