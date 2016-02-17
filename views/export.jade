@@ -29,95 +29,27 @@ block content
 					td #{d.destination}
 					td #{d.completionTime}
 					td #{d.didSucceed}
-				
-				
-	//- 	h2 Current Tasks:
-	//- 	ul
-	//- 		if (tasks.length = 0)
-	//- 			each task in tasks
-	//- 				if task.state < 3
-	//- 					li Task ID: #{task.id}
-	//- 					li Task State: #{task.state}
-	//- 					li Destination:
-	//- 					ul
-	//- 						li #{task.destination.address.number} #{task.destination.address.street}
-	//- 						li #{task.destination.address.city}, #{task.destination.address.state} #{task.destination.address.postalCode}
-	//- 					li Dependencies: #{task.dependencies}
-	//- 					li Complete after: #{new Date(task.completeAfter).toISOString()}
-	//- 					li Complete before: #{new Date(task.completeBefore).toISOString()}
-	//- 					li
-	//- 						form(method='POST', action='/Piggyback/delete-task')
-	//- 							input(type='hidden', name='id', value=task.id)
-	//- 							button(type='submit') Delete Task
-	//- 					br
-	//- 		else
-	//- 			li No tasks at the moment
-	
-	//- section
-	//- 	form#new(method='POST', action='/Piggyback/jobs') 
-	//- 		h1 Create New Task
-	//- 		div#form
-	//- 			h4 Pickup waypoint:
-	//- 			div#smalldiv
-	//- 				p *Address (line 1):
-	//- 				input(type='text', name='pickup_address', required, autocomplete='off', value='3650 Rosecrans St')
-	//- 				p Address (line 2):
-	//- 				input(type='text', name='pickup_address2', autocomplete='off')
-	//- 				p *City:
-	//- 				input(type='text', name='pickup_city', required, autocomplete='off', value='San Diego')
-	//- 				p *State:
-	//- 				input(type='text', name='pickup_state', required, autocomplete='off', value='CA')
-	//- 				p *Zip:
-	//- 				input(type='number', name='pickup_zip', required, autocomplete='off', value='92110')
-	//- 				p *Name (of contact):
-	//- 				input(type='text', name='pickup_name', required, autocomplete='off', value='Noah')
-	//- 				p *Phone number (of contact):
-	//- 				input(type='number', name='pickup_phone', autocomplete='off', value='9703084693')
-	//- 				div#smalldiv
-	//- 					//- New York Starbucks 40.718923, -74.002546: 405 Broadway New York, NY 10013
-	//- 					p *Latitude:
-	//- 					input(type='number', name='pickup_latitude', required, autocomplete='off', value='32.750925')
-	//- 					p *Longitude:
-	//- 					input(type='number', name='pickup_longitude', required, autocomplete='off', value='-117.205624')
-	//- 				p *Arrive at:
-	//- 				input(type='datetime-local', name='pickup_arrive_at', required, autocomplete='off', value='2016-05-05T12:30')
-	//- 				p Special Instructions:
-	//- 				input(type='text', name='pickup_special_instructions', autocomplete='off', value='Noodles & Company order for Noah')
-	//- 		div#form
-	//- 			h4 Dropoff waypoint:
-	//- 			div#smalldiv
-	//- 				p *Address (line 1):
-	//- 				input(type='text', name='dropoff_address', required, autocomplete='off', value='5998 Alcala Park')
-	//- 				p Address (line 2):
-	//- 				input(type='text', name='dropoff_address2', autocomplete='off')
-	//- 				p *City:
-	//- 				input(type='text', name='dropoff_city', required, autocomplete='off', value='San Diego')
-	//- 				p *State:
-	//- 				input(type='text', name='dropoff_state', required, autocomplete='off', value='CA')
-	//- 				p *Zip:
-	//- 				input(type='number', name='dropoff_zip', required, autocomplete='off', value='92110')
-	//- 				p *Name (of contact):
-	//- 				input(type='text', name='dropoff_name', required, autocomplete='off', value='Noah')
-	//- 				p *Phone number (of contact):
-	//- 				input(type='number', name='dropoff_phone', required, autocomplete='off', value='9703084693')
-	//- 				div#smalldiv
-	//- 					p *Latitude: 
-	//- 					input(type='number', name='dropoff_latitude', required, autocomplete='off', value='32.771970')
-	//- 					p *Longitude:
-	//- 					input(type='number', name='dropoff_longitude', required, autocomplete='off', value='-117.186308')
-	//- 				p Special Instructions:
-	//- 				input(type='text', name='dropoff_special_instructions', autocomplete='off', value='Please dropoff in front of the University Center')
-	//- 		div#form
-	//- 			p *Order ID:
-	//- 			input(type='text', name='order_id', required, value='123example456id')
-	//- 			p Order Items:
-	//- 			input(type='text', name='order_items', value='[Buttered Noodles, Pesto Cavatappi]')
-	//- 			p Order Total:
-	//- 			input(type='number', step='0.01' name='order_total', value='12.53')
-	//- 			p Tip:
-	//- 			input(type='number', step='0.01' name='tip', value='2.00')
-	//- 			p Support Phone:
-	//- 			input(type='text', name='support_phone', value='9703084693')
-	//- 			p Debug
-	//- 			input(type='number', name='debug')
-	//- 			button(type='submit') Submit
+
+	script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
+	script(type='text/javascript')
+		google.charts.load('current', {'packages':['table']})
+		google.charts.setOnLoadCallback(drawTable)
+		
+		function drawTable() {
+			var data = new google.visualization.DataTable()
+			data.addColumn('string', 'Name')
+			data.addColumn('number', 'Salary')
+			data.addColumn('boolean', 'Full Time Employee')
+			data.addRows([
+				['Mike',  {v: 10000, f: '$10,000'}, true],
+				['Jim',   {v:8000,   f: '$8,000'},  false],
+				['Alice', {v: 12500, f: '$12,500'}, true],
+				['Bob',   {v: 7000,  f: '$7,000'},  true]
+			])
+			var table = new google.visualization.Table(document.getElementById('table_div'));
+
+			table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+		}
+	div#table_div
+
+    </script>
