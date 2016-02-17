@@ -728,7 +728,7 @@ app.post('/Piggyback/export', function(request, response) {
 			if (rows && rows.length) {
 				var arr
 				for (i = 0; i < rows.length; i++) {
-					arr.push('' . rows[i])
+					arr.push('' + rows[i])
 				}
 				response.render('error', {pageTitle: 'Export', errors: arr})
 			}
