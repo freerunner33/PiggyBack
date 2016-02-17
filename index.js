@@ -822,6 +822,16 @@ app.post('/Piggyback/signin', function(request, response) {
 	})
 })
 
+app.get('/Piggyback/signout', function(request, response) {
+	request.session.destroy(function(error) {
+		if (error) {
+			throw error
+		} else {
+			response.redirect('/Piggyback')
+		}
+	})
+})
+
 http.listen(8080, '127.0.0.1', function() {
 	// console.log('listening on port 8080')
 })
