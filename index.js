@@ -67,7 +67,7 @@ var eat24Reasons = {
 
 // HOME PAGE
 app.get('/', function(request, response) {
-	response.sendStatus(200)
+	response.render('index', {pageTitle: 'Home', views: request.session.views})
 })
 
 // 1. Creating a new job
@@ -689,6 +689,8 @@ app.post('/Piggyback', function(request, response) {
 })
 
 // SITE
+
+
 app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
 		onfleet.listTasks().then(function(tasks) {
