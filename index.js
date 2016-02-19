@@ -713,31 +713,30 @@ app.get('/Piggyback/export', function(request, response) {
 
 app.post('/Piggyback/export', function(request, response) {
 	if (request.session.loggedin) {
-		timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
-			// request.body.start_time.replace(/\u2010/g, '-');
-			if (!(request.body.start_time)) {
-				date='no date given'
-			} else {
+		if (request.body.formsubmitted) {
+			request.body.formsubmitted = false
+			timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
 				var timeA = new Date(request.body.start_time).getTime()
 				timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 				var date = new Date(timeA)
-			}
-			var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
-			var order = request.body.sort
-			connection.query('SELECT ' + query + ' FROM Tasks ORDER BY ' + order, [], function(error, rows) {
-				if (error)
-					throw error
-				if (rows && rows.length) {
-					var arr = []
-					for (i = 0; i < rows.length; i++) {
-						arr.push(rows[i])
+				
+				var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
+				var order = request.body.sort
+				connection.query('SELECT ' + query + ' FROM Tasks ORDER BY ' + order, [], function(error, rows) {
+					if (error)
+						throw error
+					if (rows && rows.length) {
+						var arr = []
+						for (i = 0; i < rows.length; i++) {
+							arr.push(rows[i])
+						}
+						response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: date.toISOString()})
 					}
-					response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: date.toISOString()})
-				}
+				})
+			}, function(error) {
+				response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 			})
-		}, function(error) {
-			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
-		})
+		}
 	} else {
 		response.render('signin', {pageTitle: 'Sign in'})
 	}
