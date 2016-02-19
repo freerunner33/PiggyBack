@@ -718,8 +718,9 @@ app.post('/Piggyback/export', function(request, response) {
 			var timeA = new Date(request.body.start_time).getTime()
 			timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 			var date = new Date(timeA)
+			var c = 'completeAfter'
 			var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
-			connection.query('SELECT ' + query + ' FROM Tasks WHERE taskType = ? ORDER BY ?', ['pickup', 'completeAfter'], function(error, rows) {
+			connection.query('SELECT ' + query + ' FROM Tasks WHERE taskType = ? ORDER BY ?', ['pickup', c], function(error, rows) {
 				if (error)
 					throw error
 				if (rows && rows.length) {
