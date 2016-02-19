@@ -727,7 +727,7 @@ app.post('/Piggyback/export', function(request, response) {
 					for (i = 0; i < rows.length; i++) {
 						arr.push(rows[i])
 					}
-					response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: date})
+					response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: date.toISOString()})
 				}
 			})
 		}, function(error) {
