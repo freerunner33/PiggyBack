@@ -715,12 +715,12 @@ app.post('/Piggyback/export', function(request, response) {
 	if (request.session.loggedin) {
 		timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
 			// request.body.start_time.replace(/\u2010/g, '-');
-			if (request.body.start_time) {
+			if (!(request.body.start_time)) {
+				date='no date given'
+			} else {
 				var timeA = new Date(request.body.start_time).getTime()
 				timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 				var date = new Date(timeA)
-			} else {
-				date='no date given'
 			}
 			var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
 			var order = request.body.sort
