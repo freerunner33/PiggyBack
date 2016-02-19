@@ -8,7 +8,20 @@ block content
 			input(type='datetime-local', name='start_time')
 			p End time
 			input(type='datetime-local', name='end_time')
+			p Sort by
+			select(name='sort')
+				option(value='shortId') Short ID
+				option(value='driverTip') Driver Tip
+				option(value='taskType') Task Type
+				option(value='completeAfter') Complete After
+				option(value='completeBefore') Complete Before
+				option(value='workerId') Worker ID
+				option(value='workerName') Worker Name
+				option(value='destination') Destination
+				option(value='completionTime') Completion Time
+				option(value='didSucceed') Did Succeed
 			button(type='submit') Submit
+			p= test
 	section
 		table
 			tr
