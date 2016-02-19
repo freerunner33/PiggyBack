@@ -720,7 +720,8 @@ app.post('/Piggyback/export', function(request, response) {
 			var date = new Date(timeA)
 			var c = 'completeAfter'
 			var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
-			connection.query('SELECT ' + query + ' FROM Tasks WHERE taskType = ? ORDER BY ?', ['pickup', c], function(error, rows) {
+			var order = 'completeAfter'
+			connection.query('SELECT ' + query + ' FROM Tasks WHERE taskType = ? ORDER BY ' + order, ['pickup'], function(error, rows) {
 				if (error)
 					throw error
 				if (rows && rows.length) {
