@@ -714,11 +714,11 @@ app.get('/Piggyback/export', function(request, response) {
 app.post('/Piggyback/export', function(request, response) {
 	if (request.session.loggedin) {
 		if (request.body.formsubmitted == true) {
-			request.body.formsubmitted = false
 			timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
 				var timeA = new Date(request.body.start_time).getTime()
 				timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 				var date = new Date(timeA)
+				dateStr = date.toISOString()
 				
 				var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
 				var order = request.body.sort
@@ -730,7 +730,7 @@ app.post('/Piggyback/export', function(request, response) {
 						for (i = 0; i < rows.length; i++) {
 							arr.push(rows[i])
 						}
-						response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: date.toISOString()})
+						response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: dateStr})
 					}
 				})
 			}, function(error) {
