@@ -713,13 +713,14 @@ app.get('/Piggyback/export', function(request, response) {
 
 app.post('/Piggyback/export', function(request, response) {
 	if (request.session.loggedin) {
+		submit = request.body.submit
 		if (true) {
 			timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
 				var timeA = new Date(request.body.start_time).getTime()
 				timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 				var date = new Date(timeA)
 				dateStr = date.toISOString()
-				console.log(JSON.stringify(request.body))
+				console.log(submit.localeCompare('true'))
 				
 				var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
 				var order = request.body.sort
