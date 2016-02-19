@@ -748,6 +748,7 @@ app.post('/Piggyback/signup', function(request, response) {
 	var firstname = request.body.firstname
 	var lastname = request.body.lastname
 	var phone = request.body.phone
+	phone = phone.replace(/\D/g, '');
 	var password = request.body.password
 	var password2 = request.body.password2
 	var key = request.body.key
@@ -770,8 +771,8 @@ app.post('/Piggyback/signup', function(request, response) {
 		errors.push('First Name must contain only letters')
 	if (!validator.isAlpha(lastname))
 		errors.push('Last Name must contain only letters')
-	if (!(phone.length == 12 && phone.charAt(3) == '-' && phone.charAt(7) == '-' && validator.isInt(phone.substring(0, 3) + phone.substring(4, 7) + phone.substring(8))))
-		errors.push('Phone Number must be of the form 123-456-7890')
+	if (!(phone.length == 10))
+		errors.push('Phone numbers must be 10 numbers in length')
 	if (password.length < 6)
 		errors.push('Password length must be at least 6')
 	if (!validator.isAscii(password))
