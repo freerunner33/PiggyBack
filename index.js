@@ -284,9 +284,15 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 			onfleet.getSingleTaskByShortID(path[3]).then(function(taskB) {
 				onfleet.deleteTask(taskB.dependencies[0]).then(function() {
 					onfleet.deleteTask(taskB.id).then(function() {
-						response.writeHead(200, { 'Content-Type': 'application/json' })
-						response.write(JSON.stringify({job_id: path[3]}))
-						response.end()
+							console.log('taskDeleted: ' + taskB.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+							if (!taskB.pickupTask) {
+								connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskB.shortId,'50',(new Date()).getTime()], function(error, rows){
+									if (error)
+										console.log('ERROR - query\n' + error)
+									updateYelp(taskB.shortId, request, response)
+								})
+							}
+							response.sendStatus(200)
 					}, function(error) {
 						response.writeHead(405, { 'Content-Type': 'application/json' })
 						response.write(JSON.stringify({error: 'Task could not be deleted. - delete1'}))
