@@ -12,7 +12,8 @@ function postUpdate(data) {
 		request.post(
 		    'https://e24beta.com/dprovider/status/?key=wuJzjPFT5sE33Vu1iy5yudYy2uHhZoMz',
 		    {
-		    	form: data
+		    	form: data,
+		    	json: true
 		    },
 		    function (error, response, body) {
 		    	if (error) {
