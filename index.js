@@ -669,14 +669,15 @@ function updateYelp(id, request, response) {
 	getJobData(id).then(function(job) {
 		console.log('Updating Yelp with updateYelp function')
 		console.log(job)
-		yelp.postUpdate(job).then(function(result) {
-			console.log('successfully posted to Yelp ' + id)
-			console.log(result)
-			response.sendStatus(200)
-		}, function(error1) {
-			console.log('unsuccessfully posted to Yelp ' + id)
-			response.sendStatus(404)
-		})
+		response.sendStatus(200)
+		// yelp.postUpdate(job).then(function(result) {
+		// 	console.log('successfully posted to Yelp ' + id)
+		// 	console.log(result)
+		// 	response.sendStatus(200)
+		// }, function(error1) {
+		// 	console.log('unsuccessfully posted to Yelp ' + id)
+		// 	response.sendStatus(404)
+		// })
 	}, function(error2) {
 		response.sendStatus(404)
 	})
