@@ -39,6 +39,16 @@ app.use(session(
 	}
 ))
 
+// TIMING
+var timeout = require('connect-timeout')
+app.use(timeout(120000))
+app.use(haltOnTimedout)
+
+function haltOnTimedout(req, res, next){
+  if (!req.timedout) next()
+}
+
+
 // VARIABLES
 var eat24StatusCodes = {
 	40: 'submitted',
@@ -231,7 +241,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 							)
 						}, function(error) {
 							// NOT AUTO ASSIGNED TO A WORKER
-							response.writeHead(400, { 'Content-Type': 'application/json' })
+							response.writeHead(403, { 'Content-Type': 'application/json' })
 							response.write(JSON.stringify(error))
 							response.end()
 						})
@@ -537,6 +547,7 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 })
 
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
+
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
 		console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		if (!task.pickupTask) {
