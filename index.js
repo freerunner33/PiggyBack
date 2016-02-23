@@ -78,7 +78,9 @@ var eat24Reasons = {
 
 // HOME PAGE
 app.get('/', function(request, response) {
-	response.render('index', {pageTitle: 'Home', views: request.session.views})
+	setTimeout(function() {
+		response.render('index', {pageTitle: 'Home'})
+	}, 5000)
 })
 
 // 1. Creating a new job
