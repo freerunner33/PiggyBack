@@ -89,6 +89,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 				address: {
 					number: j.pickup_waypoint.address.substr(0, pickupSplit),
 					street: j.pickup_waypoint.address.substr(pickupSplit),
+					apartment: j.pickup_waypoint.address2,
 					city: j.pickup_waypoint.city,
 					state: j.pickup_waypoint.state,
 					postalCode: j.pickup_waypoint.zip,
@@ -101,6 +102,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 				address: {
 					number: j.dropoff_waypoint.address.substr(0, dropoffSplit),
 					street: j.dropoff_waypoint.address.substr(dropoffSplit),
+					apartment: j.dropoff_waypoint.address2,
 					city: j.dropoff_waypoint.city,
 					state: j.dropoff_waypoint.state,
 					postalCode: j.dropoff_waypoint.zip,
@@ -124,14 +126,15 @@ app.post('/Piggyback/jobs', function(request, response) {
 				skipPhoneNumberValidation: 'false'
 			}
 			j.pickup_waypoint.arrive_at = j.pickup_waypoint.arrive_at.replace(/\u2010/g, '-');
+			
 			var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
 			var timeB = timeA + (15 * 60 * 1000)
 			var timeC = timeA + (40 * 60 * 1000)
 
 			timezone.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
-				timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
-				timeB = timeB - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
-				timeC = timeC - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
+				// timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
+				// timeB = timeB - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
+				// timeC = timeC - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 				var dateA = new Date(timeA)
 				var dateB = new Date(timeB)
 				var dateC = new Date(timeC)
