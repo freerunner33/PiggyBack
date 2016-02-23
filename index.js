@@ -257,6 +257,8 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 	var parts=auth.split(/:/)
 	var username=parts[0]
 	var password=parts[1]
+
+	console.log('DELETE request sent')
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var path = request.url.split('/')
 		if (path.length != 4) {
