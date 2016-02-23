@@ -271,7 +271,7 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 			onfleet.getSingleTaskByShortID(path[3]).then(function(taskB) {
 				console.log('getSingleTaskByShortID worked')
 
-				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskB.shortId,'50',(new Date()).getTime()], function(error, rows){
+				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskB.shortId,'42',(new Date()).getTime()], function(error, rows){
 					if (error)
 						console.log('ERROR - query\n' + error)
 
