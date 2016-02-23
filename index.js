@@ -125,9 +125,9 @@ app.post('/Piggyback/jobs', function(request, response) {
 			}
 			j.pickup_waypoint.arrive_at = j.pickup_waypoint.arrive_at.replace(/\u2010/g, '-');
 			var timeA = new Date(j.pickup_waypoint.arrive_at).getTime()
-			// console.log('TimeA: ' + j.pickup_waypoint.arrive_at)
 			var timeB = timeA + (15 * 60 * 1000)
 			var timeC = timeA + (40 * 60 * 1000)
+
 			timezone.getTimeZone(j.dropoff_waypoint.location.latitude, j.dropoff_waypoint.location.longitude).then(function(timezone) {
 				timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
 				timeB = timeB - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
@@ -135,6 +135,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 				var dateA = new Date(timeA)
 				var dateB = new Date(timeB)
 				var dateC = new Date(timeC)
+				
 				onfleet.createNewTask(
 					'~2FSQGbR0qSXi1v9kSQxtW4v',								// merchant
 					'~2FSQGbR0qSXi1v9kSQxtW4v',								// executor
