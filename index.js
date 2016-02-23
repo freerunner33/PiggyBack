@@ -306,7 +306,7 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 })
 
 // Querying the status of a job
-app.get('/Piggyback/jobs/*', function(request, response) {
+app.get('/Piggyback/status/*', function(request, response) {
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
