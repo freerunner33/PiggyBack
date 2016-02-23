@@ -39,17 +39,6 @@ app.use(session(
 	}
 ))
 
-
-// TIMING
-var timeout = require('connect-timeout')
-app.use(timeout(120000))
-app.use(haltOnTimedout)
-
-function haltOnTimedout(req, res, next){
-  if (!req.timedout) next()
-}
-
-
 // VARIABLES
 var eat24StatusCodes = {
 	40: 'submitted',
@@ -78,9 +67,7 @@ var eat24Reasons = {
 
 // HOME PAGE
 app.get('/', function(request, response) {
-	setTimeout(function() {
-		response.render('index', {pageTitle: 'Home'})
-	}, 5000)
+	response.render('index', {pageTitle: 'Home'})
 })
 
 // 1. Creating a new job
@@ -550,20 +537,21 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 })
 
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
-
-	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
-		if (!task.pickupTask) {
-			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime()], function(error, rows){
-				if (error)
-					console.log('ERROR - query\n' + error)
-				updateYelp(task.shortId, request, response)
-			})
-		}
-		response.sendStatus(200)
-	}, function(error) {
-		response.sendStatus(404)
-	})
+	setTimeout(function() {
+		onfleet.getSingleTask(request.body.taskId).then(function(task) {
+			console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+			if (!task.pickupTask) {
+				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime()], function(error, rows){
+					if (error)
+						console.log('ERROR - query\n' + error)
+					updateYelp(task.shortId, request, response)
+				})
+			}
+			response.sendStatus(200)
+		}, function(error) {
+			response.sendStatus(404)
+		})
+	}, 5000)
 })
 
 // Unused webhooks
