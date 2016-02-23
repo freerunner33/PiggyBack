@@ -10,7 +10,7 @@ var request = require('request');
 function postUpdate(data) {
 	return new Promise(function(resolve, reject) {
 		request.post(
-		    'https://e24beta.com/dprovider/status/?key=' + apiKey,
+		    'https://e24beta.com/dprovider/status/?key=wuJzjPFT5sE33Vu1iy5yudYy2uHhZoMz',
 		    {
 		    	form: data
 		    },
