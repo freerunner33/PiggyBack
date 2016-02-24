@@ -161,131 +161,58 @@ app.post('/Piggyback/jobs', function(request, response) {
 					j.dropoff_waypoint.special_instructions				// notes for task
 				).then(function(taskB) {
 					console.log('Created taskB')
-					
-					if (taskA.worker) {
-						onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
+					connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+						[
+							taskA.shortId,													// shortId
+							taskA.id,														// taskId
+							j.order_id,														// yelpId
+							'Yelp',															// company
+							null,															// driverTip
+							'pickup',														// taskType
+							(dateA).toISOString(),											// completeAfter	- in UTC
+							(dateB).toISOString(),											// completeBefore	- in UTC
+							'not assigned',													// workerId
+							'not assigned',													// workerName
+							'' + taskA.destination.address.number + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + taskA.destination.address.postalCode,
+							null,															// completionTime
+							null															// didSucceed
+						], 
+						function(error, rows)
+						{
+							if (error) {
+								console.log('TaskA: ' + taskA.id + ' was not added to database - 2')
+								throw error
+							}
 							connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 								[
-									taskA.shortId,													// shortId
-									taskA.id,														// taskId
-									j.order_id,														// yelpId
-									'Yelp',															// company
-									null,															// driverTip
-									'pickup',														// taskType
-									(dateA).toISOString(),											// completeAfter	- in UTC
-									(dateB).toISOString(),											// completeBefore	- in UTC
-									worker.id,														// workerId
-									worker.name,													// workerName
-									'' + taskA.destination.address.number + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + taskA.destination.address.postalCode,
-									null,															// completionTime
-									null															// didSucceed
+									taskB.shortId,										// shortId
+									taskB.id,											// taskId
+									j.order_id,											// yelpId
+									'Yelp',												// company
+									j.tip,												// driverTip
+									'dropoff',											// taskType
+									(dateA).toISOString(),								// completeAfter	- in UTC
+									(dateC).toISOString(),								// completeBefore	- in UTC
+									'not assigned',										// workerId
+									'not assigned',										// workerName
+									'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
+									null,												// completionTime
+									null												// didSucceed
 								], 
 								function(error, rows)
 								{
 									if (error) {
-										console.log('TaskA: ' + taskA.id + ' was not added to database')
+										console.log('TaskB ' + taskB.id + ' was not added to database - 2')
 										throw error
 									}
-									// need to assign this task to the worker
-									worker.tasks.push(taskB.id)
-									onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-										connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-											[
-												taskB.shortId,										// shortId
-												taskB.id,											// taskId
-												j.order_id,											// yelpId
-												'Yelp',												// company
-												j.tip,												// driverTip
-												'dropoff',											// taskType
-												(dateA).toISOString(),								// completeAfter	- in UTC
-												(dateC).toISOString(),								// completeBefore	- in UTC
-												worker.id,											// workerId
-												worker.name,										// workerName
-												'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
-												null,												// completionTime
-												null												// didSucceed
-											], 
-											function(error, rows)
-											{
-												if (error) {
-													console.log('TaskB ' + taskB.id + ' was not added to database')
-													throw error
-												}
-												console.log('TaskA and B were successfully created and added to the database - ' + taskB.shortId)
-												response.writeHead(200, { 'Content-Type': 'application/json' })
-												response.write(JSON.stringify({job_id: taskB.shortId}))
-												response.end()
-											}
-										)
-									}, function(error) {
-										// DROPOFF TASK NOT ADDED TO WORKER
-										response.writeHead(400, { 'Content-Type': 'application/json' })
-										response.write(JSON.stringify(error))
-										response.end()
-									})
+									console.log('TaskA and B were successfully created and added to the database - 2' + taskB.shortId)
+									response.writeHead(200, { 'Content-Type': 'application/json' })
+									response.write(JSON.stringify({job_id: taskB.shortId}))
+									response.end()
 								}
 							)
-						}, function(error) {
-							// NOT AUTO ASSIGNED TO A WORKER
-							response.writeHead(403, { 'Content-Type': 'application/json' })
-							response.write(JSON.stringify(error))
-							response.end()
-						})
-					} else {
-						console.log('\nTasks not assigned to worker\n')
-						connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-							[
-								taskA.shortId,													// shortId
-								taskA.id,														// taskId
-								j.order_id,														// yelpId
-								'Yelp',															// company
-								null,															// driverTip
-								'pickup',														// taskType
-								(dateA).toISOString(),											// completeAfter	- in UTC
-								(dateB).toISOString(),											// completeBefore	- in UTC
-								'not assigned',													// workerId
-								'not assigned',													// workerName
-								'' + taskA.destination.address.number + taskA.destination.address.street + ', ' + taskA.destination.address.apartment + ', ' + taskA.destination.address.city + ', ' + taskA.destination.address.state + ' ' + taskA.destination.address.postalCode,
-								null,															// completionTime
-								null															// didSucceed
-							], 
-							function(error, rows)
-							{
-								if (error) {
-									console.log('TaskA: ' + taskA.id + ' was not added to database - 2')
-									throw error
-								}
-								connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-									[
-										taskB.shortId,										// shortId
-										taskB.id,											// taskId
-										j.order_id,											// yelpId
-										'Yelp',												// company
-										j.tip,												// driverTip
-										'dropoff',											// taskType
-										(dateA).toISOString(),								// completeAfter	- in UTC
-										(dateC).toISOString(),								// completeBefore	- in UTC
-										'not assigned',										// workerId
-										'not assigned',										// workerName
-										'' + taskB.destination.address.number + taskB.destination.address.street + ', ' + taskB.destination.address.apartment + ', ' + taskB.destination.address.city + ', ' + taskB.destination.address.state + ' ' + taskB.destination.address.postalCode,
-										null,												// completionTime
-										null												// didSucceed
-									], 
-									function(error, rows)
-									{
-										if (error) {
-											console.log('TaskB ' + taskB.id + ' was not added to database - 2')
-											throw error
-										}
-										console.log('TaskA and B were successfully created and added to the database - 2' + taskB.shortId)
-										response.writeHead(200, { 'Content-Type': 'application/json' })
-										response.write(JSON.stringify({job_id: taskB.shortId}))
-										response.end()
-									}
-								)
-							}
-						)
-					}
+						}
+					)
 				}, function(error) {
 					// ERROR CREATING DROPOFF TASK
 					response.writeHead(400, { 'Content-Type': 'application/json' })
@@ -351,15 +278,6 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 								response.writeHead(200, { 'Content-Type': 'application/json' })
 								response.write(JSON.stringify(joblog))
 								response.end()
-
-								// yelp.postUpdate(joblog).then(function(result) {
-
-								// 	console.log('Successfully posted to Yelp ' + taskB.shortId)
-								// 	console.log(result)
-								// 	response.sendStatus(200)
-								// }, function(error1) {
-								// 	console.log('Successfully posted to Yelp ' + taskB.shortId)
-								// })
 							}, function(error) {
 								response.writeHead(405, { 'Content-Type': 'application/json' })
 								response.write(JSON.stringify({error: 'Task could not be deleted. - delete1'}))
