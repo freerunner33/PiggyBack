@@ -12,17 +12,17 @@ CREATE TABLE IF NOT EXISTS Users (
 	skipSMS TINYINT(1) DEFAULT 1
 );
 
-CREATE TABLE IF NOT EXISTS Destinations (
-	id VARCHAR(64) PRIMARY KEY NOT NULL,
-	name VARCHAR(64),
-	number INT NOT NULL,
-	street VARCHAR(64) NOT NULL,
-	apartment VARCHAR(64),
-	city VARCHAR(64) NOT NULL,
-	state VARCHAR(64) NOT NULL,
-	postalCode INT NOT NULL,
-	country VARCHAR(64) NOT NULL
-);
+-- CREATE TABLE IF NOT EXISTS Destinations (
+-- 	id VARCHAR(64) PRIMARY KEY NOT NULL,
+-- 	name VARCHAR(64),
+-- 	number INT NOT NULL,
+-- 	street VARCHAR(64) NOT NULL,
+-- 	apartment VARCHAR(64),
+-- 	city VARCHAR(64) NOT NULL,
+-- 	state VARCHAR(64) NOT NULL,
+-- 	postalCode INT NOT NULL,
+-- 	country VARCHAR(64) NOT NULL
+-- );
 
 CREATE TABLE IF NOT EXISTS Tasks (
 	shortId VARCHAR(64) PRIMARY KEY NOT NULL,
@@ -37,8 +37,7 @@ CREATE TABLE IF NOT EXISTS Tasks (
 	workerName VARCHAR(64) NOT NULL,
 	destination VARCHAR(64) NOT NULL,
 	completionTime VARCHAR(64),
-	didSucceed VARCHAR(64),
-	status VARCHAR(1024)
+	didSucceed VARCHAR(64)
 );
 
 CREATE TABLE IF NOT EXISTS JobLogs (
