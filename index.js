@@ -348,13 +348,18 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 								console.log('Updating Yelp')
 								console.log(joblog)
 
-								yelp.postUpdate(joblog).then(function(result) {
-									console.log('Successfully posted to Yelp ' + taskB.shortId)
-									console.log(result)
-									response.sendStatus(200)
-								}, function(error1) {
-									console.log('Successfully posted to Yelp ' + taskB.shortId)
-								})
+								response.writeHead(200, { 'Content-Type': 'application/json' })
+								response.write(JSON.stringify(joblog))
+								response.end()
+
+								// yelp.postUpdate(joblog).then(function(result) {
+
+								// 	console.log('Successfully posted to Yelp ' + taskB.shortId)
+								// 	console.log(result)
+								// 	response.sendStatus(200)
+								// }, function(error1) {
+								// 	console.log('Successfully posted to Yelp ' + taskB.shortId)
+								// })
 							}, function(error) {
 								response.writeHead(405, { 'Content-Type': 'application/json' })
 								response.write(JSON.stringify({error: 'Task could not be deleted. - delete1'}))
@@ -586,23 +591,6 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 	})
 })
 
-app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
-	response.sendStatus(200)
-	// onfleet.getSingleTask(request.body.taskId).then(function(task) {
-	// 	console.log('taskDeleted: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
-	// 	if (!task.pickupTask) {
-	// 		connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'42',(new Date()).getTime()], function(error, rows){
-	// 			if (error)
-	// 				console.log('ERROR - query\n' + error)
-	// 			updateYelp(task.shortId, request, response)
-	// 		})
-	// 	}
-	// 	response.sendStatus(200)
-	// }, function(error) {
-	// 	response.sendStatus(200) // task not found, try again in 30 minutes
-	// })
-})
-
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	console.log('task assigned called')
 
@@ -686,6 +674,10 @@ app.post('/Piggyback/webhook/taskUpdated', function(request, response) {
 })
 
 app.post('/Piggyback/webhook/taskUnassigned', function(request, response) {
+	response.sendStatus(200)
+})
+
+app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	response.sendStatus(200)
 })
 
