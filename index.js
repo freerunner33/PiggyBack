@@ -576,7 +576,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
 						console.log('Got worker')
 
-						connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.name, worker.id, task.shortId], function(error, rows) {
+						connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, task.shortId], function(error, rows) {
 							if (error)
 								console.log('ERROR UPDATING - assignment1\n' + error)
 							console.log('Update 1')
@@ -586,7 +586,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 
 								worker.tasks.push(taskB.id)
 
-								connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.name, worker.id, taskB.shortId], function(error, rows) {
+								connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, taskB.shortId], function(error, rows) {
 									if (error)
 										console.log('ERROR UPDATING - assignment2\n' + error)
 									console.log('Update 2')
