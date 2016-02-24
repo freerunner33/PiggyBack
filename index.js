@@ -590,7 +590,8 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 										console.log('ERROR UPDATING - assignment2\n' + error)
 									console.log('Update 2')
 									console.log('worker id: ' + worker.id)
-									console.log('worker tasks: ' + worker.tasks)
+									console.log('task: ' + taskB.id)
+									console.log('worker tasks: ' + worker.tasks.pop())
 
 									onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
 										console.log('Update worker worked\n. TaskA and B were successfully created and added to the database - ' + taskB.shortId)
