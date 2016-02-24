@@ -161,6 +161,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 					j.dropoff_waypoint.special_instructions				// notes for task
 				).then(function(taskB) {
 					console.log('Created taskB')
+					
 					if (taskA.worker) {
 						onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
 							connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -557,15 +558,17 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 })
 
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
+	console.log('task assigned called')
 	setTimeout(function() {
 		onfleet.getSingleTask(request.body.taskId).then(function(task) {
+
 			console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			if (!task.pickupTask) {
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime()], function(error, rows){
 					if (error)
 						console.log('ERROR - query\n' + error)
 					
-					onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
+					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
 						connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.name, worker.id, task.shortId], function(error, rows) {
 							if (error)
 								console.log('ERROR UPDATING - assignment1\n' + error)
