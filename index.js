@@ -590,6 +590,11 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 										response.end()
 									})
 								})
+							}, function(error) {
+								// COULD NOT GET PICKUP TASK
+								response.writeHead(400, { 'Content-Type': 'application/json' })
+								response.write(JSON.stringify(error))
+								response.end()
 							})		
 						})
 					}, function(error) {
