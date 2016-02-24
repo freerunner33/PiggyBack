@@ -597,6 +597,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 
 										response.sendStatus(200)
 									}, function(error) {
+										console.log('did not work to update worker by id')
 										// DROPOFF TASK NOT ADDED TO WORKER
 										response.writeHead(400, { 'Content-Type': 'application/json' })
 										response.write(JSON.stringify(error))
