@@ -302,14 +302,14 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 
 								console.log('Updating Yelp')
 								console.log(joblog)
-								
+
 								yelp.postUpdate(joblog).then(function(result) {
 									console.log('Successfully posted to Yelp ' + taskB.shortId)
 									console.log(result)
+									response.sendStatus(200)
 								}, function(error1) {
 									console.log('Successfully posted to Yelp ' + taskB.shortId)
 								})
-								response.sendStatus(200)
 							}, function(error) {
 								response.writeHead(405, { 'Content-Type': 'application/json' })
 								response.write(JSON.stringify({error: 'Task could not be deleted. - delete1'}))
