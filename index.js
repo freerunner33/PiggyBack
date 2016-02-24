@@ -559,33 +559,42 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	console.log('task assigned called')
+
 	setTimeout(function() {
 		onfleet.getSingleTask(request.body.taskId).then(function(task) {
-
 			console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+
 			if (!task.pickupTask) {
+				console.log('Dropoff task ' + task.shortId)
+
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime()], function(error, rows){
 					if (error)
 						console.log('ERROR - query\n' + error)
-					
+					console.log('Inserted into joblogs')
+
 					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+						console.log('Got worker')
+
 						connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.name, worker.id, task.shortId], function(error, rows) {
 							if (error)
 								console.log('ERROR UPDATING - assignment1\n' + error)
+							console.log('Update 1')
+
 							onfleet.getSingleTask(task.dependencies[0]).then(function(taskB) {
-								
+								console.log('Got dependency task')
+
 								worker.tasks.push(taskB.id)
 
 								connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.name, worker.id, taskB.shortId], function(error, rows) {
 									if (error)
 										console.log('ERROR UPDATING - assignment2\n' + error)
-
+									console.log('Update 2')
 
 									onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-										console.log('TaskA and B were successfully created and added to the database - ' + taskB.shortId)
+										console.log('Update worker worked\n. TaskA and B were successfully created and added to the database - ' + taskB.shortId)
 										
 										updateYelp(task.shortId, request, response)
-										
+
 										response.sendStatus(200)
 									}, function(error) {
 										// DROPOFF TASK NOT ADDED TO WORKER
