@@ -35,19 +35,19 @@ block content
 			if arr
 				each d in arr
 					tr
-						potato #{d.shortId}
-						potato #{d.driverTip}
-						potato #{d.taskType}
-						potato #{d.completeAfter}
-						potato #{d.completeBefore}
-						potato #{d.workerId}
-						potato #{d.workerName}
-						potato #{d.destination}
-						potato #{d.completionTime}
-						potato #{d.didSucceed}
+						my-potato #{d.shortId}
+						my-potato #{d.driverTip}
+						my-potato #{d.taskType}
+						my-potato #{d.completeAfter}
+						my-potato #{d.completeBefore}
+						my-potato #{d.workerId}
+						my-potato #{d.workerName}
+						my-potato #{d.destination}
+						my-potato #{d.completionTime}
+						my-potato #{d.didSucceed}
 	section
 		h1 Testing below
 		potato POTATO
 	script(type='text/javascript').
-		var potato = document.createElement('potato')
-		potato.extend('h1')
+		var potato = document.registerElement('my-potato')
+		document.body.appendChild(new potato)
