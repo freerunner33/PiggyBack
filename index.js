@@ -881,11 +881,12 @@ app.get('/Piggyback/download', function(request, response) {
 
 // need to delete file, then insert it...
 
-	var query = "SELECT 'shortId', 'taskId', 'yelpId', 'company', 'driverTip', 'taskType', 'workerId', 'workerName', 'destination', 'completionTime', 'didSucceed' "
+	// var query = "SELECT 'shortId', 'taskId', 'yelpId', 'company', 'driverTip', 'taskType', 'workerId', 'workerName', 'destination', 'completionTime', 'didSucceed' "
 	// query += "UNION SELECT shortId,taskId,yelpId,company,IFNULL(driverTip,''),taskType,workerId,workerName,destination,IFNULL(completionTime,''),IFNULL(didSucceed,'') FROM Tasks "
-	query += "INTO OUTFILE '/tmp/Piggyback_log01.csv' FIELDS ENCLOSED BY '\"' TERMINATED BY ',' ESCAPED BY '\\' LINES TERMINATED BY '\n'"
-	query = encodeURI(query)
+	// query += "INTO OUTFILE '/tmp/Piggyback_log01.csv' FIELDS ENCLOSED BY '\"' TERMINATED BY ',' ESCAPED BY '\\' LINES TERMINATED BY '\n'"
+	// query = encodeURI(query)
 
+	var query = 'select shortId,taskId,driverTip from Tasks into outfile "/tmp/test.txt" fields enclosed by "\"" terminated by "," escaped by "\\" lines terminated by "\n"'
 	console.log('QUERY\n' + query)
 
 	connection.query(query, function(error, rows) {
