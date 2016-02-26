@@ -889,13 +889,15 @@ app.get('/Piggyback/download', function(request, response) {
 //		if (error)
 //			throw error
 //	})
-	fs.readFile('/tmp/', function (err, data) {
+	
+	fs.readdir('/tmp', function (err, files) {
 		if (err)
-			throw err;
-		if (data)
-			console.log(data.toString('utf8'));
-		response.sendStatus(200)
-	});
+			throw err
+		for (var index in files) {
+			console.log(files[index])
+		}
+	})
+
 	// var file = '/tmp/Piggyback_log.csv'
 
 	// var filename = path.basename(file)
