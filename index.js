@@ -871,33 +871,35 @@ app.get('/Piggyback/logout', function(request, response) {
 
 app.get('/Piggyback/download', function(request, response) {
 	// delete file
-	fs.unlinkSync('/tmp/Piggyback_log.csv', function(err) {
-		if (err) {
-			return console.error(err);
-		}
-		console.log("File deleted successfully!");
-		response.sendStatus(200)
-	});
-
-	// var query = "SELECT 'shortId', 'taskId', 'yelpId', 'company', 'driverTip', 'taskType', 'workerId', 'workerName', 'destination', 'completionTime', 'didSucceed' "
-	// query += "UNION SELECT shortId,taskId,yelpId,company,IFNULL(driverTip,''),taskType,workerId,workerName,destination,IFNULL(completionTime,''),IFNULL(didSucceed,'')"
-	// query += "FROM Tasks INTO OUTFILE '/tmp/Piggyback_log.csv' FIELDS ENCLOSED BY '\"' TERMINATED BY ',' ESCAPED BY '\\' LINES TERMINATED BY '\n'"
-
-	// connection.query(query, function(error, rows) {
-	// 	if (error)
-	// 		throw error
+	// fs.unlinkSync('/tmp/Piggyback_log.csv', function(err) {
+	// 	if (err) {
+	// 		return console.error(err)
+	// 	}
+	// 	console.log("File deleted successfully!")
+	// 	response.sendStatus(200)
 	// })
 
-	// var file = '/tmp/Piggyback_log.csv'
+// need to delete file, then insert it...
 
-	// var filename = path.basename(file)
-	// var mimetype = mime.lookup(file)
+//	var query = "SELECT 'shortId', 'taskId', 'yelpId', 'company', 'driverTip', 'taskType', 'workerId', 'workerName', 'destination', 'completionTime', 'didSucceed' "
+//	query += "UNION SELECT shortId,taskId,yelpId,company,IFNULL(driverTip,''),taskType,workerId,workerName,destination,IFNULL(completionTime,''),IFNULL(didSucceed,'')"
+//	query += "FROM Tasks INTO OUTFILE '/tmp/Piggyback_log.csv' FIELDS ENCLOSED BY '\"' TERMINATED BY ',' ESCAPED BY '\\' LINES TERMINATED BY '\n'"
 
-	// response.setHeader('Content-disposition', 'attachment; filename=' + filename)
-	// response.setHeader('Content-type', mimetype)
+//	connection.query(query, function(error, rows) {
+//		if (error)
+//			throw error
+//	})
 
-	// var filestream = fs.createReadStream(file)
-	// filestream.pipe(response)
+	var file = '/tmp/Piggyback_log.csv'
+
+	var filename = path.basename(file)
+	var mimetype = mime.lookup(file)
+
+	response.setHeader('Content-disposition', 'attachment; filename=' + filename)
+	response.setHeader('Content-type', mimetype)
+
+	var filestream = fs.createReadStream(file)
+	filestream.pipe(response)
 })
 
 http.listen(8080, '127.0.0.1', function() {
