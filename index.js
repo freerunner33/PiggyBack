@@ -736,7 +736,7 @@ app.get('/Piggyback/export', function(request, response) {
 })
 
 app.post('/Piggyback/export', function(request, response) {
-	document.createElement('potato')
+	window.document.createElement('potato')
 	if (request.session.loggedin) {
 		timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
 			var timeA = new Date(request.body.start_time).getTime()
