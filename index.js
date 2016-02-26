@@ -895,7 +895,7 @@ app.get('/Piggyback/download', function(request, response) {
 		if (files && files.length) {
 			response.render('error', {pageTitle: 'Success', errors: files})
 		} else {
-			response.render('error', {pageTitle: 'FAIIIL', errors: files})
+			response.render('error', {pageTitle: 'FAIIIL', errors: 'files'})
 		}
 	})
 	// var file = '/tmp/Piggyback_log.csv'
