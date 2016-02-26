@@ -19,6 +19,7 @@ var uuid = require('node-uuid')
 var session = require('express-session')
 var authorization = require('auth-header')
 var mime = require('mime')
+const fs = require('fs')
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
