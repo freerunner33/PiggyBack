@@ -870,7 +870,7 @@ app.get('/Piggyback/logout', function(request, response) {
 })
 
 app.get('/Piggyback/download', function(request, response) {
-	var file = __dirname + '../../tmp/Piggyback_log.csv'
+	var file = __dirname + '/assets/logs/something.csv'
 
 	var filename = path.basename(file)
 	var mimetype = mime.lookup(file)
