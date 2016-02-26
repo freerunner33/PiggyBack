@@ -890,7 +890,7 @@ app.get('/Piggyback/download', function(request, response) {
 //			throw error
 //	})
 	
-	fs.readdir('/tmp', function (err, files) {
+	fs.readdir('.', function (err, files) {
 		if (err)
 			throw err
 		for (var index in files) {
