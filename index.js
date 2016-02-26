@@ -17,10 +17,7 @@ var validator = require('validator')
 var bcrypt = require('bcrypt')
 var uuid = require('node-uuid')
 var session = require('express-session')
-	var authorization = require('auth-header')
-	var dateFormat = require('dateformat')
-	var httpClient = require('http')
-	var multer = require('multer')
+var authorization = require('auth-header')
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
@@ -879,7 +876,6 @@ app.get('/Piggyback/download', function(request, response) {
 	res.setHeader('Content-disposition', 'attachment; filename=' + filename)
 	res.setHeader('Content-type', mimetype)
 
-	
 	var filestream = fs.createReadStream(file)
 	filestream.pipe(res)
 })
