@@ -889,7 +889,7 @@ app.get('/Piggyback/download', function(request, response) {
 //		if (error)
 //			throw error
 //	})
-	fs.readFile('/tmp/Piggyback_log.csv', function (err, data) {
+	fs.readFile('/tmp/', function (err, data) {
 		if (err)
 			throw err;
 		if (data)
