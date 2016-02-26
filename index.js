@@ -871,7 +871,7 @@ app.get('/Piggyback/logout', function(request, response) {
 
 app.get('/Piggyback/download', function(request, response) {
 	// delete file
-	fs.unlink('/tmp/Piggyback_log.csv', function(err) {
+	fs.unlinkSync('/tmp/Piggyback_log.csv', function(err) {
 		if (err) {
 			return console.error(err);
 		}
