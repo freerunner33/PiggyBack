@@ -894,7 +894,8 @@ app.get('/Piggyback/download', function(request, response) {
 		if (err)
 			throw err
 		for (var index in files) {
-			console.log(files[index])
+			var num = files[index].substr(12)
+			console.log(files[index] + ' - ' + num)
 		}
 		response.sendStatus(200)
 	})
