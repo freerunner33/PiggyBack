@@ -1,7 +1,6 @@
 potato {
 	display: table-cell;
     vertical-align: inherit;
-    color: blue;
     border: 1px solid #ddd;
 	padding: 0.25em 0.5em;
 }
