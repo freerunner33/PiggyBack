@@ -63,6 +63,7 @@ input {
 	margin: 1em auto;
 	width: 25%;
 	min-width: 20em;
+	text-align: left;
 }
 
 table {
