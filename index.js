@@ -872,10 +872,11 @@ app.get('/Piggyback/logout', function(request, response) {
 app.get('/Piggyback/download', function(request, response) {
 	// delete file
 	fs.unlink('/tmp/Piggyback_log.csv', function(err) {
-	   if (err) {
-	       return console.error(err);
-	   }
-	   console.log("File deleted successfully!");
+		if (err) {
+			return console.error(err);
+		}
+		console.log("File deleted successfully!");
+		response.sendStatus(200)
 	});
 
 	// var query = "SELECT 'shortId', 'taskId', 'yelpId', 'company', 'driverTip', 'taskType', 'workerId', 'workerName', 'destination', 'completionTime', 'didSucceed' "
@@ -897,7 +898,6 @@ app.get('/Piggyback/download', function(request, response) {
 
 	// var filestream = fs.createReadStream(file)
 	// filestream.pipe(response)
-	response.sendStatus(200)
 })
 
 http.listen(8080, '127.0.0.1', function() {
