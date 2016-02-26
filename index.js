@@ -18,6 +18,7 @@ var bcrypt = require('bcrypt')
 var uuid = require('node-uuid')
 var session = require('express-session')
 var authorization = require('auth-header')
+var mime = require('mime')
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
