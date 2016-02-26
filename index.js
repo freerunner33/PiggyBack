@@ -898,8 +898,8 @@ app.get('/Piggyback/download', function(request, response) {
 				var num = files[index].substr(13, (files[index].indexOf('.')) - 13)
 				console.log(files[index] + ' - ' + num)
 			}
-			console.log(num + ' : ' + (num + 1))
 		}
+		console.log(num + ' : ' + (num + 1))
 		response.sendStatus(200)
 	})
 
