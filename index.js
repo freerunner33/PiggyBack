@@ -874,11 +874,11 @@ app.get('/Piggyback/download', function(request, response) {
 	var filename = path.basename(file)
 	var mimetype = mime.lookup(file)
 
-	res.setHeader('Content-disposition', 'attachment; filename=' + filename)
-	res.setHeader('Content-type', mimetype)
+	response.setHeader('Content-disposition', 'attachment; filename=' + filename)
+	response.setHeader('Content-type', mimetype)
 
 	var filestream = fs.createReadStream(file)
-	filestream.pipe(res)
+	filestream.pipe(response)
 })
 
 http.listen(8080, '127.0.0.1', function() {
