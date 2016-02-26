@@ -888,15 +888,15 @@ app.get('/Piggyback/download', function(request, response) {
 		connection.query(query, function(error, rows) {
 			if (error)
 				throw error
-			response.sendStatus(200)
-			// var filename = path.basename(file)
-			// var mimetype = mime.lookup(file)
+			file = file.substr(1, file.length - 2)
+			var filename = path.basename(file)
+			var mimetype = mime.lookup(file)
 
-			// response.setHeader('Content-disposition', 'attachment; filename=' + filename)
-			// response.setHeader('Content-type', mimetype)
+			response.setHeader('Content-disposition', 'attachment; filename=' + filename)
+			response.setHeader('Content-type', mimetype)
 
-			// var filestream = fs.createReadStream(file)
-			// filestream.pipe(response)
+			var filestream = fs.createReadStream(file)
+			filestream.pipe(response)
 		})
 	})
 })
