@@ -889,15 +889,13 @@ app.get('/Piggyback/download', function(request, response) {
 //		if (error)
 //			throw error
 //	})
-	fs.readdirSync('/tmp', function(error, files) {
-		if (error)
-			throw error
-		if (files && files.length) {
-			response.render('error', {pageTitle: 'Success', errors: files})
-		} else {
-			response.render('error', {pageTitle: 'FAIIIL', errors: 'files'})
-		}
-	})
+	fs.readFile('data.txt', function (err, data) {
+		if (err)
+			throw err;
+		if (data)
+			console.log(data.toString('utf8'));
+		response.sendStatus(200)
+	});
 	// var file = '/tmp/Piggyback_log.csv'
 
 	// var filename = path.basename(file)
