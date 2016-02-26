@@ -870,33 +870,17 @@ app.get('/Piggyback/logout', function(request, response) {
 })
 
 app.get('/Piggyback/download', function(request, response) {
-	// delete file
-	// fs.unlinkSync('/tmp/Piggyback_log.csv', function(err) {
-	// 	if (err) {
-	// 		return console.error(err)
-	// 	}
-	// 	console.log("File deleted successfully!")
+	// var outfile = "'/tmp/test.txt'"
+
+	// var query = "SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed' UNION SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks INTO OUTFILE " + outfile + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
+
+	// console.log('QUERY\n' + query)
+
+	// connection.query(query, function(error, rows) {
+	// 	if (error)
+	// 		throw error
 	// 	response.sendStatus(200)
 	// })
-
-// need to delete file, then insert it...
-
-	// var query = "SELECT 'shortId', 'taskId', 'yelpId', 'company', 'driverTip', 'taskType', 'workerId', 'workerName', 'destination', 'completionTime', 'didSucceed' "
-	// query += "UNION SELECT shortId,taskId,yelpId,company,IFNULL(driverTip,''),taskType,workerId,workerName,destination,IFNULL(completionTime,''),IFNULL(didSucceed,'') FROM Tasks "
-	// query += "INTO OUTFILE '/tmp/Piggyback_log01.csv' FIELDS ENCLOSED BY '\"' TERMINATED BY ',' ESCAPED BY '\\' LINES TERMINATED BY '\n'"
-	// query = encodeURI(query)
-
-	var outfile = "'/tmp/test.txt'"
-
-	var query = "SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed' UNION SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks INTO OUTFILE " + outfile + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
-
-	console.log('QUERY\n' + query)
-
-	connection.query(query, function(error, rows) {
-		if (error)
-			throw error
-		response.sendStatus(200)
-	})
 	
 	// fs.readdir('/tmp', function (err, files) {
 	// 	if (err)
@@ -907,16 +891,17 @@ app.get('/Piggyback/download', function(request, response) {
 	// 			console.log(files[index] + ' - ' + num)
 	// 		}
 	// 	}
-	// 	var file = '/tmp/Piggyback_log' + (parseInt(num) + 1) + '.csv'
+		// var file = '/tmp/Piggyback_log' + (parseInt(num) + 1) + '.csv'
+		var file = '/tmp/test.csv'
 
-	// 	var filename = path.basename(file)
-	// 	var mimetype = mime.lookup(file)
+		var filename = path.basename(file)
+		var mimetype = mime.lookup(file)
 
-	// 	response.setHeader('Content-disposition', 'attachment; filename=' + filename)
-	// 	response.setHeader('Content-type', mimetype)
+		response.setHeader('Content-disposition', 'attachment; filename=' + filename)
+		response.setHeader('Content-type', mimetype)
 
-	// 	var filestream = fs.createReadStream(file)
-	// 	filestream.pipe(response)
+		var filestream = fs.createReadStream(file)
+		filestream.pipe(response)
 	// })
 })
 
