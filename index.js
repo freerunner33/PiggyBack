@@ -889,17 +889,23 @@ app.get('/Piggyback/download', function(request, response) {
 //		if (error)
 //			throw error
 //	})
+	fs.readdirSync('/tmp', function(error, files) {
+		if (error)
+			throw error
+		if (files && files.length) {
+			response.render('error', {pageTitle: 'Success', errors: files})
+		}
+	})
+	// var file = '/tmp/Piggyback_log.csv'
 
-	var file = '/tmp/Piggyback_log.csv'
+	// var filename = path.basename(file)
+	// var mimetype = mime.lookup(file)
 
-	var filename = path.basename(file)
-	var mimetype = mime.lookup(file)
+	// response.setHeader('Content-disposition', 'attachment; filename=' + filename)
+	// response.setHeader('Content-type', mimetype)
 
-	response.setHeader('Content-disposition', 'attachment; filename=' + filename)
-	response.setHeader('Content-type', mimetype)
-
-	var filestream = fs.createReadStream(file)
-	filestream.pipe(response)
+	// var filestream = fs.createReadStream(file)
+	// filestream.pipe(response)
 })
 
 http.listen(8080, '127.0.0.1', function() {
