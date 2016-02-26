@@ -894,7 +894,7 @@ app.get('/Piggyback/download', function(request, response) {
 		if (err)
 			throw err
 		for (var index in files) {
-			if (files[index].contains('Piggyback_log')) {
+			if (files[index].includes('Piggyback_log')) {
 				var num = files[index].substr(13)
 				console.log(files[index] + ' - ' + num)
 			}
