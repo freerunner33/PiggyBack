@@ -880,8 +880,10 @@ app.get('/Piggyback/download', function(request, response) {
 				console.log(files[index] + ' - ' + num)
 			}
 		}
-		var file = '/tmp/Piggyback_log' + (parseInt(num) + 1) + '.csv'
+		var file = "'/tmp/Piggyback_log" + (parseInt(num) + 1) + ".csv'"
 		var query = "SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed' UNION SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
+
+		console.log('File is: ' + file + '\nQuery is: ' + query)
 
 		connection.query(query, function(error, rows) {
 			if (error)
