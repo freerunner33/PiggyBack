@@ -35,19 +35,19 @@ block content
 			if arr
 				each d in arr
 					tr
-						my-potato #{d.shortId}
-						my-potato #{d.driverTip}
-						my-potato #{d.taskType}
-						my-potato #{d.completeAfter}
-						my-potato #{d.completeBefore}
-						my-potato #{d.workerId}
-						my-potato #{d.workerName}
-						my-potato #{d.destination}
-						my-potato #{d.completionTime}
-						my-potato #{d.didSucceed}
-	section
-		h1 Testing below
-		potato POTATO
-	script(type='text/javascript').
-		var potato = document.registerElement('my-potato')
-		document.body.appendChild(new potato)
+						td #{d.shortId}
+						td #{d.driverTip}
+						td #{d.taskType}
+						td #{d.completeAfter}
+						td #{d.completeBefore}
+						td #{d.workerId}
+						td #{d.workerName}
+						td #{d.destination}
+						td #{d.completionTime}
+						td #{d.didSucceed}
+	//- section
+	//- 	h1 Testing below
+	//- 	potato POTATO
+	//- script(type='text/javascript').
+	//- 	var potato = document.registerElement('my-potato')
+	//- 	document.body.appendChild(new potato)
