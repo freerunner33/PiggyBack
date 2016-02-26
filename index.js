@@ -899,7 +899,7 @@ app.get('/Piggyback/download', function(request, response) {
 				console.log(files[index] + ' - ' + num)
 			}
 		}
-		console.log(num + ' : ' + (num + 1))
+		console.log(num + ' : ' + (1 + num))
 		response.sendStatus(200)
 	})
 
