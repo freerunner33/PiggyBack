@@ -876,25 +876,26 @@ app.get('/Piggyback/download', function(request, response) {
 			throw error
 	})
 
-	var query = "SELECT 'shortId', 'taskId', 'yelpId', 'company', 'driverTip', 'taskType', 'workerId', 'workerName', 'destination', 'completionTime', 'didSucceed' "
-	query += "UNION SELECT shortId,taskId,yelpId,company,IFNULL(driverTip,''),taskType,workerId,workerName,destination,IFNULL(completionTime,''),IFNULL(didSucceed,'')"
-	query += "FROM Tasks INTO OUTFILE '/tmp/Piggyback_log.csv' FIELDS ENCLOSED BY '\"' TERMINATED BY ',' ESCAPED BY '\\' LINES TERMINATED BY '\n'"
+	// var query = "SELECT 'shortId', 'taskId', 'yelpId', 'company', 'driverTip', 'taskType', 'workerId', 'workerName', 'destination', 'completionTime', 'didSucceed' "
+	// query += "UNION SELECT shortId,taskId,yelpId,company,IFNULL(driverTip,''),taskType,workerId,workerName,destination,IFNULL(completionTime,''),IFNULL(didSucceed,'')"
+	// query += "FROM Tasks INTO OUTFILE '/tmp/Piggyback_log.csv' FIELDS ENCLOSED BY '\"' TERMINATED BY ',' ESCAPED BY '\\' LINES TERMINATED BY '\n'"
 
-	connection.query(query, function(error, rows) {
-		if (error)
-			throw error
-	})
+	// connection.query(query, function(error, rows) {
+	// 	if (error)
+	// 		throw error
+	// })
 
-	var file = '/tmp/Piggyback_log.csv'
+	// var file = '/tmp/Piggyback_log.csv'
 
-	var filename = path.basename(file)
-	var mimetype = mime.lookup(file)
+	// var filename = path.basename(file)
+	// var mimetype = mime.lookup(file)
 
-	response.setHeader('Content-disposition', 'attachment; filename=' + filename)
-	response.setHeader('Content-type', mimetype)
+	// response.setHeader('Content-disposition', 'attachment; filename=' + filename)
+	// response.setHeader('Content-type', mimetype)
 
-	var filestream = fs.createReadStream(file)
-	filestream.pipe(response)
+	// var filestream = fs.createReadStream(file)
+	// filestream.pipe(response)
+	response.sendStatus(200)
 })
 
 http.listen(8080, '127.0.0.1', function() {
