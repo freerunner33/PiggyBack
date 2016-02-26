@@ -886,7 +886,9 @@ app.get('/Piggyback/download', function(request, response) {
 	// query += "INTO OUTFILE '/tmp/Piggyback_log01.csv' FIELDS ENCLOSED BY '\"' TERMINATED BY ',' ESCAPED BY '\\' LINES TERMINATED BY '\n'"
 	// query = encodeURI(query)
 
-	var query = "SELECT 'shortId','taskId','driverTip' UNION SELECT shortId,taskId,driverTip FROM Tasks INTO OUTFILE '/tmp/test.txt' FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
+	var outfile = "'/tmp/test.txt"
+
+	var query = "SELECT 'shortId','taskId','driverTip' UNION SELECT shortId,taskId,driverTip FROM Tasks INTO OUTFILE " + outfile + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
 
 	console.log('QUERY\n' + query)
 
