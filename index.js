@@ -871,10 +871,12 @@ app.get('/Piggyback/logout', function(request, response) {
 
 app.get('/Piggyback/download', function(request, response) {
 	// delete file
-	fs.unlink('/tmp/Piggyback_log.csv', function(error) {
-		if (error)
-			throw error
-	})
+	fs.unlink('/tmp/Piggyback_log.csv', function(err) {
+	   if (err) {
+	       return console.error(err);
+	   }
+	   console.log("File deleted successfully!");
+	});
 
 	// var query = "SELECT 'shortId', 'taskId', 'yelpId', 'company', 'driverTip', 'taskType', 'workerId', 'workerName', 'destination', 'completionTime', 'didSucceed' "
 	// query += "UNION SELECT shortId,taskId,yelpId,company,IFNULL(driverTip,''),taskType,workerId,workerName,destination,IFNULL(completionTime,''),IFNULL(didSucceed,'')"
