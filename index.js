@@ -870,39 +870,33 @@ app.get('/Piggyback/logout', function(request, response) {
 })
 
 app.get('/Piggyback/download', function(request, response) {
-	// var outfile = "'/tmp/test.txt'"
-
-	// var query = "SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed' UNION SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks INTO OUTFILE " + outfile + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
-
-	// console.log('QUERY\n' + query)
-
-	// connection.query(query, function(error, rows) {
-	// 	if (error)
-	// 		throw error
-	// 	response.sendStatus(200)
-	// })
 	
-	// fs.readdir('/tmp', function (err, files) {
-	// 	if (err)
-	// 		throw err
-	// 	for (var index in files) {
-	// 		if (files[index].includes('Piggyback_log')) {
-	// 			var num = files[index].substr(13, (files[index].indexOf('.')) - 13)
-	// 			console.log(files[index] + ' - ' + num)
-	// 		}
-	// 	}
-		// var file = '/tmp/Piggyback_log' + (parseInt(num) + 1) + '.csv'
-		var file = '/tmp/test.csv'
+	fs.readdir('/tmp', function (err, files) {
+		if (err)
+			throw err
+		for (var index in files) {
+			if (files[index].includes('Piggyback_log')) {
+				var num = files[index].substr(13, (files[index].indexOf('.')) - 13)
+				console.log(files[index] + ' - ' + num)
+			}
+		}
+		var file = '/tmp/Piggyback_log' + (parseInt(num) + 1) + '.csv'
+		var query = "SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed' UNION SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
 
-		var filename = path.basename(file)
-		var mimetype = mime.lookup(file)
+		connection.query(query, function(error, rows) {
+			if (error)
+				throw error
 
-		response.setHeader('Content-disposition', 'attachment; filename=' + filename)
-		response.setHeader('Content-type', mimetype)
+			var filename = path.basename(file)
+			var mimetype = mime.lookup(file)
 
-		var filestream = fs.createReadStream(file)
-		filestream.pipe(response)
-	// })
+			response.setHeader('Content-disposition', 'attachment; filename=' + filename)
+			response.setHeader('Content-type', mimetype)
+
+			var filestream = fs.createReadStream(file)
+			filestream.pipe(response)
+		})
+	})
 })
 
 http.listen(8080, '127.0.0.1', function() {
