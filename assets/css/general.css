@@ -59,8 +59,10 @@ p {
 	margin: 0.25em;
 }
 input {
-	width: calc(100% - 2em);
-	margin: 0.25em;
+	display: block;
+	margin: 1em auto;
+	width: 25%;
+	min-width: 20em;
 }
 
 table {

@@ -870,7 +870,7 @@ app.get('/Piggyback/logout', function(request, response) {
 })
 
 app.get('/Piggyback/download', function(request, response) {
-	
+	// Generates a log file, then downloads it
 	fs.readdir('/tmp', function (err, files) {
 		if (err)
 			throw err
@@ -882,8 +882,6 @@ app.get('/Piggyback/download', function(request, response) {
 		}
 		var file = "'/tmp/Piggyback_log" + (parseInt(num) + 1) + ".csv'"
 		var query = "SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed' UNION SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
-
-		console.log('File is: ' + file + '\nQuery is: ' + query)
 
 		connection.query(query, function(error, rows) {
 			if (error)
