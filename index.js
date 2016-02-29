@@ -832,7 +832,7 @@ app.post('/Piggyback/signup', function(request, response) {
 
 // SIGNIN
 app.get('/Tabitha', function(request, response) {
-	response.sendStatus(404)
+	response.render('tabitha', {pageTitle: 'Tabitha'})
 }) 
 
 app.get('/Piggyback/signin', function(request, response) {
