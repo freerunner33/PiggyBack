@@ -718,7 +718,7 @@ app.post('/Piggyback', function(request, response) {
 app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
 		onfleet.listTasks().then(function(tasks) {
-			response.render('tasks', {pageTitle: 'Piggyback Technologies', tasks: tasks})
+			response.render('tasks', {pageTitle: 'Piggyback Technologies', tasks: tasks, username: request.session.username})
 		}, function(error) {
 			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
 		})
@@ -823,6 +823,7 @@ app.post('/Piggyback/signup', function(request, response) {
 				if (error)
 					throw error
 				request.session.loggedin = true
+				request.session.username = username
 				response.render('success', {pageTitle: 'Success', message: 'You have successfully signed up'})
 			}
 		)
@@ -851,6 +852,7 @@ app.post('/Piggyback/signin', function(request, response) {
 			throw error
 		if (rows && rows.length) {
 			request.session.loggedin = true
+			request.session.username = username
 			response.redirect('/Piggyback')
 			return
 		} else {
