@@ -6,5 +6,7 @@ html {
 }
 
 h1 {
+	text-align: center;
 	color: pink;
+	font-size: 3em;
 }
