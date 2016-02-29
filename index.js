@@ -163,7 +163,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 							taskA.shortId,													// shortId
 							taskA.id,														// taskId
 							j.order_id,														// yelpId
-							'Yelp',															// company
+							username,														// company
 							null,															// driverTip
 							'pickup',														// taskType
 							(dateA).toISOString(),											// completeAfter	- in UTC
@@ -185,7 +185,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 									taskB.shortId,										// shortId
 									taskB.id,											// taskId
 									j.order_id,											// yelpId
-									'Yelp',												// company
+									username,											// company
 									j.tip,												// driverTip
 									'dropoff',											// taskType
 									(dateA).toISOString(),								// completeAfter	- in UTC
@@ -831,6 +831,10 @@ app.post('/Piggyback/signup', function(request, response) {
 })
 
 // SIGNIN
+app.get('/Tabitha', function(request, response) {
+	response.sendStatus(404)
+}) 
+
 app.get('/Piggyback/signin', function(request, response) {
 	if (request.session.loggedin)
 		response.render('signin', {pageTitle: 'Sign in', errors: ['Already signed in']})
