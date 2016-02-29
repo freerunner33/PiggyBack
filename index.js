@@ -713,8 +713,6 @@ app.post('/Piggyback', function(request, response) {
 })
 
 // SITE
-
-
 app.get('/Piggyback', function(request, response) {
 	if (request.session.loggedin) {
 		onfleet.listTasks().then(function(tasks) {
@@ -831,10 +829,6 @@ app.post('/Piggyback/signup', function(request, response) {
 })
 
 // SIGNIN
-app.get('/Tabitha', function(request, response) {
-	response.render('tabitha', {pageTitle: 'Tabitha'})
-}) 
-
 app.get('/Piggyback/signin', function(request, response) {
 	if (request.session.loggedin)
 		response.render('signin', {pageTitle: 'Sign in', errors: ['Already signed in']})
