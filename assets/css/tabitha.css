@@ -1,0 +1,10 @@
+html {
+	background-color: black;
+	background: url(../images/background.jpg) no-repeat center center fixed;
+	background-size: cover;
+	background-position: left;
+}
+
+h1 {
+	color: pink;
+}
