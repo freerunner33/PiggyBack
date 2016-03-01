@@ -296,7 +296,7 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 	}
 })
 
-// Querying the status of a job
+// 3. Querying the status of a job
 app.get('/Piggyback/status/*', function(request, response) {
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
@@ -587,7 +587,7 @@ function writeLog(arr, latitude, longitude) {
 		var newArr = []
 		timezone.getOffset(latitude, longitude).then(function(offset) {
 			for (i = 0; i < arr.length; i++) {
-				log = arr[i]
+				var log = arr[i]
 				var status_code = log.statusCode
 				var status = eat24StatusCodes[status_code]
 				var reason = eat24Reasons[status_code]
