@@ -750,7 +750,7 @@ app.post('/Piggyback/export', function(request, response) {
 				for (i = 0; i < rows.length; i++) {
 					arr.push(rows[i])
 				}
-				console.log('date: ' + dateStrA)
+				console.log('date: ' + dateStrA.substr(0, 16))
 				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: '', start_time: dateStrA, end_time: dateStrB})
 			} else {
 				response.render('export', {pageTitle: 'Export', headers: query, arr: [], test: 'No data available for selected times', start_time: dateStrA, end_time: dateStrB})
