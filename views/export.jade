@@ -6,7 +6,7 @@ block stylesheets
 
 block content
 	section
-		div#left 
+		div
 			form(method='POST', action='/Piggyback/export')
 				p Start time
 				if start_time
@@ -33,7 +33,7 @@ block content
 				br
 				button(type='submit') Submit
 				p= test
-		div#right
+		div
 			h3 Right side
 	section
 		table
