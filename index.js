@@ -736,12 +736,13 @@ app.get('/Piggyback/export', function(request, response) {
 app.post('/Piggyback/export', function(request, response) {
 	if (request.session.loggedin) {
 		var timeA = new Date(request.body.start_time).getTime()
-		var date = new Date(timeA)
-		dateStr = date.toISOString()
+		var timeB = new Date(request.body.end_time).getTime()
+		var dateStrA = (new Date(timeA)).toISOString()
+		var dateStrB = (new Date(timeB)).toISOString()
 		
 		var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
 		var order = request.body.sort
-		connection.query('SELECT ' + query + ' FROM Tasks WHERE completeAfter > ? ORDER BY ?', [dateStr, request.body.sort], function(error, rows) {
+		connection.query('SELECT ' + query + ' FROM Tasks WHERE completeAfter >= ? && completeAfter <= ? ORDER BY ?', [dateStrA, dateStrB, request.body.sort], function(error, rows) {
 			if (error)
 				throw error
 			if (rows && rows.length) {
@@ -749,9 +750,9 @@ app.post('/Piggyback/export', function(request, response) {
 				for (i = 0; i < rows.length; i++) {
 					arr.push(rows[i])
 				}
-				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: dateStr})
+				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: ''})
 			} else {
-				response.render('export', {pageTitle: 'Export', headers: query, arr: [], test: dateStr})
+				response.render('export', {pageTitle: 'Export', headers: query, arr: [], test: 'No data available for selected times'})
 			}
 		})
 	} else {
