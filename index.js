@@ -743,6 +743,7 @@ app.post('/Piggyback/export', function(request, response) {
 			
 			var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
 			var order = request.body.sort
+			console.log("SORT: " + request.body.sort)
 			connection.query('SELECT ' + query + ' FROM Tasks ORDER BY ' + order, [], function(error, rows) {
 				if (error)
 					throw error
