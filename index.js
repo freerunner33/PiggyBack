@@ -887,7 +887,7 @@ app.post('/Piggyback/download', function(request, response) {
 		query = query + "WHERE completeAfter >= '" + request.body.start_time + "' && completeAfter <= '" + request.body.end_time + "' && company = '" + request.body.company + "' ORDER BY shortId ";
 		query = query + "INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
 
-		var query = "(SELECT 'workerName', 'workerId', 'didSucceed') UNION (SELECT shortId, taskId, company from Tasks order by taskId "
+		var query = "(SELECT 'workerName', 'workerId', 'didSucceed') UNION ALL (SELECT shortId, taskId, company FROM Tasks ORDER BY taskId "
 		query += "INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n')"
 
 		connection.query(query, function(error, rows) {
