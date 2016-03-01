@@ -750,6 +750,8 @@ app.post('/Piggyback/export', function(request, response) {
 					arr.push(rows[i])
 				}
 				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: dateStr})
+			} else {
+				response.render('export', {pageTitle: 'Export', headers: query, arr: [], test: dateStr})
 			}
 		})
 	} else {
