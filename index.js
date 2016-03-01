@@ -741,8 +741,7 @@ app.post('/Piggyback/export', function(request, response) {
 		
 		var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
 		var order = request.body.sort
-		console.log()
-		connection.query('SELECT ' + query + ' FROM Tasks ORDER BY ?', [request.body.sort], function(error, rows) {
+		connection.query('SELECT ' + query + ' FROM Tasks ORDER BY ? WHERE completeAfter > ?', [request.body.sort, 1456282200000], function(error, rows) {
 			if (error)
 				throw error
 			if (rows && rows.length) {
