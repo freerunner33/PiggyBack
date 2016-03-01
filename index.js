@@ -877,13 +877,13 @@ app.post('/Piggyback/download', function(request, response) {
 		for (var index in files) {
 			if (files[index].includes('Piggyback_log')) {
 				var num = (parseInt(files[index].substr(13, (files[index].indexOf('.')) - 13)))
-				console.log('num is: ' + num)
 				if (num > max)
 					max = num
 			}
 		}
 		var file = "'/tmp/Piggyback_log" + (max + 1) + ".csv'"
-		var query = "SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed' UNION SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks WHERE completeAfter >= 1456280208216 && completeAfter <= 1456282208216 && company = 'YelpEat24' ORDER BY shortId INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
+		var query = "SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed'";
+		query = query + " UNION SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks WHERE completeAfter >= 1456280208216 && completeAfter <= 1456282208216 && company = 'YelpEat24' ORDER BY shortId INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
 
 		connection.query(query, function(error, rows) {
 			if (error)
