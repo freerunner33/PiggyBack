@@ -874,7 +874,7 @@ app.post('/Piggyback/download', function(request, response) {
 	fs.readdir('/tmp', function (err, files) {
 		if (err)
 			throw err
-		var max = 1
+		var max = 0
 		for (var index in files) {
 			if (files[index].includes('Piggyback_log')) {
 				var num = (parseInt(files[index].substr(13, (files[index].indexOf('.')) - 13)))
