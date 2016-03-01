@@ -1,3 +1,7 @@
 input {
 	display: inline-block;
 }
+
+td, tr {
+	min-height: 2em;
+}
