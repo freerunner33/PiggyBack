@@ -34,10 +34,9 @@ block content
 					option(value='didSucceed') Did Succeed
 				br
 				p Company
-				input(type='radio', name='company', value='Yelp')
-				p Yelp
-				input(type='radio', name='company', value='DIN')
-				p DIN
+				select(name='company')
+					option(value='Yelp') Yelp
+					option(value='DIN') DIN
 				br
 				button(type='submit') Submit
 				p= test
