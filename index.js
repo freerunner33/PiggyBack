@@ -735,28 +735,23 @@ app.get('/Piggyback/export', function(request, response) {
 
 app.post('/Piggyback/export', function(request, response) {
 	if (request.session.loggedin) {
-		timezone.getTimeZone(32.715869, -117.158959).then(function(timezone) {
-			var timeA = new Date(request.body.start_time).getTime()
-			timeA = timeA - (timezone.rawOffset * 1000) - (timezone.dstOffset * 1000)
-			var date = new Date(timeA)
-			dateStr = date.toISOString()
-			
-			var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
-			var order = request.body.sort
-			console.log("SORT: " + request.body.sort)
-			connection.query('SELECT ' + query + ' FROM Tasks ORDER BY ?', [request.body.sort], function(error, rows) {
-				if (error)
-					throw error
-				if (rows && rows.length) {
-					var arr = []
-					for (i = 0; i < rows.length; i++) {
-						arr.push(rows[i])
-					}
-					response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: dateStr})
+		var timeA = new Date(request.body.start_time).getTime()
+		var date = new Date(timeA)
+		dateStr = date.toISOString()
+		
+		var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
+		var order = request.body.sort
+		console.log()
+		connection.query('SELECT ' + query + ' FROM Tasks ORDER BY ?', [request.body.sort], function(error, rows) {
+			if (error)
+				throw error
+			if (rows && rows.length) {
+				var arr = []
+				for (i = 0; i < rows.length; i++) {
+					arr.push(rows[i])
 				}
-			})
-		}, function(error) {
-			response.render('error', {pageTitle: 'Error', errors: [JSON.stringify(error)]})
+				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: dateStr})
+			}
 		})
 	} else {
 		response.render('signin', {pageTitle: 'Sign in'})
