@@ -1,7 +1,14 @@
+
+div#left, div#right {
+	display: inline-block;
+	width: 45%;
+	text-align: center;
+}
+
 input {
 	display: inline-block;
 }
 
 tr, th, td {
-	min-height: 2em;
+	padding: 0.5em;
 }

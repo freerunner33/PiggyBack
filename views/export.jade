@@ -6,32 +6,35 @@ block stylesheets
 
 block content
 	section
-		form(method='POST', action='/Piggyback/export')
-			p Start time
-			if start_time
-				input(type='datetime-local', name='start_time', value=start_time)
-			else
-				input(type='datetime-local', name='start_time', value='2016-01-01T00:00')
-			p End time
-			if end_time
-				input(type='datetime-local', name='end_time', value=end_time)
-			else
-				input(type='datetime-local', name='end_time', value='2017-01-01T00:00')
-			p Sort by
-			select(name='sort')
-				option(value='shortId') Short ID
-				option(value='driverTip') Driver Tip
-				option(value='taskType') Task Type
-				option(value='completeAfter') Complete After
-				option(value='completeBefore') Complete Before
-				option(value='workerId') Worker ID
-				option(value='workerName') Worker Name
-				option(value='destination') Destination
-				option(value='completionTime') Completion Time
-				option(value='didSucceed') Did Succeed
-			br
-			button(type='submit') Submit
-			p= test
+		div#left 
+			form(method='POST', action='/Piggyback/export')
+				p Start time
+				if start_time
+					input(type='datetime-local', name='start_time', value=start_time)
+				else
+					input(type='datetime-local', name='start_time', value='2016-01-01T00:00')
+				p End time
+				if end_time
+					input(type='datetime-local', name='end_time', value=end_time)
+				else
+					input(type='datetime-local', name='end_time', value='2017-01-01T00:00')
+				p Sort by
+				select(name='sort')
+					option(value='shortId') Short ID
+					option(value='driverTip') Driver Tip
+					option(value='taskType') Task Type
+					option(value='completeAfter') Complete After
+					option(value='completeBefore') Complete Before
+					option(value='workerId') Worker ID
+					option(value='workerName') Worker Name
+					option(value='destination') Destination
+					option(value='completionTime') Completion Time
+					option(value='didSucceed') Did Succeed
+				br
+				button(type='submit') Submit
+				p= test
+		div#right
+			h3 Right side
 	section
 		table
 			tr
