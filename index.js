@@ -740,7 +740,7 @@ app.post('/Piggyback/export', function(request, response) {
 		var dateStrA = (new Date(timeA)).toISOString()
 		var dateStrB = (new Date(timeB)).toISOString()
 		
-		var query = 'shortId, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed'
+		var query = 'shortId, driverTip, taskType, workerName, destination, completionTime, didSucceed'
 		connection.query('SELECT ' + query + ' FROM Tasks WHERE completeAfter >= ? && completeAfter <= ? ORDER BY ?', [dateStrA, dateStrB, request.body.sort], function(error, rows) {
 			if (error)
 				throw error
