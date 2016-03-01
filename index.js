@@ -750,9 +750,9 @@ app.post('/Piggyback/export', function(request, response) {
 					arr.push(rows[i])
 				}
 				console.log('date: ' + dateStrA.substr(0, 16))
-				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: '', start_time: dateStrA.substr(0, 16), end_time: dateStrB.substr(0, 16)})
+				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: '', start_time: dateStrA.substr(0, 16), end_time: dateStrB.substr(0, 16), company: request.body.company, sort: request.body.sort})
 			} else {
-				response.render('export', {pageTitle: 'Export', headers: query, arr: [], test: 'No data available for selected times', start_time: dateStrA.substr(0, 16), end_time: dateStrB.substr(0, 16)})
+				response.render('export', {pageTitle: 'Export', headers: query, arr: [], test: 'No data available for selected times', start_time: dateStrA.substr(0, 16), end_time: dateStrB.substr(0, 16), company: request.body.company, sort: request.body.sort})
 			}
 		})
 	} else {

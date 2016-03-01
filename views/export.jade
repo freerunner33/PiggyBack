@@ -35,7 +35,8 @@ block content
 			p Company
 			select(name='company')
 				option(value='YelpEat24') YelpEat24
-				option(value='DIN') DIN
+				if company='DIN'
+					option(value='DIN', selected) DIN
 			br
 			button(type='submit') Submit
 			br
