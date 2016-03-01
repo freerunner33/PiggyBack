@@ -2,6 +2,6 @@ input {
 	display: inline-block;
 }
 
-td, tr {
+tr, th, td {
 	min-height: 2em;
 }
