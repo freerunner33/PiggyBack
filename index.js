@@ -869,39 +869,42 @@ app.get('/Piggyback/logout', function(request, response) {
 })
 
 app.post('/Piggyback/download', function(request, response) {
-	console.log(JSON.stringify(request.body))
-	// Generates a log file, then downloads it
-	fs.readdir('/tmp', function (err, files) {
-		if (err)
-			throw err
-		var max = 0
-		for (var index in files) {
-			if (files[index].includes('Piggyback_log')) {
-				var num = (parseInt(files[index].substr(13, (files[index].indexOf('.')) - 13)))
-				if (num > max)
-					max = num
+	if (request.session.loggedin) {
+		// Generates a log file, then downloads it
+		fs.readdir('/tmp', function (err, files) {
+			if (err)
+				throw err
+			var max = 0
+			for (var index in files) {
+				if (files[index].includes('Piggyback_log')) {
+					var num = (parseInt(files[index].substr(13, (files[index].indexOf('.')) - 13)))
+					if (num > max)
+						max = num
+				}
 			}
-		}
-		var file = "'/tmp/Piggyback_log" + (max + 1) + ".csv'"
-		var query = "(SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed') ";
-		query = query + "UNION ALL (SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks ";
-		query = query + "WHERE completeAfter >= '" + request.body.start_time + "' && completeAfter <= '" + request.body.end_time + "' && company = '" + request.body.company + "' ORDER BY shortId ";
-		query = query + "INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n')"
+			var file = "'/tmp/Piggyback_log" + (max + 1) + ".csv'"
+			var query = "(SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed') ";
+			query = query + "UNION ALL (SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks ";
+			query = query + "WHERE completeAfter >= '" + request.body.start_time + "' && completeAfter <= '" + request.body.end_time + "' && company = '" + request.body.company + "' ORDER BY shortId ";
+			query = query + "INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n')"
 
-		connection.query(query, function(error, rows) {
-			if (error)
-				throw error
-			file = file.substr(1, file.length - 2)
-			var filename = path.basename(file)
-			var mimetype = mime.lookup(file)
+			connection.query(query, function(error, rows) {
+				if (error)
+					throw error
+				file = file.substr(1, file.length - 2)
+				var filename = path.basename(file)
+				var mimetype = mime.lookup(file)
 
-			response.setHeader('Content-disposition', 'attachment; filename=' + filename)
-			response.setHeader('Content-type', mimetype)
+				response.setHeader('Content-disposition', 'attachment; filename=' + filename)
+				response.setHeader('Content-type', mimetype)
 
-			var filestream = fs.createReadStream(file)
-			filestream.pipe(response)
+				var filestream = fs.createReadStream(file)
+				filestream.pipe(response)
+			})
 		})
-	})
+	} else {
+		response.render('signin', {pageTitle: 'Sign in'})
+	}
 })
 
 http.listen(8080, '127.0.0.1', function() {
