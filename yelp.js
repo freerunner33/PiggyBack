@@ -3,14 +3,13 @@ var apiKey = require('./keys.js').yelpAPIKey
 
 var Promise = require('promise')
 var https = require('https')
-// https://eat24hours.com/dprovider/status?key= {key}
 
-var request = require('request');
+var request = require('request')
 
 function postUpdate(data) {
 	return new Promise(function(resolve, reject) {
 		request.post(
-		    'https://e24beta.com/dprovider/status/?key=wuJzjPFT5sE33Vu1iy5yudYy2uHhZoMz',
+			'https://eat24hours.com/dprovider/status?key=wuJzjPFT5sE33Vu1iy5yudYy2uHhZoMz',
 		    {
 		    	body: data,
 		    	json: true
@@ -23,7 +22,7 @@ function postUpdate(data) {
 		            resolve(JSON.stringify(response))
 		        }
 		    }
-		);
+		)
 	})
 }
 
