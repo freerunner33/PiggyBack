@@ -38,10 +38,12 @@ block content
 				option(value='DIN') DIN
 			br
 			button(type='submit') Submit
-			p= test
+			br
+			button(type='submit', formmethod='POST' formaction='/Piggyback/download') Download
 		br
 		form(method='POST', action='/Piggyback/download')
 			button(type='submit') Download
+		p= test
 	section
 		table
 			tr
