@@ -13,11 +13,13 @@ block content
 					input(type='datetime-local', name='start_time', value=start_time)
 				else
 					input(type='datetime-local', name='start_time', value='2016-01-01T00:00')
+				br
 				p End time
 				if end_time
 					input(type='datetime-local', name='end_time', value=end_time)
 				else
 					input(type='datetime-local', name='end_time', value='2017-01-01T00:00')
+				br
 				p Sort by
 				select(name='sort')
 					option(value='shortId') Short ID
@@ -30,6 +32,7 @@ block content
 					option(value='destination') Destination
 					option(value='completionTime') Completion Time
 					option(value='didSucceed') Did Succeed
+				br
 				p Company
 				select(name='company')
 					option(value='Yelp') Yelp
