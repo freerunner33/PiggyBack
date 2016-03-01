@@ -2,6 +2,7 @@
 div {
 	display: inline-block;
 	width: calc(50% - 1em);
+	background-color: blue;
 }
 
 input {
