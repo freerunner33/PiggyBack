@@ -8,9 +8,15 @@ block content
 	section
 		form(method='POST', action='/Piggyback/export')
 			p Start time
-			input(type='datetime-local', name='start_time', value='2016-01-01T00:00')
+			if start_time
+				input(type='datetime-local', name='start_time', value=start_time)
+			else
+				input(type='datetime-local', name='start_time', value='2016-01-01T00:00')
 			p End time
-			input(type='datetime-local', name='end_time', value='2017-01-01T00:00')
+			if end_time
+				input(type='datetime-local', name='end_time', value=end_time)
+			else
+				input(type='datetime-local', name='end_time', value='2017-01-01T00:00')
 			p Sort by
 			select(name='sort')
 				option(value='shortId') Short ID
