@@ -1,12 +1,23 @@
 
 div {
 	display: inline-block;
-	width: calc(50% - 1em);
-	background-color: blue;
+    width: calc(50% - 3em);
+    margin: 0.5em;
 }
 
 input {
 	display: inline-block;
+}
+
+p {
+	display: inline-block;
+    vertical-align: middle;
+    margin: 0.5em;
+    width: 5em;
+}
+
+button {
+	margin-left: 0.5em;
 }
 
 tr, th, td {
