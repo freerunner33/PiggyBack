@@ -741,7 +741,7 @@ app.post('/Piggyback/export', function(request, response) {
 		var dateStrB = (new Date(timeB)).toISOString()
 		
 		var query = 'shortId, driverTip, taskType, workerName, destination, completionTime, didSucceed'
-		connection.query('SELECT ' + query + ' FROM Tasks WHERE completeAfter >= ? && completeAfter <= ? && company = ? ORDER BY ?', [dateStrA, dateStrB, request.body.company, request.body.sort], function(error, rows) {
+		connection.query('SELECT ' + query + ' FROM Tasks WHERE completeAfter >= ? && completeAfter <= ? && company = ? ORDER BY ?', [dateStrA, dateStrB, request.body.company, request.body.order], function(error, rows) {
 			if (error)
 				throw error
 			if (rows && rows.length) {
@@ -749,7 +749,7 @@ app.post('/Piggyback/export', function(request, response) {
 				for (i = 0; i < rows.length; i++) {
 					arr.push(rows[i])
 				}
-				console.log('date: ' + dateStrA.substr(0, 16))
+				console.log('date: ' + request.body.order)
 				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: '', start_time: dateStrA.substr(0, 16), end_time: dateStrB.substr(0, 16), company: request.body.company, sort: request.body.sort})
 			} else {
 				response.render('export', {pageTitle: 'Export', headers: query, arr: [], test: 'No data available for selected times', start_time: dateStrA.substr(0, 16), end_time: dateStrB.substr(0, 16), company: request.body.company, sort: request.body.sort})
