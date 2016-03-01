@@ -881,11 +881,9 @@ app.get('/Piggyback/download', function(request, response) {
 				console.log('num is: ' + num)
 				if (num > max)
 					max = num
-				//console.log(files[index] + ' - ' + num)
 			}
 		}
-		console.log("max is: " + max)
-		var file = "'/tmp/Piggyback_log" + (parseInt(num) + 1) + ".csv'"
+		var file = "'/tmp/Piggyback_log" + (max + 1) + ".csv'"
 		var query = "SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed' UNION SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n'"
 
 		connection.query(query, function(error, rows) {
