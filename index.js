@@ -867,7 +867,7 @@ app.get('/Piggyback/logout', function(request, response) {
 	})
 })
 
-app.get('/Piggyback/download', function(request, response) {
+app.post('/Piggyback/download', function(request, response) {
 	// Generates a log file, then downloads it
 	fs.readdir('/tmp', function (err, files) {
 		if (err)
