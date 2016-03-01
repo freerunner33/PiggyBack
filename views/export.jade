@@ -35,14 +35,12 @@ block content
 			p Company
 			select(name='company')
 				option(value='YelpEat24') YelpEat24
-				if company='DIN'
-					option(value='DIN', selected) DIN
+				option(value='DIN') DIN
 			br
 			button(type='submit') Submit
-			br
 			button(type='submit', formmethod='POST' formaction='/Piggyback/download') Download
 		br
-		p= test
+		span= test
 	section
 		table
 			tr
