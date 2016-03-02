@@ -401,8 +401,7 @@ app.get('/Piggyback/status/*', function(request, response) {
 									response.end()
 								}
 							})
-						}
-						
+						}	
 					} else {
 						response.writeHead(400, { 'Content-Type': 'application/json' })
 						response.write(JSON.stringify({ error: 'Task not found in database - query2'}))
