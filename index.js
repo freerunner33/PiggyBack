@@ -220,7 +220,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 			}, function(error) {
 				// ERROR CREATING PICKUP TASK
 				response.writeHead(405, { 'Content-Type': 'application/json' })
-				response.write(JSON.stringify({error: 'Error creating job - 1 ', message: JSON.stringify(error)}))
+				response.write(JSON.stringify({error: 'Error creating job - 1 '} + error))
 				response.end()
 			})
 		} else {
