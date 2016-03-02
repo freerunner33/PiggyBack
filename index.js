@@ -540,29 +540,28 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	setTimeout(function() {
 		onfleet.getSingleTask(request.body.taskId).then(function(task) {
-			// console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+			console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			if (!task.pickupTask) {
-				// console.log('Dropoff task ' + task.shortId)
+				console.log('Dropoff task ' + task.shortId)
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime()], function(error, rows){
 					if (error)
 						console.log('ERROR in taskAssigned - 1\n' + error)
-					// console.log('Inserted into joblogs')
+					console.log('Inserted into joblogs')
 					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
-						// console.log('Got worker')
+						console.log('Got worker')
 						connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, task.shortId], function(error, rows) {
 							if (error)
 								console.log('ERROR in taskAssigned - 2\n' + error)
-							// console.log('Update 1')
+							console.log('Update 1')
 							onfleet.getSingleTask(task.dependencies[0]).then(function(taskB) {
-								// console.log('Got dependency task')
+								console.log('Got dependency task')
 								worker.tasks.push(taskB.id)
 								connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, taskB.shortId], function(error, rows) {
 									if (error)
 										console.log('ERROR in taskAssigned - 3\n' + error)
-									// console.log('Update 2')
-									// console.log('worker id: ' + worker.id)
-									// console.log('task: ' + taskB.id)
-									// console.log('worker tasks: ' + worker.tasks.pop())
+									console.log('Update 2')
+									console.log('worker id: ' + worker.id)
+									console.log('task: ' + taskB.id)
 									onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
 										console.log('Update worker worked\n. TaskA and B were successfully created and added to the database - ' + taskB.shortId)
 										
@@ -570,8 +569,8 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 										response.sendStatus(200)
 									}, function(error) {
 										// DROPOFF TASK NOT ADDED TO WORKER
-										// console.log('did not work to update worker by id')
-										// console.log(error)
+										console.log('did not work to update worker by id')
+										console.log(error)
 										response.writeHead(400, { 'Content-Type': 'application/json' })
 										response.write(JSON.stringify(error))
 										response.end()
@@ -740,11 +739,8 @@ function getJobData(id) {
 function updateYelp(id, request, response) {
 	getJobData(id).then(function(job) {
 		console.log('Updating Yelp with updateYelp function')
-		console.log(job)
-		// response.sendStatus(200)
 		yelp.postUpdate(job).then(function(result) {
-			console.log('successfully posted to Yelp ' + id)
-			console.log(result)
+			conso`le.log('successfully posted to Yelp ' + id)
 			response.sendStatus(200)
 		}, function(error1) {
 			console.log('unsuccessfully posted to Yelp ' + id)
