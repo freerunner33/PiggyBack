@@ -675,7 +675,7 @@ function getJobData(id) {
 						connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 							if (error)
 								throw error
-							console.log('second query worked')
+							console.log('second query worked 333')
 							if (rows2 && rows2.length) {
 								writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
 									var result = {
