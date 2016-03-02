@@ -540,13 +540,13 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	setTimeout(function() {
 		onfleet.getSingleTask(request.body.taskId).then(function(task) {
-			// console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+			console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			if (!task.pickupTask) {
-				// console.log('Dropoff task ' + task.shortId)
+				console.log('Dropoff task ' + task.shortId)
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime()], function(error, rows){
 					if (error)
 						console.log('ERROR in taskAssigned - 1\n' + error)
-					// console.log('Inserted into joblogs')
+					console.log('Inserted into joblogs')
 					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
 						// console.log('Got worker')
 						connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, task.shortId], function(error, rows) {
