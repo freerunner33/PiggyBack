@@ -626,12 +626,15 @@ function checkWayPoint(wp, pickup) {
 function getJobData(id) {
 	return new Promise(function(resolve, reject) {
 		onfleet.getSingleTaskByShortID(id).then(function(task) {
+			console.log('got task by short id')
 			connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
 				if (error)
 					throw error
+				console.log('first query worked')
 				if (rows && rows.length) {
 					// get worker details
 					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+						console.log('got single worker')
 						if (worker.location) {
 							var loc = {latitude: worker.location[1], longitude: worker.location[0]}
 						} else {
@@ -640,6 +643,7 @@ function getJobData(id) {
 						connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 							if (error)
 								throw error
+							console.log('second query worked')
 							if (rows2 && rows2.length) {
 								writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
 									var result = {
