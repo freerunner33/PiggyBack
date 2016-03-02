@@ -633,13 +633,45 @@ function getJobData(id) {
 				console.log('first query worked')
 				if (rows && rows.length) {
 					// get worker details
-					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
-						console.log('got single worker')
-						if (worker.location) {
-							var loc = {latitude: worker.location[1], longitude: worker.location[0]}
-						} else {
-							var loc = null
-						}
+					if (task.worker) {
+						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+							console.log('got single worker')
+							if (worker.location) {
+								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
+							} else {
+								var loc = null
+							}
+							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
+								if (error)
+									throw error
+								console.log('second query worked')
+								if (rows2 && rows2.length) {
+									writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
+										var result = {
+											job_id: task.shortId,
+											order_id: rows[0].yelpId,
+											status_code: rows2[rows2.length - 1].statusCode,
+											status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
+											reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
+											log: log,
+											driver: {
+												name: worker.name,
+												location: loc,
+												phone: worker.phone
+											}
+										}
+										resolve(result)
+									}, function() {
+										reject('Problem with log file')
+									})
+								} else {
+									reject('Task not found in database')
+								}
+							})
+						}, function(error) {
+							reject(error)
+						})
+					} else {
 						connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 							if (error)
 								throw error
@@ -653,11 +685,7 @@ function getJobData(id) {
 										status: eat24StatusCodes[rows2[rows2.length - 1].statusCode],
 										reason: eat24Reasons[rows2[rows2.length - 1].statusCode],
 										log: log,
-										driver: {
-											name: worker.name,
-											location: loc,
-											phone: worker.phone
-										}
+										driver: null
 									}
 									resolve(result)
 								}, function() {
@@ -667,9 +695,8 @@ function getJobData(id) {
 								reject('Task not found in database')
 							}
 						})
-					}, function(error) {
-						reject(error)
-					})
+					}
+					
 				} else {
 					reject('Task not found in database')
 				}
