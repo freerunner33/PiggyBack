@@ -586,6 +586,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 						})
 					}, function(error) {
 						// NOT AUTO ASSIGNED TO A WORKER
+						console.log('could not assign task to driver ...')
 						response.writeHead(403, { 'Content-Type': 'application/json' })
 						response.write(JSON.stringify(error))
 						response.end()
