@@ -214,19 +214,19 @@ app.post('/Piggyback/jobs', function(request, response) {
 				}, function(error) {
 					// ERROR CREATING DROPOFF TASK
 					response.writeHead(405, { 'Content-Type': 'application/json' })
-					response.write(JSON.stringify({error: 'Error creating job - 2'}))
+					response.write(JSON.stringify({error: 'Error creating job - 2\n' + error}))
 					response.end()
 				})
 			}, function(error) {
 				// ERROR CREATING PICKUP TASK
 				response.writeHead(405, { 'Content-Type': 'application/json' })
-				response.write(JSON.stringify({error: 'Error creating job - 1'}))
+				response.write(JSON.stringify({error: 'Error creating job - 1\n' + error}))
 				response.end()
 			})
 		} else {
 			// ERROR MISSING SOME VARIABLE
 			response.writeHead(400, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify({error: 'Missing some variable.'}))
+			response.write(JSON.stringify({error: 'Missing some variable.\n' + error}))
 			response.end()
 		}
 	} else {
@@ -626,16 +626,13 @@ function checkWayPoint(wp, pickup) {
 function getJobData(id) {
 	return new Promise(function(resolve, reject) {
 		onfleet.getSingleTaskByShortID(id).then(function(task) {
-			console.log('got task by short id')
 			connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
 				if (error)
 					throw error
-				console.log('first query worked')
 				if (rows && rows.length) {
 					// get worker details
 					if (task.worker) {
 						onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
-							console.log('got single worker')
 							if (worker.location) {
 								var loc = {latitude: worker.location[1], longitude: worker.location[0]}
 							} else {
@@ -644,7 +641,6 @@ function getJobData(id) {
 							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 								if (error)
 									throw error
-								console.log('second query worked')
 								if (rows2 && rows2.length) {
 									writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
 										var result = {
@@ -675,7 +671,6 @@ function getJobData(id) {
 						connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 							if (error)
 								throw error
-							console.log('second query worked 333')
 							if (rows2 && rows2.length) {
 								writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
 									var result = {
