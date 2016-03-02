@@ -214,7 +214,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 				}, function(error) {
 					// ERROR CREATING DROPOFF TASK
 					response.writeHead(405, { 'Content-Type': 'application/json' })
-					response.write(JSON.stringify({error: 'Error creating job - 2 ', message: JSON.stringify(error)}))
+					response.write(JSON.stringify({error: 'Error creating job - 2 '}) + JSON.stringify(error))
 					response.end()
 				})
 			}, function(error) {
@@ -226,7 +226,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		} else {
 			// ERROR MISSING SOME VARIABLE
 			response.writeHead(400, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify({error: 'Missing some variable. ', message: JSON.stringify(error)}))
+			response.write(JSON.stringify({error: 'Missing some variable. '}) + JSON.stringify(error))
 			response.end()
 		}
 	} else {
