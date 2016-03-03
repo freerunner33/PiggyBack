@@ -72,7 +72,8 @@ app.get('/', function(request, response) {
 
 // 1. Creating a new job
 app.post('/Piggyback/jobs', function(request, response) {
-	// console.log('Got new job request')
+	console.log('CREATE JOB')
+
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
@@ -146,7 +147,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 				j.pickup_waypoint.special_instructions,					// notes for task
 				{mode:'distance', team: 'wX8Nn3uoYlEvtGOdTcbQseQ6'}		// Can add team option with team id: TEST ylC5klVbtmEVrVlBfUYp9oeM
 			).then(function(taskA) {
-				// console.log('Created taskA')
+				console.log('Created pickup task - ' + taskA.shortId)
+
 				onfleet.createNewTask(
 					'~2FSQGbR0qSXi1v9kSQxtW4v',							// merchant
 					'~2FSQGbR0qSXi1v9kSQxtW4v',							// executor
@@ -158,7 +160,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 					[taskA.id],											// dependencies - array
 					j.dropoff_waypoint.special_instructions				// notes for task
 				).then(function(taskB) {
-					// console.log('Created taskB')
+					console.log('Created dropoff task - ' + taskB.shortId + ' [' + taskA.shortId + ']')
+
 					connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 						[
 							taskA.shortId,													// shortId
@@ -178,7 +181,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 						function(error, rows)
 						{
 							if (error) {
-								console.log('TaskA: ' + taskA.id + ' was not added to database - 2')
+								console.log('Pickup task: ' + taskA.shortId + ' was not added to database - 1')
 								throw error
 							}
 							connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -200,10 +203,10 @@ app.post('/Piggyback/jobs', function(request, response) {
 								function(error, rows)
 								{
 									if (error) {
-										console.log('TaskB ' + taskB.id + ' was not added to database - 2')
+										console.log('Dropoff task: ' + taskB.shortId + ' was not added to database - 2')
 										throw error
 									}
-									console.log('Jobs were successfully created and added to database:' + taskB.shortId + '\t\t\t' + (new Date()).getTime())
+									console.log('Jobs [' + taskA.shortId + ', ' + taskB.shortId + '] were successfully created and added to database - \t\t\t' + (new Date()).getTime())
 									response.writeHead(200, { 'Content-Type': 'application/json' })
 									response.write(JSON.stringify({job_id: taskB.shortId}))
 									response.end()
@@ -226,7 +229,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 		} else {
 			// ERROR MISSING SOME VARIABLE
 			response.writeHead(400, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify({error: 'Missing some variable. '}) + JSON.stringify(error))
+			response.write(JSON.stringify({error: 'Missing a parameter '}) + JSON.stringify(error))
 			response.end()
 		}
 	} else {
@@ -236,13 +239,14 @@ app.post('/Piggyback/jobs', function(request, response) {
 
 // 2. Deleting a job
 app.delete('/Piggyback/jobs/*', function(request, response) {
+	console.log('DELETE JOB')
+
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
 	var parts=auth.split(/:/)
 	var username=parts[0]
 	var password=parts[1]
-	// console.log('DELETE request received')
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var path = request.url.split('/')
 		if (path.length != 4) {
@@ -250,17 +254,14 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 			response.write(JSON.stringify({error: 'Incorrect path format'}))
 			response.end()
 		} else {
-			// console.log('Got a delete request ' + path[3])
 			// first delete the pickup, then dropoff
 			onfleet.getSingleTaskByShortID(path[3]).then(function(taskB) {
-				// console.log('getSingleTaskByShortID worked')
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskB.shortId,'42',(new Date()).getTime()], function(error, rows){
 					if (error)
 						console.log('ERROR - query\n' + error)
-					// console.log('Insert into JobLogs worked')
 					getJobData(taskB.shortId).then(function(joblog) {
-						// console.log('getJobData worked')
 						onfleet.deleteTask(taskB.dependencies[0]).then(function() {
+							console.log('Cancelled dropoff task - ' + taskB.shortId)
 							onfleet.deleteTask(taskB.id).then(function() {
 								// console.log('Both tasks deleted')
 								console.log('Job cancelled: ' + taskB.shortId + '\t\t\t' + (new Date()).getTime())
