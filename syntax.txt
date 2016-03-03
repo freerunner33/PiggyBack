@@ -7,11 +7,27 @@ Create task
 					console.log(' ERR 02 - Dropoff task: ' + taskB.shortId + ' was not added to database')
 						console.log('Jobs [' + taskA.shortId + ', ' + taskB.shortId + '] were successfully created and added to database - \t\t\t' + (new Date()).getTime())
 			console.log(' ERR 03 - Dropoff task was not created\n' + JSON.stringify(error))
-			response.write(JSON.stringify({error: 'Error creating job - 2 '}) + JSON.stringify(error))
+			response.write(JSON.stringify({error: 'Error creating job - 2 '}))
 		console.log(' ERR 04 - Pickup task was not created\n' + JSON.stringify(error))
 		response.write(JSON.stringify({error: 'Error creating job - 1 '}))
 	console.log(' ERR 05 - Request missing a variable\n' + JSON.stringify(error))
 	response.write(JSON.stringify({error: 'Missing a parameter '}))
+
+Delete task
+	console.log('DELETE JOB')
+		console.log('Cancelling dropoff ' + taskB.shortId + ' and pickup ' + taskB.dependencies[0])
+				console.log(' ERR 06 - Dropoff task: ' + taskB.shortId + ' was not added to database')
+					console.log('Cancelled pickup task')
+						console.log('Cancelled dropoff task - \t\t\t' + (new Date()).getTime())
+						console.log(' ERR 07 - Dropoff task was not cancelled\n' + JSON.stringify(error))
+						response.write(JSON.stringify({error: 'Error cancelling job - 2 '}))
+					console.log(' ERR 08 - Pickup task was not cancelled\n' + JSON.stringify(error))
+					response.write(JSON.stringify({error: 'Error cancelling job - 1'}))
+			console.log(' ERR 09 - Job log could not be generated\n' + JSON.stringify(error))
+			response.write(JSON.stringify({error: 'Job log could not be generated'}))
+		console.log(' ERR 10 - Job could not be found\n' + JSON.stringify(error))
+		response.write(JSON.stringify({error: 'Job could not be found'}))
+	
 
 Errors
 	Database errors

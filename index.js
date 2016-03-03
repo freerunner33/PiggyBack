@@ -257,41 +257,42 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 			response.write(JSON.stringify({error: 'Incorrect path format'}))
 			response.end()
 		} else {
-			// first delete the pickup, then dropoff
 			onfleet.getSingleTaskByShortID(path[3]).then(function(taskB) {
+				console.log('Cancelling dropoff ' + taskB.shortId + ' and pickup ' + taskB.dependencies[0])
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskB.shortId,'42',(new Date()).getTime()], function(error, rows){
 					if (error) {
-						console.log('Pickup task: ' + taskA.shortId + ' was not added to database - 1')
+						console.log(' ERR 06 - Dropoff task: ' + taskB.shortId + ' was not added to database')
 						throw error
 					}
 					getJobData(taskB.shortId).then(function(joblog) {
 						onfleet.deleteTask(taskB.dependencies[0]).then(function() {
-							console.log('Cancelled dropoff task - ' + taskB.shortId)
+							console.log('Cancelled pickup task')
 							onfleet.deleteTask(taskB.id).then(function() {
-								// console.log('Both tasks deleted')
-								console.log('Job cancelled: ' + taskB.shortId + '\t\t\t' + (new Date()).getTime())
-								// console.log('Updating Yelp')
-								// console.log(joblog)
+								console.log('Cancelled dropoff task - \t\t\t' + (new Date()).getTime())
 								response.writeHead(200, { 'Content-Type': 'application/json' })
 								response.write(JSON.stringify(joblog))
 								response.end()
 							}, function(error) {
+								console.log(' ERR 07 - Dropoff task was not cancelled\n' + JSON.stringify(error))
 								response.writeHead(405, { 'Content-Type': 'application/json' })
-								response.write(JSON.stringify({error: 'Task could not be cancelled. - 2'}))
+								response.write(JSON.stringify({error: 'Error cancelling job - 2 '}))
 								response.end()
 							})
 						}, function(error) {
+							console.log(' ERR 08 - Pickup task was not cancelled\n' + JSON.stringify(error))
 							response.writeHead(405, { 'Content-Type': 'application/json' })
-							response.write(JSON.stringify({error: 'Task could not be cancelled. - 1'}))
+							response.write(JSON.stringify({error: 'Error cancelling job - 1'}))
 							response.end()
 						})
 					}, function(error) {
+						console.log(' ERR 09 - Job log could not be generated\n' + JSON.stringify(error))
 						response.writeHead(405, { 'Content-Type': 'application/json' })
-						response.write(JSON.stringify({error: 'Task log could not be generated.'}))
+						response.write(JSON.stringify({error: 'Job log could not be generated'}))
 						response.end()
 					})
 				})
 			}, function(error) {
+				console.log(' ERR 10 - Job could not be found\n' + JSON.stringify(error))
 				response.writeHead(404, { 'Content-Type': 'application/json' })
 				response.write(JSON.stringify({error: 'Job could not be found'}))
 				response.end()
