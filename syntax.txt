@@ -60,3 +60,13 @@ Query task
 		response.write(JSON.stringify({error: 'Job could not be found'}))
 	console.log(' ERR 22 - Incorrect URL path format')
 	response.write(JSON.stringify({error: 'Incorrect URL path format'}))
+
+Webhooks
+
+console.log('STATUS - taskStarted')
+	if dropoff
+		console.log(' Dropoff task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+			console.log(' ERR 23 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
+	else 
+		console.log(' Pickup task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+
