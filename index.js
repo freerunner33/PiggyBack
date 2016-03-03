@@ -560,9 +560,9 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 									if (error)
 										console.log('ERROR in taskAssigned - 3\n' + error)
 									console.log('Update 2')
-									// console.log('worker id: ' + worker.id)
-									// console.log('task: ' + taskB.id)
-									// console.log('worker tasks: ' + worker.tasks.pop())
+									console.log('worker id: ' + worker.id)
+									console.log('task: ' + taskB.id)
+									console.log('worker tasks: ' + worker.tasks.pop())
 									onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
 										console.log('Update worker worked\n. TaskA and B were successfully created and added to the database - ' + taskB.shortId)
 										
@@ -571,7 +571,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 									}, function(error) {
 										// DROPOFF TASK NOT ADDED TO WORKER
 										console.log('did not work to update worker by id')
-										// console.log(error)
+										console.log(error)
 										response.writeHead(400, { 'Content-Type': 'application/json' })
 										response.write(JSON.stringify(error))
 										response.end()

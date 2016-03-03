@@ -582,6 +582,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 							}, function(error) {
 								// COULD NOT GET PICKUP TASK
 								console.log('could not find dependency task')
+								console.log(error)
 								response.writeHead(400, { 'Content-Type': 'application/json' })
 								response.write(JSON.stringify(error))
 								response.end()
