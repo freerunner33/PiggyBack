@@ -1,4 +1,6 @@
 
+// THIS IS A TESTING ENVIRONMENT. Should only communicate with myself. Create new pm2 process
+
 // SETUP
 var onfleet = require('./onfleet.js')
 var yelp = require('./yelp')
@@ -571,7 +573,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 									}, function(error) {
 										// DROPOFF TASK NOT ADDED TO WORKER
 										console.log('did not work to update worker by id')
-										// console.log(error)
+										console.log(error)
 										response.writeHead(400, { 'Content-Type': 'application/json' })
 										response.write(JSON.stringify(error))
 										response.end()
