@@ -252,11 +252,7 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 	var password=parts[1]
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var path = request.url.split('/')
-		if (path.length != 4) {
-			response.writeHead(405, {'Content-Type': 'application/json'})
-			response.write(JSON.stringify({error: 'Incorrect path format'}))
-			response.end()
-		} else {
+		if (path.length == 4) {
 			onfleet.getSingleTaskByShortID(path[3]).then(function(taskB) {
 				console.log('Cancelling dropoff ' + taskB.shortId + ' and pickup ' + taskB.dependencies[0])
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskB.shortId,'42',(new Date()).getTime()], function(error, rows){
@@ -297,6 +293,11 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 				response.write(JSON.stringify({error: 'Job could not be found'}))
 				response.end()
 			})
+		} else {
+			console.log(' ERR 11 - Incorrect URL path format')
+			response.writeHead(405, {'Content-Type': 'application/json'})
+			response.write(JSON.stringify({error: 'Incorrect URL path format'}))
+			response.end()
 		}
 	} else {
 		response.sendStatus(401)
@@ -305,6 +306,7 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 
 // 3. Querying the status of a job
 app.get('/Piggyback/status/*', function(request, response) {
+	console.log('QUERY JOB')
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
@@ -314,21 +316,20 @@ app.get('/Piggyback/status/*', function(request, response) {
 
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var path = request.url.split('/')
-		if (path.length != 4) {
-			response.writeHead(400, {'Content-Type': 'application/json'})
-			response.write(JSON.stringify({error: 'Incorrect path format'}))
-			response.end()
-		} else {
+		if (path.length == 4) {
 			onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
+				console.log('Querying dropoff task - ' + taskB.shortId)
 				connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
 					if (error) {
-						response.writeHead(400, {'Content-Type': 'application/json'})
-						response.write(JSON.stringify(error))
+						console.log(' ERR 12 - Dropoff task: ' + task.shortId + ' was not found in database Tasks')
+						response.writeHead(404, {'Content-Type': 'application/json'})
+						response.write(JSON.stringify({error: 'Job id not found'}))
 						response.end()
 					}
 					if (rows && rows.length) {
 						if (task.worker) {
 							onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+								console.log('Found worker - ' + worker.name)
 								if (worker.location) {
 									var loc = {latitude: worker.location[1], longitude: worker.location[0]}
 								} else {
@@ -336,12 +337,14 @@ app.get('/Piggyback/status/*', function(request, response) {
 								}
 								connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 									if (error) {
-										response.writeHead(400, {'Content-Type': 'application/json'})
-										response.write(JSON.stringify(error))
+										console.log(' ERR 13 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+										response.writeHead(404, {'Content-Type': 'application/json'})
+										response.write(JSON.stringify({error: 'Job id not found'}))
 										response.end()
 									}
 									if (rows2 && rows2.length) {
 										writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
+											console.log('Query was successfully - \t\t\t' + (new Date()).getTime())
 											response.writeHead(200, {'Content-Type': 'application/json'})
 											var json = JSON.stringify(
 												{
@@ -359,31 +362,36 @@ app.get('/Piggyback/status/*', function(request, response) {
 												}
 											)
 											response.end(json)	
-										}, function() {
-											response.writeHead(400, { 'Content-Type': 'application/json' })
-											response.write(JSON.stringify({ error: 'Problem with log file'}))
+										}, function(error) {
+											console.log(' ERR 14 - Job log could not be generated')
+											response.writeHead(405, {'Content-Type': 'application/json'})
+											response.write(JSON.stringify({error: 'Job log could not be generated'}))
 											response.end()
 										})
 									} else {
-										response.writeHead(400, { 'Content-Type': 'application/json' })
-										response.write(JSON.stringify({ error: 'Task not found in database - query1'}))
+										console.log(' ERR 15 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+										response.writeHead(404, { 'Content-Type': 'application/json' })
+										response.write(JSON.stringify({ error: 'Job id not found'}))
 										response.end()
 									}
 								})
 							}, function(error) {
-								response.writeHead(400, { 'Content-Type': 'application/json' })
-								response.write(JSON.stringify(error))
+								console.log(' ERR 16 - Worker: ' + task.worker + ' could not be found')
+								response.writeHead(404, { 'Content-Type': 'application/json' })
+								response.write(JSON.stringify({ error: 'Job id not found'}))
 								response.end()
 							})
 						} else {
 							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 								if (error) {
-									response.writeHead(400, {'Content-Type': 'application/json'})
-									response.write(JSON.stringify(error))
+									console.log(' ERR 17 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+									response.writeHead(404, {'Content-Type': 'application/json'})
+									response.write(JSON.stringify({error: 'Job id not found'}))
 									response.end()
 								}
 								if (rows2 && rows2.length) {
 									writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
+										console.log('Query was successfully - \t\t\t' + (new Date()).getTime())
 										response.writeHead(200, {'Content-Type': 'application/json'})
 										var json = JSON.stringify(
 											{
@@ -397,29 +405,38 @@ app.get('/Piggyback/status/*', function(request, response) {
 											}
 										)
 										response.end(json)	
-									}, function() {
-										response.writeHead(400, { 'Content-Type': 'application/json' })
-										response.write(JSON.stringify({ error: 'Problem with log file'}))
+									}, function(error) {
+										console.log(' ERR 18 - Job log could not be generated')
+										response.writeHead(405, {'Content-Type': 'application/json'})
+										response.write(JSON.stringify({error: 'Job log could not be generated'}))
 										response.end()
 									})
 								} else {
-									response.writeHead(400, { 'Content-Type': 'application/json' })
-									response.write(JSON.stringify({ error: 'Task not found in database - query1'}))
+									console.log(' ERR 19 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+									response.writeHead(404, { 'Content-Type': 'application/json' })
+									response.write(JSON.stringify({ error: 'Job id not found'}))
 									response.end()
 								}
 							})
 						}	
 					} else {
-						response.writeHead(400, { 'Content-Type': 'application/json' })
-						response.write(JSON.stringify({ error: 'Task not found in database - query2'}))
+						console.log(' ERR 20 - Dropoff task: ' + task.shortId + ' was not found in database Tasks')
+						response.writeHead(404, { 'Content-Type': 'application/json' })
+						response.write(JSON.stringify({ error: 'Job id not found'}))
 						response.end()
 					}
 				})
 			}, function(error) {
-				response.writeHead(400, { 'Content-Type': 'application/json' })
-				response.write(JSON.stringify(error))
+				console.log(' ERR 21 - Job could not be found\n' + JSON.stringify(error))
+				response.writeHead(404, { 'Content-Type': 'application/json' })
+				response.write(JSON.stringify({error: 'Job could not be found'}))
 				response.end()
 			})
+		} else {
+			console.log(' ERR 22 - Incorrect URL path format')
+			response.writeHead(400, {'Content-Type': 'application/json'})
+			response.write(JSON.stringify({error: 'Incorrect URL path format'}))
+			response.end()
 		}
 	} else {
 		response.sendStatus(401)

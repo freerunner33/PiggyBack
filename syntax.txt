@@ -27,8 +27,36 @@ Delete task
 			response.write(JSON.stringify({error: 'Job log could not be generated'}))
 		console.log(' ERR 10 - Job could not be found\n' + JSON.stringify(error))
 		response.write(JSON.stringify({error: 'Job could not be found'}))
-	
+	console.log(' ERR 11 - Incorrect URL path format')
+	response.write(JSON.stringify({error: 'Incorrect URL path format'}))
 
-Errors
-	Database errors
-		console.log('\tERR01 - Pickup task: ' + taskA.shortId + ' was not added to database')
+Query task
+	console.log('QUERY JOB')
+		console.log('Querying dropoff task - ' + taskB.shortId)
+			console.log(' ERR 12 - Dropoff task: ' + task.shortId + ' was not found in database Tasks')
+			response.write(JSON.stringify({error: 'Job id not found'}))
+				if driver
+					console.log('Found worker - ' + worker.name)
+						console.log(' ERR 13 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+						response.write(JSON.stringify({error: 'Job id not found'}))
+							console.log('Query was successfully - \t\t\t' + (new Date()).getTime())
+							console.log(' ERR 14 - Job log could not be generated')
+							response.write(JSON.stringify({error: 'Job log could not be generated'}))
+						console.log(' ERR 15 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+						response.write(JSON.stringify({ error: 'Job id not found'}))
+					console.log(' ERR 16 - Worker: ' + task.worker + ' could not be found')
+					response.write(JSON.stringify({ error: 'Job id not found'}))
+				else
+					console.log(' ERR 17 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+					response.write(JSON.stringify({error: 'Job id not found'}))
+						console.log('Query was successfully - \t\t\t' + (new Date()).getTime())
+						console.log(' ERR 18 - Job log could not be generated')
+						response.write(JSON.stringify({error: 'Job log could not be generated'}))
+					console.log(' ERR 19 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+					response.write(JSON.stringify({ error: 'Job id not found'}))
+			console.log(' ERR 20 - Dropoff task: ' + task.shortId + ' was not found in database Tasks')
+			response.write(JSON.stringify({ error: 'Job id not found'}))
+		console.log(' ERR 21 - Job could not be found\n' + JSON.stringify(error))
+		response.write(JSON.stringify({error: 'Job could not be found'}))
+	console.log(' ERR 22 - Incorrect URL path format')
+	response.write(JSON.stringify({error: 'Incorrect URL path format'}))
