@@ -1,0 +1,18 @@
+
+Create task
+	console.log('CREATE JOB')
+		console.log('Created pickup task - ' + taskA.shortId)
+			console.log('Created dropoff task - ' + taskB.shortId + ' [' + taskA.shortId + ']')
+				console.log(' ERR 01 - Pickup task: ' + taskA.shortId + ' was not added to database')
+					console.log(' ERR 02 - Dropoff task: ' + taskB.shortId + ' was not added to database')
+						console.log('Jobs [' + taskA.shortId + ', ' + taskB.shortId + '] were successfully created and added to database - \t\t\t' + (new Date()).getTime())
+			console.log(' ERR 03 - Dropoff task was not created\n' + JSON.stringify(error))
+			response.write(JSON.stringify({error: 'Error creating job - 2 '}) + JSON.stringify(error))
+		console.log(' ERR 04 - Pickup task was not created\n' + JSON.stringify(error))
+		response.write(JSON.stringify({error: 'Error creating job - 1 '}))
+	console.log(' ERR 05 - Request missing a variable\n' + JSON.stringify(error))
+	response.write(JSON.stringify({error: 'Missing a parameter '}))
+
+Errors
+	Database errors
+		console.log('\tERR01 - Pickup task: ' + taskA.shortId + ' was not added to database')

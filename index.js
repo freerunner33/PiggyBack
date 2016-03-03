@@ -181,7 +181,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 						function(error, rows)
 						{
 							if (error) {
-								console.log('Pickup task: ' + taskA.shortId + ' was not added to database - 1')
+								console.log(' ERR 01 - Pickup task: ' + taskA.shortId + ' was not added to database')
 								throw error
 							}
 							connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -203,7 +203,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 								function(error, rows)
 								{
 									if (error) {
-										console.log('Dropoff task: ' + taskB.shortId + ' was not added to database - 2')
+										console.log(' ERR 02 - Dropoff task: ' + taskB.shortId + ' was not added to database')
 										throw error
 									}
 									console.log('Jobs [' + taskA.shortId + ', ' + taskB.shortId + '] were successfully created and added to database - \t\t\t' + (new Date()).getTime())
@@ -216,20 +216,23 @@ app.post('/Piggyback/jobs', function(request, response) {
 					)
 				}, function(error) {
 					// ERROR CREATING DROPOFF TASK
+					console.log(' ERR 03 - Dropoff task was not created\n' + JSON.stringify(error))
 					response.writeHead(405, { 'Content-Type': 'application/json' })
-					response.write(JSON.stringify({error: 'Error creating job - 2 '}) + JSON.stringify(error))
+					response.write(JSON.stringify({error: 'Error creating job - 2'}))
 					response.end()
 				})
 			}, function(error) {
 				// ERROR CREATING PICKUP TASK
+				console.log(' ERR 04 - Pickup task was not created\n' + JSON.stringify(error))
 				response.writeHead(405, { 'Content-Type': 'application/json' })
-				response.write(JSON.stringify({error: 'Error creating job - 1 '}) + JSON.stringify(error))
+				response.write(JSON.stringify({error: 'Error creating job - 1 '}))
 				response.end()
 			})
 		} else {
-			// ERROR MISSING SOME VARIABLE
+			// ERROR MISSING A VARIABLE
+			console.log(' ERR 05 - Request missing a variable\n' + JSON.stringify(error))
 			response.writeHead(400, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify({error: 'Missing a parameter '}) + JSON.stringify(error))
+			response.write(JSON.stringify({error: 'Missing a parameter '}))
 			response.end()
 		}
 	} else {
@@ -257,8 +260,10 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 			// first delete the pickup, then dropoff
 			onfleet.getSingleTaskByShortID(path[3]).then(function(taskB) {
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskB.shortId,'42',(new Date()).getTime()], function(error, rows){
-					if (error)
-						console.log('ERROR - query\n' + error)
+					if (error) {
+						console.log('Pickup task: ' + taskA.shortId + ' was not added to database - 1')
+						throw error
+					}
 					getJobData(taskB.shortId).then(function(joblog) {
 						onfleet.deleteTask(taskB.dependencies[0]).then(function() {
 							console.log('Cancelled dropoff task - ' + taskB.shortId)
