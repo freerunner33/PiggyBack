@@ -581,7 +581,6 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	console.log('STATUS - taskAssigned')
 	setTimeout(function() {
 		onfleet.getSingleTask(request.body.taskId).then(function(task) {
-			console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			if (!task.pickupTask) {
 				console.log(' Dropoff task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime()], function(error, rows){
@@ -592,24 +591,19 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 						connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, task.shortId], function(error, rows) {
 							if (error)
 								console.log(' ERR 34 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
-							
-
-
-
-							console.log('Update 1')
 							onfleet.getSingleTask(task.dependencies[0]).then(function(taskB) {
-								console.log('Got dependency task')
 								worker.tasks.push(taskB.id)
 								connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, taskB.shortId], function(error, rows) {
 									if (error)
-										console.log('ERROR in taskAssigned - 3\n' + error)
-									console.log('Update 2')
-									console.log('worker id: ' + worker.id)
-									console.log('task: ' + taskB.id)
-									console.log('worker tasks: ' + worker.tasks.pop())
+										console.log(' ERR 35 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
 									onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-										console.log('Update worker worked\n. TaskA and B were successfully created and added to the database - ' + taskB.shortId)
-										
+										console.log('Tasks [' + taskA.shortId + ', ' + taskB.shortId + '] were successfully assigned - \t\t\t' + (new Date()).getTime())
+
+
+
+
+
+
 										updateYelp(task.shortId, request, response)
 										response.sendStatus(200)
 									}, function(error) {
@@ -638,6 +632,8 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 						response.end()
 					})
 				})
+			} else {
+				console.log(' Dropoff task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			}
 			response.sendStatus(200)
 		}, function(error) {
