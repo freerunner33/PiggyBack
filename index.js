@@ -603,7 +603,6 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 
 
 
-
 										updateYelp(task.shortId, request, response)
 										response.sendStatus(200)
 									}, function(error) {
