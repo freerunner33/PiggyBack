@@ -762,37 +762,32 @@ function getJobData(id) {
 								reject('Task not found in database')
 							}
 						})
-					}
-					
+					}		
 				} else {
 					console.log(' ERR 48 - Select from Tasks database returned no rows\n')
 					reject('Task not found in database')
 				}
 			})
 		}, function(error) {
-			// console.log(' ERR 49 - Could not get job information\n' + JSON.stringify(error))
+			console.log(' ERR 49 - Could not get job information\n' + JSON.stringify(error))
 			reject(error)
 		})
 	})
 }
 
-
-
-
-
 function updateYelp(id, request, response) {
-	console.log('Updating Yelp with updateYelp function - id - ' + id)
+	console.log('Update function called - id - ' + id)
 	getJobData(id).then(function(job) {
 		console.log(job)
-		// response.sendStatus(200)
 		yelp.postUpdate(job).then(function(result) {
-			console.log('successfully posted to Yelp ' + id)
+			console.log(' Successfully posted to Yelp ' + id)
 			response.sendStatus(200)
-		}, function(error1) {
-			console.log('unsuccessfully posted to Yelp ' + id)
+		}, function(error) {
+			console.log(' ERR 50 - Unsuccessfully posted to Yelp\n' + JSON.stringify(error))
 			response.sendStatus(404)
 		})
-	}, function(error2) {
+	}, function(error) {
+		console.log(' ERR 51 - Could not get job information\n' + JSON.stringify(error))
 		response.sendStatus(404)
 	})
 }
