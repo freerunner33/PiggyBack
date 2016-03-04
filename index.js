@@ -582,10 +582,6 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	setTimeout(function() {
 		onfleet.getSingleTask(request.body.taskId).then(function(taskB) {
 			if (!taskB.pickupTask) {
-				// DROPOFF WAS ASSIGNED
-				console.log(' Pickup task: ' + taskB.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
-				response.sendStatus(200)
-			} else {
 				console.log(' Dropoff task: ' + taskB.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskB.shortId,'50',(new Date()).getTime()], function(error, rows){
 					if (error)
@@ -623,6 +619,9 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 						response.sendStatus(200)
 					})
 				})
+			} else {
+				console.log(' Pickup task: ' + taskB.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+				response.sendStatus(200)
 			}
 		}, function(error) {
 			console.log(' ERR 39 - Could not find main task\n' + JSON.stringify(error))
