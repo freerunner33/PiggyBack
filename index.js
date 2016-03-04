@@ -594,7 +594,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 				console.log(' Pickup task: ' + taskA.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 				onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
 					console.log('Found worker - ' + worker.name)
-					console.log('Dependencies: ' + taskA.dependencies.toString())
+					console.log('TaskA:\n' + JSON.stringify(taskA))
 					connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, taskA.shortId], function(error, rows) {
 						if (error)
 							console.log(' ERR 34 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
