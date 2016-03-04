@@ -10,21 +10,22 @@ var request = require('request')
 
 function postUpdate(data) {
 	return new Promise(function(resolve, reject) {
-		request.post(
-			'https://eat24hours.com/dprovider/status?key=' + apiKey,
-		    {
-		    	body: data,
-		    	json: true
-		    },
-		    function (error, response, body) {
-		    	if (error) {
-		    		reject(error)
-		    	}
-		        if (!error && response.statusCode == 200) {
-		            resolve(JSON.stringify(response))
-		        }
-		    }
-		)
+		resolve('Success - test')
+		// request.post(
+		// 	'https://eat24hours.com/dprovider/status?key=' + apiKey,
+		//     {
+		//     	body: data,
+		//     	json: true
+		//     },
+		//     function (error, response, body) {
+		//     	if (error) {
+		//     		reject(error)
+		//     	}
+		//         if (!error && response.statusCode == 200) {
+		//             resolve(JSON.stringify(response))
+		//         }
+		//     }
+		// )
 	})
 }
 
