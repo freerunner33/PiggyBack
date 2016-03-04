@@ -594,6 +594,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 							onfleet.getSingleTask(taskB.dependencies[0]).then(function(taskA) {
 								var tempArray = worker.tasks
 								tempArray.push(taskB.id)
+								console.log('tasks array: ' + tempArray.length + ', ' + tempArray.toString())
 								connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, taskA.shortId], function(error, rows) {
 									if (error)
 										console.log(' ERR 35 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
