@@ -1,0 +1,22 @@
+This is the basic layout for the test environment
+
+Need server to be running on backend ready to relay any requests
+
+All requests will be sent via buttons on some sort of dashboard
+Will send default data from html forms - changable if necessary
+
+There will be a separate page that will display the log file and error file
+
+All requests will be to the test organization - use the test key
+
+Button on website sends form
+server catches this post request
+converts to Onfleet spec and assigns to driver
+
+At each new alert, a log is created for this task
+
+Index file should not contain signup and all webhooks should post to my log
+Need to also be listening for these webhooks
+	Need to simply log when onfleet sends me the update
+
+On backend need totally different mysql database

@@ -145,7 +145,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 				true,													// pickup task?
 				[],														// dependencies - array
 				j.pickup_waypoint.special_instructions,					// notes for task
-				{mode:'distance', team: 'wX8Nn3uoYlEvtGOdTcbQseQ6'}		// Can add team option with team id: TEST ylC5klVbtmEVrVlBfUYp9oeM
+				{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id: SEATTLE wX8Nn3uoYlEvtGOdTcbQseQ6 TEST ylC5klVbtmEVrVlBfUYp9oeM
 			).then(function(taskA) {
 				console.log('Created pickup task - ' + taskA.shortId)
 

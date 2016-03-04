@@ -2,13 +2,11 @@
 // THIS IS A TEST ENVIRONMENT
 
 // SETUP
-var onfleet = require('./onfleet.js')
-var partner = require('./partner')
-var timezone = require('./timezone.js')
-var connection = require('./database.js')
+var onfleet = require('../onfleet.js')
+var partner = require('./partner.js')
 var keys = require('./keys.js')
+var connection = require('./database.js')
 
-var signupKey = keys.signupKey
 var yelpUser = keys.yelpUser
 var yelpPass = keys.yelpPass
 
