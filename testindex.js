@@ -1,9 +1,9 @@
 
-// THIS IS A TESTING ENVIRONMENT. Should only communicate with myself. Create new pm2 process
+// THIS IS A TEST ENVIRONMENT
 
 // SETUP
 var onfleet = require('./onfleet.js')
-var yelp = require('./yelp')
+var partner = require('./partner')
 var timezone = require('./timezone.js')
 var connection = require('./database.js')
 var keys = require('./keys.js')
@@ -74,7 +74,8 @@ app.get('/', function(request, response) {
 
 // 1. Creating a new job
 app.post('/Piggyback/jobs', function(request, response) {
-	// console.log('Got new job request')
+	console.log('CREATE JOB')
+
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
@@ -148,7 +149,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 				j.pickup_waypoint.special_instructions,					// notes for task
 				{mode:'distance', team: 'wX8Nn3uoYlEvtGOdTcbQseQ6'}		// Can add team option with team id: TEST ylC5klVbtmEVrVlBfUYp9oeM
 			).then(function(taskA) {
-				// console.log('Created taskA')
+				console.log('Created pickup task - ' + taskA.shortId)
+
 				onfleet.createNewTask(
 					'~2FSQGbR0qSXi1v9kSQxtW4v',							// merchant
 					'~2FSQGbR0qSXi1v9kSQxtW4v',							// executor
@@ -160,7 +162,8 @@ app.post('/Piggyback/jobs', function(request, response) {
 					[taskA.id],											// dependencies - array
 					j.dropoff_waypoint.special_instructions				// notes for task
 				).then(function(taskB) {
-					// console.log('Created taskB')
+					console.log('Created dropoff task - ' + taskB.shortId + ' [' + taskA.shortId + ']')
+
 					connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
 						[
 							taskA.shortId,													// shortId
@@ -180,7 +183,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 						function(error, rows)
 						{
 							if (error) {
-								console.log('TaskA: ' + taskA.id + ' was not added to database - 2')
+								console.log(' ERR 01 - Pickup task: ' + taskA.shortId + ' was not added to database')
 								throw error
 							}
 							connection.query('INSERT INTO Tasks (shortId, taskId, yelpId, company, driverTip, taskType, completeAfter, completeBefore, workerId, workerName, destination, completionTime, didSucceed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
@@ -202,10 +205,10 @@ app.post('/Piggyback/jobs', function(request, response) {
 								function(error, rows)
 								{
 									if (error) {
-										console.log('TaskB ' + taskB.id + ' was not added to database - 2')
+										console.log(' ERR 02 - Dropoff task: ' + taskB.shortId + ' was not added to database')
 										throw error
 									}
-									console.log('Jobs were successfully created and added to database:' + taskB.shortId + '\t\t\t' + (new Date()).getTime())
+									console.log('Jobs [' + taskA.shortId + ', ' + taskB.shortId + '] were successfully created and added to database - \t\t\t' + (new Date()).getTime())
 									response.writeHead(200, { 'Content-Type': 'application/json' })
 									response.write(JSON.stringify({job_id: taskB.shortId}))
 									response.end()
@@ -215,20 +218,23 @@ app.post('/Piggyback/jobs', function(request, response) {
 					)
 				}, function(error) {
 					// ERROR CREATING DROPOFF TASK
+					console.log(' ERR 03 - Dropoff task was not created\n' + JSON.stringify(error))
 					response.writeHead(405, { 'Content-Type': 'application/json' })
-					response.write(JSON.stringify({error: 'Error creating job - 2 '}) + JSON.stringify(error))
+					response.write(JSON.stringify({error: 'Error creating job - 2'}))
 					response.end()
 				})
 			}, function(error) {
 				// ERROR CREATING PICKUP TASK
+				console.log(' ERR 04 - Pickup task was not created\n' + JSON.stringify(error))
 				response.writeHead(405, { 'Content-Type': 'application/json' })
-				response.write(JSON.stringify({error: 'Error creating job - 1 '}) + JSON.stringify(error))
+				response.write(JSON.stringify({error: 'Error creating job - 1 '}))
 				response.end()
 			})
 		} else {
-			// ERROR MISSING SOME VARIABLE
+			// ERROR MISSING A VARIABLE
+			console.log(' ERR 05 - Request missing a variable\n' + JSON.stringify(error))
 			response.writeHead(400, { 'Content-Type': 'application/json' })
-			response.write(JSON.stringify({error: 'Missing some variable. '}) + JSON.stringify(error))
+			response.write(JSON.stringify({error: 'Missing a parameter '}))
 			response.end()
 		}
 	} else {
@@ -238,60 +244,62 @@ app.post('/Piggyback/jobs', function(request, response) {
 
 // 2. Deleting a job
 app.delete('/Piggyback/jobs/*', function(request, response) {
+	console.log('DELETE JOB')
+
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
 	var parts=auth.split(/:/)
 	var username=parts[0]
 	var password=parts[1]
-	// console.log('DELETE request received')
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var path = request.url.split('/')
-		if (path.length != 4) {
-			response.writeHead(405, {'Content-Type': 'application/json'})
-			response.write(JSON.stringify({error: 'Incorrect path format'}))
-			response.end()
-		} else {
-			// console.log('Got a delete request ' + path[3])
-			// first delete the pickup, then dropoff
+		if (path.length == 4) {
 			onfleet.getSingleTaskByShortID(path[3]).then(function(taskB) {
-				// console.log('getSingleTaskByShortID worked')
+				console.log('Cancelling dropoff ' + taskB.shortId + ' and pickup ' + taskB.dependencies[0])
 				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskB.shortId,'42',(new Date()).getTime()], function(error, rows){
-					if (error)
-						console.log('ERROR - query\n' + error)
-					// console.log('Insert into JobLogs worked')
+					if (error) {
+						console.log(' ERR 06 - Dropoff task: ' + taskB.shortId + ' was not added to database')
+						throw error
+					}
 					getJobData(taskB.shortId).then(function(joblog) {
-						// console.log('getJobData worked')
 						onfleet.deleteTask(taskB.dependencies[0]).then(function() {
+							console.log('Cancelled pickup task')
 							onfleet.deleteTask(taskB.id).then(function() {
-								// console.log('Both tasks deleted')
-								console.log('Job cancelled: ' + taskB.shortId + '\t\t\t' + (new Date()).getTime())
-								// console.log('Updating Yelp')
-								// console.log(joblog)
+								console.log('Cancelled dropoff task - \t\t\t' + (new Date()).getTime())
 								response.writeHead(200, { 'Content-Type': 'application/json' })
 								response.write(JSON.stringify(joblog))
 								response.end()
 							}, function(error) {
+								console.log(' ERR 07 - Dropoff task was not cancelled\n' + JSON.stringify(error))
 								response.writeHead(405, { 'Content-Type': 'application/json' })
-								response.write(JSON.stringify({error: 'Task could not be cancelled. - 2'}))
+								response.write(JSON.stringify({error: 'Error cancelling job - 2 '}))
 								response.end()
 							})
 						}, function(error) {
+							console.log(' ERR 08 - Pickup task was not cancelled\n' + JSON.stringify(error))
 							response.writeHead(405, { 'Content-Type': 'application/json' })
-							response.write(JSON.stringify({error: 'Task could not be cancelled. - 1'}))
+							response.write(JSON.stringify({error: 'Error cancelling job - 1'}))
 							response.end()
 						})
 					}, function(error) {
+						console.log(' ERR 09 - Job log could not be generated\n' + JSON.stringify(error))
 						response.writeHead(405, { 'Content-Type': 'application/json' })
-						response.write(JSON.stringify({error: 'Task log could not be generated.'}))
+						response.write(JSON.stringify({error: 'Job log could not be generated'}))
 						response.end()
 					})
 				})
 			}, function(error) {
+				console.log(' ERR 10 - Job could not be found\n' + JSON.stringify(error))
 				response.writeHead(404, { 'Content-Type': 'application/json' })
 				response.write(JSON.stringify({error: 'Job could not be found'}))
 				response.end()
 			})
+		} else {
+			console.log(' ERR 11 - Incorrect URL path format')
+			response.writeHead(405, {'Content-Type': 'application/json'})
+			response.write(JSON.stringify({error: 'Incorrect URL path format'}))
+			response.end()
 		}
 	} else {
 		response.sendStatus(401)
@@ -300,6 +308,7 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 
 // 3. Querying the status of a job
 app.get('/Piggyback/status/*', function(request, response) {
+	console.log('QUERY JOB')
 	var header=request.headers['authorization']||''
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
@@ -309,21 +318,20 @@ app.get('/Piggyback/status/*', function(request, response) {
 
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		var path = request.url.split('/')
-		if (path.length != 4) {
-			response.writeHead(400, {'Content-Type': 'application/json'})
-			response.write(JSON.stringify({error: 'Incorrect path format'}))
-			response.end()
-		} else {
+		if (path.length == 4) {
 			onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
+				console.log('Querying dropoff task - ' + taskB.shortId)
 				connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
 					if (error) {
-						response.writeHead(400, {'Content-Type': 'application/json'})
-						response.write(JSON.stringify(error))
+						console.log(' ERR 12 - Dropoff task: ' + task.shortId + ' was not found in database Tasks')
+						response.writeHead(404, {'Content-Type': 'application/json'})
+						response.write(JSON.stringify({error: 'Job id not found'}))
 						response.end()
 					}
 					if (rows && rows.length) {
 						if (task.worker) {
 							onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
+								console.log('Found worker - ' + worker.name)
 								if (worker.location) {
 									var loc = {latitude: worker.location[1], longitude: worker.location[0]}
 								} else {
@@ -331,12 +339,14 @@ app.get('/Piggyback/status/*', function(request, response) {
 								}
 								connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 									if (error) {
-										response.writeHead(400, {'Content-Type': 'application/json'})
-										response.write(JSON.stringify(error))
+										console.log(' ERR 13 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+										response.writeHead(404, {'Content-Type': 'application/json'})
+										response.write(JSON.stringify({error: 'Job id not found'}))
 										response.end()
 									}
 									if (rows2 && rows2.length) {
 										writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
+											console.log('Query was successfully - \t\t\t' + (new Date()).getTime())
 											response.writeHead(200, {'Content-Type': 'application/json'})
 											var json = JSON.stringify(
 												{
@@ -354,31 +364,36 @@ app.get('/Piggyback/status/*', function(request, response) {
 												}
 											)
 											response.end(json)	
-										}, function() {
-											response.writeHead(400, { 'Content-Type': 'application/json' })
-											response.write(JSON.stringify({ error: 'Problem with log file'}))
+										}, function(error) {
+											console.log(' ERR 14 - Job log could not be generated')
+											response.writeHead(405, {'Content-Type': 'application/json'})
+											response.write(JSON.stringify({error: 'Job log could not be generated'}))
 											response.end()
 										})
 									} else {
-										response.writeHead(400, { 'Content-Type': 'application/json' })
-										response.write(JSON.stringify({ error: 'Task not found in database - query1'}))
+										console.log(' ERR 15 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+										response.writeHead(404, { 'Content-Type': 'application/json' })
+										response.write(JSON.stringify({ error: 'Job id not found'}))
 										response.end()
 									}
 								})
 							}, function(error) {
-								response.writeHead(400, { 'Content-Type': 'application/json' })
-								response.write(JSON.stringify(error))
+								console.log(' ERR 16 - Worker: ' + task.worker + ' could not be found')
+								response.writeHead(404, { 'Content-Type': 'application/json' })
+								response.write(JSON.stringify({ error: 'Job id not found'}))
 								response.end()
 							})
 						} else {
 							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 								if (error) {
-									response.writeHead(400, {'Content-Type': 'application/json'})
-									response.write(JSON.stringify(error))
+									console.log(' ERR 17 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+									response.writeHead(404, {'Content-Type': 'application/json'})
+									response.write(JSON.stringify({error: 'Job id not found'}))
 									response.end()
 								}
 								if (rows2 && rows2.length) {
 									writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
+										console.log('Query was successfully - \t\t\t' + (new Date()).getTime())
 										response.writeHead(200, {'Content-Type': 'application/json'})
 										var json = JSON.stringify(
 											{
@@ -392,29 +407,38 @@ app.get('/Piggyback/status/*', function(request, response) {
 											}
 										)
 										response.end(json)	
-									}, function() {
-										response.writeHead(400, { 'Content-Type': 'application/json' })
-										response.write(JSON.stringify({ error: 'Problem with log file'}))
+									}, function(error) {
+										console.log(' ERR 18 - Job log could not be generated')
+										response.writeHead(405, {'Content-Type': 'application/json'})
+										response.write(JSON.stringify({error: 'Job log could not be generated'}))
 										response.end()
 									})
 								} else {
-									response.writeHead(400, { 'Content-Type': 'application/json' })
-									response.write(JSON.stringify({ error: 'Task not found in database - query1'}))
+									console.log(' ERR 19 - Dropoff task: ' + task.shortId + ' was not found in database JobLogs')
+									response.writeHead(404, { 'Content-Type': 'application/json' })
+									response.write(JSON.stringify({ error: 'Job id not found'}))
 									response.end()
 								}
 							})
 						}	
 					} else {
-						response.writeHead(400, { 'Content-Type': 'application/json' })
-						response.write(JSON.stringify({ error: 'Task not found in database - query2'}))
+						console.log(' ERR 20 - Dropoff task: ' + task.shortId + ' was not found in database Tasks')
+						response.writeHead(404, { 'Content-Type': 'application/json' })
+						response.write(JSON.stringify({ error: 'Job id not found'}))
 						response.end()
 					}
 				})
 			}, function(error) {
-				response.writeHead(400, { 'Content-Type': 'application/json' })
-				response.write(JSON.stringify(error))
+				console.log(' ERR 21 - Job could not be found\n' + JSON.stringify(error))
+				response.writeHead(404, { 'Content-Type': 'application/json' })
+				response.write(JSON.stringify({error: 'Job could not be found'}))
 				response.end()
 			})
+		} else {
+			console.log(' ERR 22 - Incorrect URL path format')
+			response.writeHead(400, {'Content-Type': 'application/json'})
+			response.write(JSON.stringify({error: 'Incorrect URL path format'}))
+			response.end()
 		}
 	} else {
 		response.sendStatus(401)
@@ -423,115 +447,131 @@ app.get('/Piggyback/status/*', function(request, response) {
 
 // 4. Reporting the status of a job
 app.post('/Piggyback/webhook/taskStarted', function(request, response) {
+	console.log('STATUS - taskStarted')
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		// console.log('taskStarted: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		if (!task.pickupTask) {
+			console.log(' Dropoff task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'51',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query\n' + error)
+					console.log(' ERR 23 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
 				updateYelp(task.shortId, request, response)
+				response.sendStatus(200)
 			})
+		} else {
+			console.log(' Pickup task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		}
-		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404)
 	})
 })
 
 app.post('/Piggyback/webhook/taskEta', function(request, response) {
+	console.log('STATUS - taskEta')
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		// console.log('taskEta: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		if (!task.pickupTask) {
+			console.log(' Dropoff task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'52',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query\n' + error)
+					console.log(' ERR 24 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
 				updateYelp(task.shortId, request, response)
+				response.sendStatus(200)
 			})
+		} else {
+			console.log(' Pickup task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		}
-		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404)
 	})
 })
 
 app.post('/Piggyback/webhook/taskArrival', function(request, response) {
+	console.log('STATUS - taskArrival')
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		// console.log('taskArrival: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		if (!task.pickupTask) {
+			console.log(' Dropoff task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'53',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR - query\n' + error)
+					console.log(' ERR 25 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
 				updateYelp(task.shortId, request, response)
+				response.sendStatus(200)
 			})
+		} else {
+			console.log(' Pickup task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		}
-		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404)
 	})
 })
 
 app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
+	console.log('STATUS - taskCompleted')
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		// console.log('taskCompleted: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
-		if (!task.pickupTask) {		// Must be dropoff task
+		if (!task.pickupTask) {
+			console.log(' Dropoff task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'54',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR in taskCompleted - 1\n' + error)
+					console.log(' ERR 26 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
 				connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [(new Date()).toISOString(), task.shortId], function(error, rows) {
 					if (error)
-						console.log('ERROR in taskCompleted - 2\n' + error)
+						console.log(' ERR 27 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
 					updateYelp(task.shortId, request, response)
+					response.sendStatus(200)
 				})
 			})
 		} else {
+			console.log(' Pickup task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [(new Date()).toISOString(), task.shortId], function(error, rows) {
 				if (error)
-					console.log('ERROR in taskCompleted - 3\n' + error)
+					console.log(' ERR 28 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
+				response.sendStatus(200)
 			})
 		}
-		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404)
 	})
 })
 
 app.post('/Piggyback/webhook/taskFailed', function(request, response) {
+	console.log('STATUS - taskFailed')
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		// console.log('taskFailed: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		if (!task.pickupTask) {
+			console.log(' Dropoff task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'55', (new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR in taskFailed - 1\n' + error)
+					console.log(' ERR 29 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
 				connection.query('UPDATE Tasks SET didSucceed=\'FALSE\', completionTime=? WHERE shortId=?', [(new Date()).toISOString(), task.shortId], function(error, rows) {
 					if (error)
-						console.log('ERROR in taskFailed - 2\n' + error)
+						console.log(' ERR 30 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
 					updateYelp(task.shortId, request, response)
+					response.sendStatus(200)
 				})
 			})
 		} else {
+			console.log(' Pickup task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			connection.query('UPDATE Tasks SET didSucceed=\'FALSE\', completionTime=? WHERE shortId=?', [task.shortId, (new Date()).getTime()], function(error, rows) {
 				if (error)
-					console.log('ERROR in taskFailed - 3\n' + error)
-				updateYelp(task.shortId, request, response)
+					console.log(' ERR 31 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
+				response.sendStatus(200)
 			})
 		}
-		response.sendStatus(200)
 	}, function(error) {
 		response.sendStatus(404)
 	})
 })
 
 app.post('/Piggyback/webhook/taskCreated', function(request, response) {
+	console.log('STATUS - taskCreated')
 	onfleet.getSingleTask(request.body.taskId).then(function(task) {
-		// console.log('taskCreated: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 		if (!task.pickupTask) {
+			console.log(' Dropoff task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'40',(new Date()).getTime()], function(error, rows){
 				if (error)
-					console.log('ERROR in taskCreated - 1\n' + error)
-				// updateYelp(task.shortId, request, response)
+					console.log(' ERR 32 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
+				// Do not need to update YelpEat24
 				response.sendStatus(200)
 			})
 		} else {
+			console.log(' Pickup task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			response.sendStatus(200)
 		}
 	}, function(error) {
@@ -540,65 +580,56 @@ app.post('/Piggyback/webhook/taskCreated', function(request, response) {
 })
 
 app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
+	console.log('STATUS - taskAssigned')
+	// the pickup task is automatically assigned, need to add the dropoff to the driver
 	setTimeout(function() {
-		onfleet.getSingleTask(request.body.taskId).then(function(task) {
-			console.log('taskAssigned: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
-			if (!task.pickupTask) {
-				console.log('Dropoff task ' + task.shortId)
-				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [task.shortId,'50',(new Date()).getTime()], function(error, rows){
+		onfleet.getSingleTask(request.body.taskId).then(function(taskA) {
+			if (!taskA.pickupTask) {
+				// DROPOFF WAS ASSIGNED - just log this and respond 200
+				console.log(' Dropoff task: ' + taskA.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+				connection.query('INSERT INTO JobLogs (shortId, statusCode, timestamp) VALUES (?,?,?)', [taskA.shortId,'50',(new Date()).getTime()], function(error, rows){
 					if (error)
-						console.log('ERROR in taskAssigned - 1\n' + error)
-					console.log('Inserted into joblogs')
-					onfleet.getSingleWorkerByID(task.worker).then(function(worker) {
-						console.log('Got worker')
-						connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, task.shortId], function(error, rows) {
-							if (error)
-								console.log('ERROR in taskAssigned - 2\n' + error)
-							console.log('Update 1')
-							onfleet.getSingleTask(task.dependencies[0]).then(function(taskB) {
-								console.log('Got dependency task')
-								worker.tasks.push(taskB.id)
-								connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, taskB.shortId], function(error, rows) {
-									if (error)
-										console.log('ERROR in taskAssigned - 3\n' + error)
-									console.log('Update 2')
-									// console.log('worker id: ' + worker.id)
-									// console.log('task: ' + taskB.id)
-									// console.log('worker tasks: ' + worker.tasks.pop())
-									onfleet.updateWorkerByID(worker.id, {tasks: worker.tasks}).then(function() {
-										console.log('Update worker worked\n. TaskA and B were successfully created and added to the database - ' + taskB.shortId)
-										
-										updateYelp(task.shortId, request, response)
-										response.sendStatus(200)
-									}, function(error) {
-										// DROPOFF TASK NOT ADDED TO WORKER
-										console.log('did not work to update worker by id')
-										console.log(error)
-										response.writeHead(400, { 'Content-Type': 'application/json' })
-										response.write(JSON.stringify(error))
-										response.end()
-									})
+						console.log(' ERR 33 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
+					response.sendStatus(200)
+				})
+			} else {
+				console.log(' Pickup task: ' + taskA.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+				onfleet.getSingleWorkerByID(taskA.worker).then(function(worker) {
+					console.log('Found worker - ' + worker.name)
+					connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, taskA.shortId], function(error, rows) {
+						if (error)
+							console.log(' ERR 34 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
+						onfleet.getSingleTask(taskA.dependencies[0]).then(function(taskB) {
+							console.log('Current tasks: ' + (worker.tasks).toString())
+							var tempArray = worker.tasks
+							tempArray.push(taskB.id)
+							connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, taskB.shortId], function(error, rows) {
+								if (error)
+									console.log(' ERR 35 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
+								onfleet.updateWorkerByID(worker.id, {tasks: tempArray}).then(function() {
+									console.log('Tasks [' + taskA.shortId + ', ' + taskB.shortId + '] were successfully assigned - \t\t\t' + (new Date()).getTime())
+									updateYelp(taskB.shortId, request, response)
+									response.sendStatus(200)
+								}, function(error) {
+									// DROPOFF TASK NOT ADDED TO WORKER
+									console.log(' ERR 36 - Task ' + taskB.shortId + ' was not added to worker\n' + JSON.stringify(error))
+									response.sendStatus(200)
 								})
-							}, function(error) {
-								// COULD NOT GET PICKUP TASK
-								console.log('could not find dependency task')
-								console.log(error)
-								response.writeHead(400, { 'Content-Type': 'application/json' })
-								response.write(JSON.stringify(error))
-								response.end()
-							})		
-						})
-					}, function(error) {
-						// NOT AUTO ASSIGNED TO A WORKER
-						console.log('could not assign task to driver ...')
-						response.writeHead(403, { 'Content-Type': 'application/json' })
-						response.write(JSON.stringify(error))
-						response.end()
+							})
+						}, function(error) {
+							// COULD NOT GET DROPOFF TASK
+							console.log(' ERR 37 - Could not find dropoff task\n' + JSON.stringify(error))
+							response.sendStatus(200)
+						})		
 					})
+				}, function(error) {
+					// NOT AUTO ASSIGNED TO A WORKER
+					console.log(' ERR 38 - Could not find driver\n' + JSON.stringify(error))
+					response.sendStatus(200)
 				})
 			}
-			response.sendStatus(200)
 		}, function(error) {
+			console.log(' ERR 39 - Could not find main task\n' + JSON.stringify(error))
 			response.sendStatus(404)
 		})
 	}, 5000)
@@ -668,7 +699,7 @@ function getJobData(id) {
 		onfleet.getSingleTaskByShortID(id).then(function(task) {
 			connection.query('SELECT yelpId,workerName FROM Tasks WHERE shortId=?', [task.shortId], function(error, rows) {
 				if (error)
-					throw error
+					console.log(' ERR 40 - Select from Tasks database did not work\n' + JSON.stringify(error))
 				if (rows && rows.length) {
 					// get worker details
 					if (task.worker) {
@@ -680,7 +711,7 @@ function getJobData(id) {
 							}
 							connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 								if (error)
-									throw error
+									console.log(' ERR 41 - Select from JobLogs database did not work\n' + JSON.stringify(error))
 								if (rows2 && rows2.length) {
 									writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
 										var result = {
@@ -698,19 +729,22 @@ function getJobData(id) {
 										}
 										resolve(result)
 									}, function() {
+										console.log(' ERR 42 - Problem creating job log\n')
 										reject('Problem with log file')
 									})
 								} else {
+									console.log(' ERR 43 - Select from JobLogs database returned no rows\n')
 									reject('Task not found in database')
 								}
 							})
 						}, function(error) {
+							console.log(' ERR 44 - Could not get driver information\n' + JSON.stringify(error))
 							reject(error)
 						})
 					} else {
 						connection.query('SELECT statusCode, timestamp FROM JobLogs WHERE shortId=?', [task.shortId], function(error, rows2) {
 							if (error)
-								throw error
+								console.log(' ERR 45 - Select from JobLogs database did not work\n' + JSON.stringify(error))
 							if (rows2 && rows2.length) {
 								writeLog(rows2, task.destination.location[1], task.destination.location[0]).then(function(log) {
 									var result = {
@@ -724,37 +758,40 @@ function getJobData(id) {
 									}
 									resolve(result)
 								}, function() {
+									console.log(' ERR 46 - Problem creating job log\n')
 									reject('Problem with log file')
 								})
 							} else {
+								console.log(' ERR 47 - Select from JobLogs database returned no rows\n')
 								reject('Task not found in database')
 							}
 						})
-					}
-					
+					}		
 				} else {
+					console.log(' ERR 48 - Select from Tasks database returned no rows\n')
 					reject('Task not found in database')
 				}
 			})
 		}, function(error) {
+			console.log(' ERR 49 - Could not get job information\n' + JSON.stringify(error))
 			reject(error)
 		})
 	})
 }
 
 function updateYelp(id, request, response) {
-	console.log('Updating Yelp with updateYelp function - id - ' + id)
+	console.log('Update function called - id - ' + id)
 	getJobData(id).then(function(job) {
 		console.log(job)
-		// response.sendStatus(200)
 		yelp.postUpdate(job).then(function(result) {
-			console.log('successfully posted to Yelp ' + id)
+			console.log(' Successfully posted to Yelp ' + id)
 			response.sendStatus(200)
-		}, function(error1) {
-			console.log('unsuccessfully posted to Yelp ' + id)
+		}, function(error) {
+			console.log(' ERR 50 - Unsuccessfully posted to Yelp\n' + JSON.stringify(error))
 			response.sendStatus(404)
 		})
-	}, function(error2) {
+	}, function(error) {
+		console.log(' ERR 51 - Could not get job information\n' + JSON.stringify(error))
 		response.sendStatus(404)
 	})
 }

@@ -1,7 +1,7 @@
 
 // SETUP
 var onfleet = require('./onfleet.js')
-var yelp = require('./yelp')
+var yelp = require('./yelp.js')
 var timezone = require('./timezone.js')
 var connection = require('./database.js')
 var keys = require('./keys.js')
