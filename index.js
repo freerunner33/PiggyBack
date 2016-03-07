@@ -157,7 +157,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 					false,													// pickup task?
 					[taskA.id],												// dependencies - array
 					j.dropoff_waypoint.special_instructions,				// notes for task
-					{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id: SEATTLE wX8Nn3uoYlEvtGOdTcbQseQ6 TEST ylC5klVbtmEVrVlBfUYp9oeM
+					{mode:'distance', team: 'wX8Nn3uoYlEvtGOdTcbQseQ6'}		// Can add team option with team id: SEATTLE wX8Nn3uoYlEvtGOdTcbQseQ6 TEST ylC5klVbtmEVrVlBfUYp9oeM
 				).then(function(taskB) {
 					console.log('Created dropoff task - ' + taskB.shortId + ' [' + taskA.shortId + ']')
 
@@ -594,7 +594,6 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 							onfleet.getSingleTask(taskB.dependencies[0]).then(function(taskA) {
 								var tempArray = worker.tasks
 								tempArray.push(taskA.id)
-								console.log('tasks array: ' + tempArray.length + ', ' + tempArray.toString())
 								connection.query('UPDATE Tasks SET workerId=?, workerName=? WHERE shortId=?', [worker.id, worker.name, taskA.shortId], function(error, rows) {
 									if (error)
 										console.log(' ERR 35 - Update Tasks database was unsuccessful\n' + JSON.stringify(error))
