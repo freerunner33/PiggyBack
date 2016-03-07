@@ -844,7 +844,9 @@ app.post('/Piggyback/export', function(request, response) {
 				throw error
 			if (rows && rows.length) {
 				var arr = []
+				var d
 				for (i = 0; i < rows.length; i++) {
+					rows[i].didSucceed = 'Testing'
 					arr.push(rows[i])
 				}
 				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: '', start_time: dateStrA.substr(0, 16), end_time: dateStrB.substr(0, 16), company: request.body.company, sort: request.body.sort})
