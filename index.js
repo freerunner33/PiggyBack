@@ -846,6 +846,7 @@ app.post('/Piggyback/export', function(request, response) {
 				var arr = []
 				var d
 				for (i = 0; i < rows.length; i++) {
+					rows[i].completionTime = (new Date((new Date(rows[i].completionTime)).getTime() - 8*3600000)).toISOString()
 					rows[i].didSucceed = 'Testing'
 					arr.push(rows[i])
 				}
