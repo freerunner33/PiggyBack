@@ -9,6 +9,8 @@ var keys = require('./keys.js')
 var signupKey = keys.signupKey
 var yelpUser = keys.yelpUser
 var yelpPass = keys.yelpPass
+var dinUser = keys.dinUser
+var dinPass = keys.dinPass
 
 var path = require('path')
 var express = require('express')
