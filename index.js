@@ -5,7 +5,6 @@ var yelp = require('./yelp.js')
 var timezone = require('./timezone.js')
 var connection = require('./database.js')
 var keys = require('./keys.js')
-var testfile = require('./test.js')
 
 var signupKey = keys.signupKey
 var yelpUser = keys.yelpUser
