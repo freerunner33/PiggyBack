@@ -795,6 +795,17 @@ function updateYelp(id, request, response) {
 	})
 }
 
+function verify(request) {
+	var header=request.headers['authorization']||''
+	var token=header.split(/\s+/).pop()||''
+	var auth=new Buffer(token, 'base64').toString()
+	var parts=auth.split(/:/)
+	var username=parts[0]
+	var password=parts[1]
+
+	return true
+}
+
 // TESTING
 app.post('/Piggyback', function(request, response) {
 	// Parsing basic authorization sent in post request
@@ -827,6 +838,7 @@ app.get('/Piggyback', function(request, response) {
 	}
 })
 
+// EXPORT
 app.get('/Piggyback/export', function(request, response) {
 	if (request.session.loggedin) {
 		response.render('export', {pageTitle: 'Export'})
@@ -861,6 +873,46 @@ app.post('/Piggyback/export', function(request, response) {
 			} else {
 				response.render('export', {pageTitle: 'Export', headers: query, arr: [], test: 'No data available for selected times', start_time: dateStrA.substr(0, 16), end_time: dateStrB.substr(0, 16), company: request.body.company, sort: request.body.sort})
 			}
+		})
+	} else {
+		response.render('signin', {pageTitle: 'Sign in'})
+	}
+})
+
+// DOWNLOAD
+app.post('/Piggyback/download', function(request, response) {
+	if (request.session.loggedin) {
+		// Generates a log file, then downloads it
+		fs.readdir('/tmp', function (err, files) {
+			if (err)
+				throw err
+			var max = 0
+			for (var index in files) {
+				if (files[index].includes('Piggyback_log')) {
+					var num = (parseInt(files[index].substr(13, (files[index].indexOf('.')) - 13)))
+					if (num > max)
+						max = num
+				}
+			}
+			var file = "'/tmp/Piggyback_log" + (max + 1) + ".csv'"
+			var query = "(SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed') ";
+			query = query + "UNION ALL (SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks ";
+			query = query + "WHERE completeAfter >= '" + request.body.start_time + "' && completeAfter <= '" + request.body.end_time + "' && company = '" + request.body.company + "' ORDER BY shortId ";
+			query = query + "INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n')"
+
+			connection.query(query, function(error, rows) {
+				if (error)
+					throw error
+				file = file.substr(1, file.length - 2)
+				var filename = path.basename(file)
+				var mimetype = mime.lookup(file)
+
+				response.setHeader('Content-disposition', 'attachment; filename=' + filename)
+				response.setHeader('Content-type', mimetype)
+
+				var filestream = fs.createReadStream(file)
+				filestream.pipe(response)
+			})
 		})
 	} else {
 		response.render('signin', {pageTitle: 'Sign in'})
@@ -964,6 +1016,7 @@ app.post('/Piggyback/signin', function(request, response) {
 	})
 })
 
+// LOGOUT
 app.get('/Piggyback/logout', function(request, response) {
 	request.session.destroy(function(error) {
 		if (error) {
@@ -972,45 +1025,6 @@ app.get('/Piggyback/logout', function(request, response) {
 			response.redirect('/Piggyback')
 		}
 	})
-})
-
-app.post('/Piggyback/download', function(request, response) {
-	if (request.session.loggedin) {
-		// Generates a log file, then downloads it
-		fs.readdir('/tmp', function (err, files) {
-			if (err)
-				throw err
-			var max = 0
-			for (var index in files) {
-				if (files[index].includes('Piggyback_log')) {
-					var num = (parseInt(files[index].substr(13, (files[index].indexOf('.')) - 13)))
-					if (num > max)
-						max = num
-				}
-			}
-			var file = "'/tmp/Piggyback_log" + (max + 1) + ".csv'"
-			var query = "(SELECT 'shortId','taskId','yelpId','company','driverTip','taskType','completeAfter','completeBefore','workerId','workerName','destination','completionTime','didSucceed') ";
-			query = query + "UNION ALL (SELECT shortId,taskId,yelpId,company,driverTip,taskType,completeAfter,completeBefore,workerId,workerName,destination,completionTime,didSucceed FROM Tasks ";
-			query = query + "WHERE completeAfter >= '" + request.body.start_time + "' && completeAfter <= '" + request.body.end_time + "' && company = '" + request.body.company + "' ORDER BY shortId ";
-			query = query + "INTO OUTFILE " + file + " FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n')"
-
-			connection.query(query, function(error, rows) {
-				if (error)
-					throw error
-				file = file.substr(1, file.length - 2)
-				var filename = path.basename(file)
-				var mimetype = mime.lookup(file)
-
-				response.setHeader('Content-disposition', 'attachment; filename=' + filename)
-				response.setHeader('Content-type', mimetype)
-
-				var filestream = fs.createReadStream(file)
-				filestream.pipe(response)
-			})
-		})
-	} else {
-		response.render('signin', {pageTitle: 'Sign in'})
-	}
 })
 
 http.listen(8080, '127.0.0.1', function() {
