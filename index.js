@@ -842,8 +842,8 @@ app.post('/Piggyback/export', function(request, response) {
 		var dateStrA = (new Date(timeA)).toISOString()
 		var dateStrB = (new Date(timeB)).toISOString()
 
-		var queryTimeA = (new Date(timeA + 8*3600000))
-		var queryTimeB = (new Date(timeB + 8*3600000))
+		var queryTimeA = (new Date(timeA - 8*3600000))
+		var queryTimeB = (new Date(timeB - 8*3600000))
 		
 		var query = 'shortId, driverTip, taskType, workerName, destination, completionTime, didSucceed'
 		connection.query('SELECT ' + query + ' FROM Tasks WHERE completeAfter >= ? && completeAfter <= ? && company = ? ORDER BY ' + request.body.order, [queryTimeA, queryTimeB, request.body.company, request.body.order], function(error, rows) {
