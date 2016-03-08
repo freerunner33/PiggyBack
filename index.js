@@ -74,14 +74,7 @@ app.get('/', function(request, response) {
 app.post('/Piggyback/jobs', function(request, response) {
 	console.log('CREATE JOB')
 
-	var header=request.headers['authorization']||''
-	var token=header.split(/\s+/).pop()||''
-	var auth=new Buffer(token, 'base64').toString()
-	var parts=auth.split(/:/)
-	var username=parts[0]
-	var password=parts[1]
-
-	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
+	if (verify(request)) {
 		var j = request.body
 
 		if (checkWayPoint(j.pickup_waypoint, true) && checkWayPoint(j.dropoff_waypoint, false) && j.order_id) {
@@ -243,13 +236,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 app.delete('/Piggyback/jobs/*', function(request, response) {
 	console.log('DELETE JOB')
 
-	var header=request.headers['authorization']||''
-	var token=header.split(/\s+/).pop()||''
-	var auth=new Buffer(token, 'base64').toString()
-	var parts=auth.split(/:/)
-	var username=parts[0]
-	var password=parts[1]
-	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
+	if (verify(request)) {
 		var path = request.url.split('/')
 		if (path.length == 4) {
 			onfleet.getSingleTaskByShortID(path[3]).then(function(taskB) {
@@ -306,14 +293,8 @@ app.delete('/Piggyback/jobs/*', function(request, response) {
 // 3. Querying the status of a job
 app.get('/Piggyback/status/*', function(request, response) {
 	console.log('QUERY JOB')
-	var header=request.headers['authorization']||''
-	var token=header.split(/\s+/).pop()||''
-	var auth=new Buffer(token, 'base64').toString()
-	var parts=auth.split(/:/)
-	var username=parts[0]
-	var password=parts[1]
-
-	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
+	
+	if (verify(request)) {
 		var path = request.url.split('/')
 		if (path.length == 4) {
 			onfleet.getSingleTaskByShortID(path[3]).then(function(task) {
