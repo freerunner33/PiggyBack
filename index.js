@@ -790,7 +790,7 @@ function verify(request) {
 	var p=parts[1]
 
 	if ((u.localeCompare(yelpUser) == 0 && p.localeCompare(yelpPass) == 0) || 
-		(u.localeCompare(din.user) == 0 && p.localeCompare(din.pass) == 0)) {
+		(u.localeCompare(dinUser) == 0 && p.localeCompare(dinPass) == 0)) {
 		return true
 	} else {
 		return false
