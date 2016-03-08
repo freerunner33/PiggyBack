@@ -66,9 +66,9 @@ var eat24Reasons = {
 }
 
 // HOME PAGE
-// app.get('/', function(request, response) {
-// 	response.render('index', {pageTitle: 'Home'})
-// })
+app.get('/', function(request, response) {
+	response.render('index', {pageTitle: 'Home'})
+})
 
 // 1. Creating a new job
 app.post('/Piggyback/jobs', function(request, response) {
@@ -634,7 +634,7 @@ app.post('/Piggyback/webhook/taskAssigned', function(request, response) {
 	}, 5000)
 })
 
-// Unused webhooks
+// UNUSED WEBHOOKS
 app.post('/Piggyback/webhook/workerDuty', function(request, response) {
 	response.sendStatus(200)
 })
@@ -651,7 +651,7 @@ app.post('/Piggyback/webhook/taskDeleted', function(request, response) {
 	response.sendStatus(200)
 })
 
-// Helper functions
+// HELPER FUNCTIONS
 function writeLog(arr, latitude, longitude) {
 	return new Promise(function(resolve, reject) {
 		var newArr = []
@@ -795,7 +795,7 @@ function updateYelp(id, request, response) {
 	})
 }
 
-// OTHER
+// TESTING
 app.post('/Piggyback', function(request, response) {
 	// Parsing basic authorization sent in post request
 	var header=request.headers['authorization']||''
@@ -1016,7 +1016,3 @@ app.post('/Piggyback/download', function(request, response) {
 http.listen(8080, '127.0.0.1', function() {
 	console.log('----------------listening on port 8080')
 })
-
-module.exports = {
-	app: app
-}
