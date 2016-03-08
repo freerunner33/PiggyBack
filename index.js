@@ -518,6 +518,9 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 		} else {
 			console.log(' Pickup task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
 			// check if complete after??
+			if (request.body.time > task.completeAfter) {
+				console.log('LATE')
+			}
 			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [(new Date()).toISOString(), task.shortId], function(error, rows) {
 				if (error)
 					console.log(' ERR 28 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
@@ -845,13 +848,10 @@ app.post('/Piggyback/export', function(request, response) {
 				throw error
 			if (rows && rows.length) {
 				var arr = []
-				var d
 				for (i = 0; i < rows.length; i++) {
 					str = (new Date((new Date(rows[i].completionTime)).getTime() - 8*3600000)).toISOString()
-					str = str.substr(0, str.length - 4)
+					str = str.substr(0, str.length - 5)
 					rows[i].completionTime = str
-
-					rows[i].didSucceed = 'Testing'
 					arr.push(rows[i])
 				}
 				response.render('export', {pageTitle: 'Export', headers: query, arr: arr, test: '', start_time: dateStrA.substr(0, 16), end_time: dateStrB.substr(0, 16), company: request.body.company, sort: request.body.sort})
