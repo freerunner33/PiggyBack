@@ -10,7 +10,7 @@ var signupKey = keys.signupKey
 var yelpUser = keys.yelpUser
 var yelpPass = keys.yelpPass
 
-var din = keys['DIN']
+//var din = keys['DIN']
 
 var dinUser = keys['dinUser']
 var dinPass = keys.dinPass
