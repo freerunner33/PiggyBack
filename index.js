@@ -157,7 +157,7 @@ app.post('/Piggyback/jobs', function(request, response) {
 					false,													// pickup task?
 					[taskA.id],												// dependencies - array
 					j.dropoff_waypoint.special_instructions,				// notes for task
-					{mode:'distance', team: 'ylC5klVbtmEVrVlBfUYp9oeM'}		// Can add team option with team id: SEATTLE wX8Nn3uoYlEvtGOdTcbQseQ6 TEST ylC5klVbtmEVrVlBfUYp9oeM
+					{mode:'distance', team: 'wX8Nn3uoYlEvtGOdTcbQseQ6'}		// Can add team option with team id: SEATTLE wX8Nn3uoYlEvtGOdTcbQseQ6 TEST ylC5klVbtmEVrVlBfUYp9oeM
 				).then(function(taskB) {
 					console.log('Created dropoff task - ' + taskB.shortId + ' [' + taskA.shortId + ']')
 
@@ -837,7 +837,7 @@ app.get('/Piggyback/export', function(request, response) {
 
 app.post('/Piggyback/export', function(request, response) {
 	if (request.session.loggedin) {
-		var timeA = new Date(request.body.start_time + 8*3600000).getTime()
+		var timeA = new Date(request.body.start_time).getTime() + 8*3600000
 		var timeB = new Date(request.body.end_time).getTime()
 		var dateStrA = (new Date(timeA)).toISOString()
 		var dateStrB = (new Date(timeB)).toISOString()
