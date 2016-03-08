@@ -66,9 +66,9 @@ var eat24Reasons = {
 }
 
 // HOME PAGE
-app.get('/', function(request, response) {
-	response.render('index', {pageTitle: 'Home'})
-})
+// app.get('/', function(request, response) {
+// 	response.render('index', {pageTitle: 'Home'})
+// })
 
 // 1. Creating a new job
 app.post('/Piggyback/jobs', function(request, response) {
