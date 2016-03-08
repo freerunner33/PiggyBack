@@ -12,9 +12,8 @@ var yelpPass = keys.yelpPass
 
 var din = keys['DIN']
 
-// var dinUser = keys['dinUser']
-// var dinPass = keys.dinPass
-
+var dinUser = keys['dinUser']
+var dinPass = keys.dinPass
 
 var path = require('path')
 var express = require('express')
