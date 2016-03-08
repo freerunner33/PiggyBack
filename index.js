@@ -849,7 +849,7 @@ app.post('/Piggyback/export', function(request, response) {
 					// b7dbad50 - 2016-03-04T01:31:25.148Z
 					// should be 2016-03-03T17:31:25.148
 					// rows[i].completionTime = (new Date((new Date(rows[i].completionTime)).getTime() - 8*3600000)).toISOString()
-					rows[i].completionTime = (new Date(rows[i].completionTime)).toLocaleString()
+					rows[i].completionTime = (new Date(rows[i].completionTime))
 					rows[i].didSucceed = 'Testing'
 					arr.push(rows[i])
 				}
