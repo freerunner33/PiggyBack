@@ -846,9 +846,9 @@ app.post('/Piggyback/export', function(request, response) {
 				var arr = []
 				var d
 				for (i = 0; i < rows.length; i++) {
-					// b7dbad50 - 2016-03-04T01:31:25.148Z
-					// should be 2016-03-03T17:31:25.148
-					rows[i].completionTime = (new Date((new Date(rows[i].completionTime)).getTime() - 8*3600000)).toISOString()
+					str = (new Date((new Date(rows[i].completionTime)).getTime() - 8*3600000)).toISOString()
+					str = str.substr(0, str.length - 1)
+					rows[i].completionTime = str
 
 					rows[i].didSucceed = 'Testing'
 					arr.push(rows[i])
