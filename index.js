@@ -837,7 +837,7 @@ app.get('/Piggyback/export', function(request, response) {
 
 app.post('/Piggyback/export', function(request, response) {
 	if (request.session.loggedin) {
-		var timeA = new Date(request.body.start_time).getTime()
+		var timeA = new Date(request.body.start_time + 8*3600000).getTime()
 		var timeB = new Date(request.body.end_time).getTime()
 		var dateStrA = (new Date(timeA)).toISOString()
 		var dateStrB = (new Date(timeB)).toISOString()
