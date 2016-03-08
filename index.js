@@ -1016,3 +1016,7 @@ app.post('/Piggyback/download', function(request, response) {
 http.listen(8080, '127.0.0.1', function() {
 	console.log('----------------listening on port 8080')
 })
+
+module.exports = {
+	app: app
+}
