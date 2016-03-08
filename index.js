@@ -517,6 +517,7 @@ app.post('/Piggyback/webhook/taskCompleted', function(request, response) {
 			})
 		} else {
 			console.log(' Pickup task: ' + task.shortId + '\t' + request.body.time + '\t' + (new Date()).getTime())
+			// check if complete after??
 			connection.query('UPDATE Tasks SET didSucceed=\'TRUE\', completionTime=? WHERE shortId=?', [(new Date()).toISOString(), task.shortId], function(error, rows) {
 				if (error)
 					console.log(' ERR 28 - Insert into JobLogs database was unsuccessful\n' + JSON.stringify(error))
