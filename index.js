@@ -10,10 +10,10 @@ var signupKey = keys.signupKey
 var yelpUser = keys.yelpUser
 var yelpPass = keys.yelpPass
 
-//var din = keys['DIN']
+var din = keys['DIN']
 
-var dinUser = keys['dinUser']
-var dinPass = keys.dinPass
+// var dinUser = keys['dinUser']
+// var dinPass = keys.dinPass
 
 var path = require('path')
 var express = require('express')
@@ -790,7 +790,7 @@ function verify(request) {
 	var p=parts[1]
 
 	if ((u.localeCompare(yelpUser) == 0 && p.localeCompare(yelpPass) == 0) || 
-		(u.localeCompare(dinUser) == 0 && p.localeCompare(dinPass) == 0)) {
+		(u.localeCompare(din.user) == 0 && p.localeCompare(din.pass) == 0)) {
 		return true
 	} else {
 		return false
