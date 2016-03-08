@@ -810,18 +810,9 @@ function verify(request) {
 	}
 }
 
-
 // TESTING
 app.post('/Piggyback', function(request, response) {
-	// Parsing basic authorization sent in post request
-	var header=request.headers['authorization']||''
-	var token=header.split(/\s+/).pop()||''
-	var auth=new Buffer(token, 'base64').toString()
-	var parts=auth.split(/:/)
-	var username=parts[0]
-	var password=parts[1]
-
-	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
+	if (verify(request)) {
 		response.writeHead(200, { 'Content-Type': 'application/json' })
 		response.write('OK\n')
 		response.end()
