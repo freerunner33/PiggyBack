@@ -800,10 +800,14 @@ function verify(request) {
 	var token=header.split(/\s+/).pop()||''
 	var auth=new Buffer(token, 'base64').toString()
 	var parts=auth.split(/:/)
-	var username=parts[0]
-	var password=parts[1]
+	var u=parts[0]
+	var p=parts[1]
 
-	return true
+	if ((u.localeCompare(yelpUser) == 0 && p.localeCompare(yelpPass) == 0) || (u.localeCompare(dinUser) == 0 && p.localeCompare(dinPass) == 0)) {
+		return true
+	} else {
+		return false
+	}
 }
 
 // TESTING
@@ -818,7 +822,7 @@ app.post('/Piggyback', function(request, response) {
 
 	if (username.localeCompare(yelpUser) == 0 && password.localeCompare(yelpPass) == 0) {
 		response.writeHead(200, { 'Content-Type': 'application/json' })
-		response.write('OK')
+		response.write('OK\n')
 		response.end()
 	} else {
 		response.sendStatus(401)
